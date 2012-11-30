@@ -1,0 +1,13 @@
+# Resource configuration
+resource.name=Cohort Member
+node.root=$.results
+resource.object=com.mclinic.api.model.Patient
+algorithm.class=com.mclinic.api.model.algorithm.CohortMemberAlgorithm
+resolver.class=com.mclinic.api.model.resolver.CohortMemberResolver
+field.unique=uuid
+# Mapping
+uuid=$.patient.uuid
+identifier=$.patient.identifiers[0].display
+name=$.patient.person.display
+gender=$.patient.person.gender
+birthdate=$.patient.person.birthdate
