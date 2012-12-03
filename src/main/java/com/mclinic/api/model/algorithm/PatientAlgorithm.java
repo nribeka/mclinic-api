@@ -1,16 +1,15 @@
 package com.mclinic.api.model.algorithm;
 
+import java.text.ParseException;
+
 import com.burkeware.search.api.serialization.Algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Patient;
 import com.mclinic.util.ISO8601;
 
-import java.text.ParseException;
-
 public class PatientAlgorithm implements Algorithm {
     /**
      * Implementation of this method will define how the patient will be de-serialized from the JSON representation.
-     *
      *
      * @param json the json representation
      * @return the concrete patient object
@@ -55,7 +54,7 @@ public class PatientAlgorithm implements Algorithm {
      */
     @Override
     public String serialize(final Object object) {
-    	Patient patient = (Patient) object;
+        Patient patient = (Patient) object;
         return patient.getJson();
     }
 }

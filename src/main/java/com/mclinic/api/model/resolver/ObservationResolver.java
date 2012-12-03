@@ -15,9 +15,8 @@
 package com.mclinic.api.model.resolver;
 
 
-
 public class ObservationResolver extends AbstractResolver {
-    
+
     public String resolve(String searchString) {
         return getServer() + "ws/rest/v1/obs?patient=" + searchString + "";
     }

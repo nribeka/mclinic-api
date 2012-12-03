@@ -24,77 +24,88 @@ public class User {
     private String password;
     private String salt;
     private Boolean status;
-    
-	/**
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	/**
-	 * @return the systemId
-	 */
-	public String getSystemId() {
-		return systemId;
-	}
-	/**
-	 * @param systemId the systemId to set
-	 */
-	public void setSystemId(String systemId) {
-		this.systemId = systemId;
-	}
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-	/**
-	 * @param username the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	/**
-	 * @return the salt
-	 */
-	public String getSalt() {
-		return salt;
-	}
-	/**
-	 * @param salt the salt to set
-	 */
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
-	/**
-	 * @return the status
-	 */
-	public Boolean getStatus() {
-		return status;
-	}
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the systemId
+     */
+    public String getSystemId() {
+        return systemId;
+    }
+
+    /**
+     * @param systemId the systemId to set
+     */
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the salt
+     */
+    public String getSalt() {
+        return salt;
+    }
+
+    /**
+     * @param salt the salt to set
+     */
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    /**
+     * @return the status
+     */
+    public Boolean getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }
