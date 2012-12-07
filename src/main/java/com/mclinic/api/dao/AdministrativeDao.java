@@ -5,24 +5,24 @@ import java.io.File;
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.AdministrativeDaoImpl;
 
-@ImplementedBy (AdministrativeDaoImpl.class)
+@ImplementedBy(AdministrativeDaoImpl.class)
 public interface AdministrativeDao {
 
-	void initializeDB(File j2lFile);
+    void initializeDB(File j2lFile);
 
-	void loadPatients(File jsonFilesDir);
+    void loadPatients(File jsonFilesDir);
 
-	void downloadPatients();
-	
-	void loadCohorts(File jsonFilesDir);
+    void downloadPatients();
 
-	void downloadCohorts();
-	
-	void loadCohortPatients(File jsonFilesDir);
+    void loadCohorts(File jsonFilesDir);
 
-	void downloadCohortPatients(String cohortUUID);
+    void downloadCohorts();
 
-	void loadObservations(File jsonFilesDir);
+    void loadCohortPatients(File jsonFilesDir);
 
-	void downloadObservations(String patientUUID);
+    void downloadCohortPatients(String cohortUUID);
+
+    void loadObservations(File jsonFilesDir);
+
+    void downloadObservations(String patientUUID);
 }

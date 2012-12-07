@@ -1,20 +1,20 @@
 package com.mclinic.api.dao;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.PatientDaoImpl;
 import com.mclinic.api.model.Patient;
 
-import java.util.List;
-
-@ImplementedBy (PatientDaoImpl.class)
+@ImplementedBy(PatientDaoImpl.class)
 public interface PatientDao {
-	
+
     Patient createPatient(Patient patient);
 
     Patient updatePatient(Patient patient);
-    
+
     Patient getPatientByIdentifier(String identifier);
-    
+
     Patient getPatientByUUID(String uuid);
 
     List<Patient> getAllPatients();
@@ -23,6 +23,6 @@ public interface PatientDao {
 
     void deleteAllPatients();
 
-	List<Patient> getPatientsByName(String name);
+    List<Patient> getPatientsByName(String name);
 
 }

@@ -13,10 +13,10 @@ public class CohortAlgorithm implements Algorithm {
 
         String uuid = JsonPath.read(jsonObject, "$.uuid");
         cohort.setUuid(uuid);
-        
+
         String name = JsonPath.read(jsonObject, "$.display");
         cohort.setName(name);
-        
+
 //        String description = JsonPath.read(jsonObject, "$.description");
 //        cohort.setDescription(description);
 
@@ -27,7 +27,7 @@ public class CohortAlgorithm implements Algorithm {
 
     @Override
     public String serialize(final Object object) {
-    	Cohort cohort = (Cohort) object;
+        Cohort cohort = (Cohort) object;
         return cohort.getJson();
     }
 }

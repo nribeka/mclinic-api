@@ -13,19 +13,17 @@
  */
 package com.mclinic.api.model.algorithm;
 
+import java.text.ParseException;
+
 import com.burkeware.search.api.serialization.Algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Observation;
 import com.mclinic.util.ISO8601;
-
 import net.minidev.json.JSONObject;
-
-import java.text.ParseException;
 
 public class ObservationAlgorithm implements Algorithm {
     /**
      * Implementation of this method will define how the patient will be serialized from the JSON representation.
-     *
      *
      * @param json the json representation
      * @return the concrete observation object
@@ -37,7 +35,7 @@ public class ObservationAlgorithm implements Algorithm {
         // get the full json object representation and then pass this around to the next JsonPath.read()
         // this should minimize the time for the subsequent read() call
         Object jsonObject = JsonPath.read(json, "$");
-        
+
         String uuid = JsonPath.read(jsonObject, "$.uuid");
         observation.setUuid(uuid);
 
@@ -52,11 +50,11 @@ public class ObservationAlgorithm implements Algorithm {
 
         Object jsonValue = JsonPath.read(jsonObject, "$.value");
         if (jsonValue != null) {
-	        String value = jsonValue.toString();
-	        if (jsonValue instanceof JSONObject)
-	             value = JsonPath.read(jsonValue, "$.name.display");
-	        observation.setValueText(value);
-	    }
+            String value = jsonValue.toString();
+            if (jsonValue instanceof JSONObject)
+                value = JsonPath.read(jsonValue, "$.name.display");
+            observation.setValueText(value);
+        }
 
         String obsDatetime = JsonPath.read(jsonObject, "$.obsDatetime");
         try {
@@ -73,13 +71,12 @@ public class ObservationAlgorithm implements Algorithm {
     /**
      * Implementation of this method will define how the patient will be deserialized into the JSON representation.
      *
-     *
      * @param observation the observation
      * @return the json representation
      */
     @Override
     public String serialize(final Object object) {
-    	Observation observation = (Observation) object;
+        Observation observation = (Observation) object;
         return observation.getJson();
     }
 }

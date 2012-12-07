@@ -17,85 +17,85 @@
 package com.mclinic.api.model;
 
 public class PatientAttribute {
-	
-	private String uuid;
-	
-	private String name;
-	
-	private String value;
-	
-	//Not sure we will use this and why we need it
-	private String attributeType;
-	
-	private String json;
 
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
+    private String uuid;
 
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    private String name;
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    private String value;
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    //Not sure we will use this and why we need it
+    private String attributeType;
 
-	/**
-	 * @return the value
-	 */
-	public String getValue() {
-		return value;
-	}
+    private String json;
 
-	/**
-	 * @param value the value to set
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
+    /**
+     * @return the uuid
+     */
+    public String getUuid() {
+        return uuid;
+    }
 
-	/**
-	 * @return the attributeType
-	 */
-	public String getAttributeType() {
-		return attributeType;
-	}
+    /**
+     * @param uuid the uuid to set
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	/**
-	 * @param attributeType the attributeType to set
-	 */
-	public void setAttributeType(String attributeType) {
-		this.attributeType = attributeType;
-	}
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @return the json
-	 */
-	public String getJson() {
-		return json;
-	}
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @param json the json to set
-	 */
-	public void setJson(String json) {
-		this.json = json;
-	}
+    /**
+     * @return the value
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    /**
+     * @return the attributeType
+     */
+    public String getAttributeType() {
+        return attributeType;
+    }
+
+    /**
+     * @param attributeType the attributeType to set
+     */
+    public void setAttributeType(String attributeType) {
+        this.attributeType = attributeType;
+    }
+
+    /**
+     * @return the json
+     */
+    public String getJson() {
+        return json;
+    }
+
+    /**
+     * @param json the json to set
+     */
+    public void setJson(String json) {
+        this.json = json;
+    }
 }

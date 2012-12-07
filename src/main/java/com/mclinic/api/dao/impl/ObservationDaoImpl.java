@@ -14,65 +14,65 @@ import com.mclinic.util.Constants;
 
 public class ObservationDaoImpl implements ObservationDao {
 
-	@Inject
-	private RestAssuredService	service; 
-	
-	@Inject
-	private Logger log;
-	
-	private String TAG = "ObservationDao"; 
+    @Inject
+    private RestAssuredService service;
 
-	@Override
-	public Observation createObservation(Observation observation) {
-		try {
-			service.createObject(observation, Context.getResource(Constants.OBSERVATION));
-		} catch (Exception e) {
-			log.debug(TAG, "Error creating observation " + e.getLocalizedMessage());
-		}
-		return null;	
-	}
+    @Inject
+    private Logger log;
 
-	@Override
-	public Observation updateObservation(Observation observation) {
-		try {
-			service.updateObject(observation, Context.getResource(Constants.OBSERVATION));
-		} catch (Exception e) {
-			log.debug(TAG, "Error updating observation " + e.getLocalizedMessage());
-		}
-		return null;
-	}
+    private String TAG = "ObservationDao";
 
-	@Override
-	public Observation getObservationByUUID(String uuid) {
-		try {
-			return service.getObject("uuid: " + StringUtil.quote(uuid), Observation.class);
-		} catch (Exception e) {
-			log.debug(TAG, "Error getting observation by uuid " + e.getLocalizedMessage());
-		}
-		return null;
-	}
+    @Override
+    public Observation createObservation(Observation observation) {
+        try {
+            service.createObject(observation, Context.getResource(Constants.OBSERVATION));
+        } catch (Exception e) {
+            log.debug(TAG, "Error creating observation " + e.getLocalizedMessage());
+        }
+        return null;
+    }
 
-	@Override
-	public List<Observation> getAllObservations(Patient patient) {
-		try {
-			return service.getObjects("patientUuid: " + StringUtil.quote(patient.getUuid()), Observation.class);
-		} catch (Exception e) {
-			log.debug(TAG, "Error fetching all obs " + e.getLocalizedMessage());
-		}
-		return null;
-	}
+    @Override
+    public Observation updateObservation(Observation observation) {
+        try {
+            service.updateObject(observation, Context.getResource(Constants.OBSERVATION));
+        } catch (Exception e) {
+            log.debug(TAG, "Error updating observation " + e.getLocalizedMessage());
+        }
+        return null;
+    }
 
-	@Override
-	public void deleteObservation(Observation observation) {
-		try {
-			service.invalidate(observation, Context.getResource(Constants.OBSERVATION));
-		} catch (Exception e) {
-			log.debug(TAG, "Error delete observation " + e.getLocalizedMessage());
-		}
-	}
+    @Override
+    public Observation getObservationByUUID(String uuid) {
+        try {
+            return service.getObject("uuid: " + StringUtil.quote(uuid), Observation.class);
+        } catch (Exception e) {
+            log.debug(TAG, "Error getting observation by uuid " + e.getLocalizedMessage());
+        }
+        return null;
+    }
 
-	@Override
-	public void deleteAllObservations(Patient patient) {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public List<Observation> getAllObservations(Patient patient) {
+        try {
+            return service.getObjects("patientUuid: " + StringUtil.quote(patient.getUuid()), Observation.class);
+        } catch (Exception e) {
+            log.debug(TAG, "Error fetching all obs " + e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteObservation(Observation observation) {
+        try {
+            service.invalidate(observation, Context.getResource(Constants.OBSERVATION));
+        } catch (Exception e) {
+            log.debug(TAG, "Error delete observation " + e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void deleteAllObservations(Patient patient) {
+        // TODO Auto-generated method stub
+    }
 }

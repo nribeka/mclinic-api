@@ -6,9 +6,9 @@ import com.mclinic.api.model.PatientAttribute;
 
 public class PatientAttributeAlgorithm implements Algorithm {
 
-	@Override
+    @Override
     public PatientAttribute deserialize(final String json) {
-    	PatientAttribute patientAttribute = new PatientAttribute();
+        PatientAttribute patientAttribute = new PatientAttribute();
 
         Object jsonObject = JsonPath.read(json, "$");
 
@@ -27,8 +27,8 @@ public class PatientAttributeAlgorithm implements Algorithm {
     }
 
     @Override
-    public String serialize(final Object object ) {
-    	PatientAttribute patientAttribute = (PatientAttribute) object;
+    public String serialize(final Object object) {
+        PatientAttribute patientAttribute = (PatientAttribute) object;
         return patientAttribute.getJson();
     }
 }

@@ -39,13 +39,13 @@ public class CohortMemberAlgorithm implements Algorithm {
 
         String name = JsonPath.read(jsonObject, "$.patient.person.display");
         patient.setName(name);
-        
+
         //this an identifier of type OpenMRS Identification Number = 1984MP-5
         String identifier = JsonPath.read(jsonObject, "$.patient.identifiers[0].display");
         //extract the identifier
         int index = identifier.indexOf("=");
-        if (index != -1){
-        	identifier= identifier.substring(index+1);
+        if (index != -1) {
+            identifier = identifier.substring(index + 1);
         }
         patient.setIdentifier(identifier.trim());
 
