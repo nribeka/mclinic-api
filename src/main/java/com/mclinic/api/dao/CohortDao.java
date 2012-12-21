@@ -13,7 +13,7 @@ public interface CohortDao {
 
     Cohort updateCohort(Cohort cohort);
 
-    Cohort getCohortByUUID(String uuid);
+    Cohort getCohortByUuid(String uuid);
 
     List<Cohort> getCohortsByName(String name);
 

@@ -8,38 +8,35 @@ import com.mclinic.api.service.impl.AdministrativeServiceImpl;
 
 /**
  * Service handling all administrative operations
- *
- * @author nribeka
- * @author Samuel Mbugua
  */
 @ImplementedBy(AdministrativeServiceImpl.class)
 public interface AdministrativeService {
 
     /**
-     * @param j2lFile the j2l file to use to convert json files into lucene objects
+     * @param configurationFile the j2l file to use to convert json files into lucene objects
      */
-    void initializeDB(File j2lFile);
+    void initializeDB(final File configurationFile);
 
     /**
      * Load all patients in to the lucene index. This method will load all <code>Patient</code> as represented
-     * by all json files in @jsonFilesDir directory into the lucene search index engine. <br><br>
+     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
      * <p/>
      * The method should be called once in the life time of a project. If new json files have been added to
      * the Json directory then update should be the method to call. <br><br>
      *
-     * @param jsonFilesDir the directory containing all patients json files.
+     * @param jsonFiles the directory containing all patients json files.
      */
-    void loadPatients(File jsonFilesDir);
+    void loadPatients(final File jsonFiles);
 
-    void loadCohorts(File jsonFilesDir);
+    void loadCohorts(final File jsonFiles);
 
     void downloadCohorts();
 
-    void loadCohortPatients(File jsonFilesDir);
+    void loadCohortPatients(final File jsonFiles);
 
-    void downloadCohortPatients(String cohortUUID);
+    void downloadCohortPatients(final String cohortUuid);
 
-    void loadObservations(File jsonFilesDir);
+    void loadObservations(final File jsonFiles);
 
-    void downloadObservations(String patientUUID);
+    void downloadObservations(final String patientUuid);
 }

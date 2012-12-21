@@ -14,7 +14,7 @@ public interface ObservationDao {
 
     public Observation updateObservation(Observation observation);
 
-    public Observation getObservationByUUID(String uuid);
+    public Observation getObservationByUuid(String uuid);
 
     public List<Observation> getAllObservations(Patient patient);
 

@@ -18,21 +18,22 @@ import com.mclinic.api.model.resolver.PatientResolver;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
+import com.mclinic.search.api.resource.Resource;
+import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 
-@SuppressWarnings("unchecked")
 public class AdministrativeDaoImpl implements AdministrativeDao {
-
-    @Inject
-    private RestAssuredService service;
 
     @Inject
     private Logger log;
 
-    private static final String TAG = "AdministrativeDao";
+    @Inject
+    private RestAssuredService service;
+
+    private static final String TAG = AdministrativeDao.class.getSimpleName();
 
     @Override
-    public void initializeDB(File j2lFile) {
+    public void initializeDB(final File configurationFile) {
         try {
             Context.registerObject(Patient.class);
             Context.registerObject(Cohort.class);
@@ -48,86 +49,90 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
             Context.registerResolver(CohortMemberResolver.class);
             Context.registerResolver(ObservationResolver.class);
 
-            Context.registerResources(j2lFile);
+            Context.registerResources(configurationFile);
 
         } catch (Exception e) {
-            log.debug(TAG, "Error initializing Database " + e.getLocalizedMessage());
+            log.error(TAG, "Error initializing database.", e);
         }
     }
 
     @Override
-    public void loadPatients(File jsonFilesDir) {
+    public void loadPatients(final File jsonFiles) {
         try {
-            service.loadObjects("*", Context.getResource(Constants.PATIENT), jsonFilesDir);
+            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
         } catch (Exception e) {
-            log.debug(TAG, "Error loading patients from local json file "
-                    + jsonFilesDir.getAbsolutePath() + "\n" + e.getLocalizedMessage());
+            log.error(TAG, "Error loading patients from local json file " + jsonFiles.getAbsolutePath(), e);
         }
     }
 
     @Override
     public void downloadPatients() {
         try {
-            service.loadObjects("*", Context.getResource(Constants.PATIENT));
+            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error downloading patients from URL " + e.getLocalizedMessage());
+            log.error(TAG, "Error downloading patients from remote REST resource.", e);
         }
     }
 
     @Override
-    public void loadObservations(File jsonFilesDir) {
+    public void loadObservations(final File jsonFiles) {
         try {
-            service.loadObjects("*", Context.getResource(Constants.OBSERVATION), jsonFilesDir);
+            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
         } catch (Exception e) {
-            log.debug(TAG, "Error loading observations from local json file "
-                    + jsonFilesDir.getAbsolutePath() + "\n" + e.getLocalizedMessage());
+            log.error(TAG, "Error loading observations from local json file " + jsonFiles.getAbsolutePath(), e);
         }
     }
 
     @Override
-    public void downloadObservations(String patientUUID) {
+    public void downloadObservations(final String patientUuid) {
         try {
-            service.loadObjects(patientUUID, Context.getResource(Constants.OBSERVATION));
+            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
+            service.loadObjects(patientUuid, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error downloading observations from URL " + e.getLocalizedMessage());
+            log.error(TAG, "Error downloading observations for patient with uuid: " + patientUuid, e);
         }
     }
 
     @Override
-    public void loadCohorts(File jsonFilesDir) {
+    public void loadCohorts(final File jsonFiles) {
         try {
-            service.loadObjects("*", Context.getResource(Constants.COHORT), jsonFilesDir);
+            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
         } catch (Exception e) {
-            log.debug(TAG, "Error loading cohorts from local json file " + jsonFilesDir.getAbsolutePath()
-                    + "\n" + e.getLocalizedMessage());
+            log.error(TAG, "Error loading cohorts from local json file " + jsonFiles.getAbsolutePath(), e);
         }
     }
 
     @Override
     public void downloadCohorts() {
         try {
-            service.loadObjects(null, Context.getResource(Constants.COHORT));
+            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error downloading cohorts from URL " + e.getLocalizedMessage());
+            log.error(TAG, "Error downloading cohorts from remote REST resource.", e);
         }
     }
 
     @Override
-    public void loadCohortPatients(File jsonFilesDir) {
+    public void loadCohortPatients(final File jsonFiles) {
         try {
-            service.loadObjects("*", Context.getResource(Constants.COHORT_MEMBER), jsonFilesDir);
+            Resource resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
         } catch (Exception e) {
-            log.debug(TAG, "Error loading cohort members from local json file " + jsonFilesDir.getAbsolutePath()
-                    + "\n" + e.getLocalizedMessage());
+            log.error(TAG, "Error loading cohort members from local json file " + jsonFiles.getAbsolutePath(), e);
         }
     }
 
     @Override
-    public void downloadCohortPatients(String cohortUUID) {
+    public void downloadCohortPatients(final String cohortUuid) {
         try {
-            service.loadObjects(cohortUUID, Context.getResource("Cohort Member"));
+            Resource resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
+            service.loadObjects(cohortUuid, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error downloading cohort members for cohort = " + cohortUUID + " from URL " + e.getLocalizedMessage());
+            log.error(TAG, "Error downloading cohort members for cohort = " + cohortUuid, e);
         }
     }
 }

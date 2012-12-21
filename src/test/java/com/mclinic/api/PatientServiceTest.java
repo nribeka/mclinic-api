@@ -129,7 +129,7 @@ public class PatientServiceTest {
 
     @Test
     public void getPatientByIdentifier_shouldReturnOnePatient() {
-        System.out.println("PATIENT BY IDENTIFIER");
+        System.out.println("PATIENT_RESOURCE BY IDENTIFIER");
         Patient pat = pService.getPatientByIdentifier("363MO-5");
         Assert.assertNotNull(pat);
         if (pat != null) {
@@ -146,8 +146,8 @@ public class PatientServiceTest {
 
     @Test
     public void getPatientByUUID_shouldReturnOnePatient() {
-        System.out.println("\nPATIENT BY UUID");
-        Patient pat = pService.getPatientByUUID("dd55e586-1693-11df-97a5-7038c432aabf");
+        System.out.println("\nPATIENT_RESOURCE BY UUID");
+        Patient pat = pService.getPatientByUuid("dd55e586-1693-11df-97a5-7038c432aabf");
         Assert.assertNotNull(pat);
         if (pat != null) {
             System.out.print("[" + pat.getUuid() + "]");
@@ -163,8 +163,8 @@ public class PatientServiceTest {
 
     @Test
     public void deletePatient_shouldDeleteOnePatient() {
-        System.out.println("\nDELETE PATIENT");
-        Patient pat = pService.getPatientByUUID("dd55e586-1693-11df-97a5-7038c432aabf");
+        System.out.println("\nDELETE PATIENT_RESOURCE");
+        Patient pat = pService.getPatientByUuid("dd55e586-1693-11df-97a5-7038c432aabf");
         Assert.assertNotNull(pat);
         pService.deletePatient(pat);
         getAllPatients_shouldReturnAllPatientsInDB();

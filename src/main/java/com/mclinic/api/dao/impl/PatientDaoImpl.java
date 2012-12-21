@@ -1,5 +1,6 @@
 package com.mclinic.api.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -8,70 +9,80 @@ import com.mclinic.api.model.Patient;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
+import com.mclinic.search.api.resource.Resource;
 import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 
-/**
- * This class should actually return actual objects from @SearchAPI
- *
- * @author Samuel Mbugua
- */
 public class PatientDaoImpl implements PatientDao {
-
-    @Inject
-    private RestAssuredService service;
 
     @Inject
     private Logger log;
 
-    private String TAG = "PatientDao";
+    @Inject
+    private RestAssuredService service;
+
+    private static final String TAG = PatientDao.class.getSimpleName();
 
     @Override
-    public Patient createPatient(Patient patient) {
+    public Patient createPatient(final Patient patient) {
+
         try {
-            service.createObject(patient, Context.getResource(Constants.PATIENT));
+            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
+            service.createObject(patient, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error creating patient " + e.getLocalizedMessage());
+            log.error(TAG, "Error creating patient.", e);
         }
         return null;
     }
 
     @Override
-    public Patient updatePatient(Patient patient) {
+    public Patient updatePatient(final Patient patient) {
+
         try {
-            service.updateObject(patient, Context.getResource(Constants.PATIENT));
+            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
+            service.updateObject(patient, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error updating patient " + e.getLocalizedMessage());
+            log.error(TAG, "Error updating patient.", e);
         }
         return null;
     }
 
     @Override
-    public Patient getPatientByIdentifier(String identifier) {
+    public Patient getPatientByIdentifier(final String identifier) {
+
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(identifier))
+            searchQuery = "identifier: " + StringUtil.quote(identifier);
+
+        Patient patient = null;
         try {
-            return service.getObject("identifier: " + StringUtil.quote(identifier), Patient.class);
+            patient = service.getObject(searchQuery, Patient.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error in getPatientByIdentifier " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting patient using query: " + searchQuery, e);
         }
-        return null;
+        return patient;
     }
 
     @Override
     public List<Patient> getAllPatients() {
+
+        List<Patient> patients = new ArrayList<Patient>();
         try {
-            return service.getObjects(null, Patient.class);
+            patients = service.getObjects(StringUtil.EMPTY, Patient.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error in returning all patients " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting all patients.", e);
         }
-        return null;
+        return patients;
     }
 
     @Override
-    public void deletePatient(Patient patient) {
+    public void deletePatient(final Patient patient) {
+
         try {
-            service.invalidate(patient, Context.getResource(Constants.PATIENT));
+            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
+            service.invalidate(patient, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error in delete patient " + e.getLocalizedMessage());
+            log.error(TAG, "Error deleting patient.", e);
         }
     }
 
@@ -81,22 +92,34 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     @Override
-    public Patient getPatientByUUID(String uuid) {
+    public Patient getPatientByUuid(final String uuid) {
+
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(uuid))
+            searchQuery = "uuid: " + StringUtil.quote(uuid);
+
+        Patient patient = null;
         try {
-            return service.getObject("uuid: " + StringUtil.quote(uuid), Patient.class);
+            patient = service.getObject(searchQuery, Patient.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error in getPatientByUUID " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting patient using query: " + searchQuery, e);
         }
-        return null;
+        return patient;
     }
 
     @Override
-    public List<Patient> getPatientsByName(String name) {
+    public List<Patient> getPatientsByName(final String name) {
+
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(name))
+            searchQuery = "name:" + StringUtil.quote(name + "*");
+
+        List<Patient> patients = new ArrayList<Patient>();
         try {
-            return service.getObjects("name:" + StringUtil.quote(name + "*"), Patient.class);
+            patients = service.getObjects(searchQuery, Patient.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error in getPatientByName " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting patients using query: " + searchQuery, e);
         }
-        return null;
+        return patients;
     }
 }

@@ -22,8 +22,9 @@ import com.mclinic.search.api.util.ISO8601Util;
 import net.minidev.json.JSONObject;
 
 public class ObservationAlgorithm implements Algorithm {
+
     /**
-     * Implementation of this method will define how the patient will be serialized from the JSON representation.
+     * Implementation of this method will define how the observation will be serialized from the JSON representation.
      *
      * @param json the json representation
      * @return the concrete observation object
@@ -69,7 +70,7 @@ public class ObservationAlgorithm implements Algorithm {
     }
 
     /**
-     * Implementation of this method will define how the patient will be deserialized into the JSON representation.
+     * Implementation of this method will define how the observation will be de-serialized into the JSON representation.
      *
      * @param object the observation
      * @return the json representation

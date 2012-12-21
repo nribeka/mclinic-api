@@ -8,24 +8,21 @@ import com.mclinic.api.service.impl.CohortServiceImpl;
 
 /**
  * Service handling all operation to the @{Cohort} actor/model
- *
- * @author nribeka
- * @author Samuel Mbugua
  */
 @ImplementedBy(CohortServiceImpl.class)
 public interface CohortService {
 
-    Cohort createCohort(Cohort cohort);
+    Cohort createCohort(final Cohort cohort);
 
-    Cohort updateCohort(Cohort cohort);
+    Cohort updateCohort(final Cohort cohort);
 
-    Cohort getCohortByUUID(String uuid);
+    Cohort getCohortByUUID(final String uuid);
 
-    List<Cohort> getCohortsByName(String name);
+    List<Cohort> getCohortsByName(final String name);
 
     List<Cohort> getAllCohorts();
 
-    void deleteCohort(Cohort cohort);
+    void deleteCohort(final Cohort cohort);
 
     void deleteAllCohorts();
 }

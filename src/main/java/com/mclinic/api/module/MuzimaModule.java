@@ -8,20 +8,24 @@ import com.mclinic.util.Constants;
 
 public class MuzimaModule extends AbstractModule {
 
-    private String luceneDir;
-    private String luceneDocumentKey;
+    private String lucenePath;
+
+    private String documentKey;
+
     private String server;
+
     private String username;
+
     private String password;
 
-    public MuzimaModule(final String luceneDir, final String luceneDocumentKey) {
+    public MuzimaModule(final String lucenePath, final String documentKey) {
         super();
-        this.luceneDir = luceneDir;
-        this.luceneDocumentKey = luceneDocumentKey;
+        this.lucenePath = lucenePath;
+        this.documentKey = documentKey;
     }
 
     /**
-     * @param webserver the webserver to set
+     * @param server the web server to set
      */
     public void setServer(final String server) {
         this.server = server;
@@ -43,8 +47,8 @@ public class MuzimaModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(String.class).annotatedWith(Names.named(Constants.LUCENE_DIR_NAME)).toInstance(luceneDir);
-        bind(String.class).annotatedWith(Names.named(Constants.LUCENE_DOCUMENT_KEY)).toInstance(luceneDocumentKey);
+        bind(String.class).annotatedWith(Names.named(Constants.LUCENE_DIRECTORY_NAME)).toInstance(lucenePath);
+        bind(String.class).annotatedWith(Names.named(Constants.LUCENE_DOCUMENT_KEY)).toInstance(documentKey);
         bind(LogLevel.class).toInstance(LogLevel.DEBUG);
 
         // if instance needs a server then register the server username and password

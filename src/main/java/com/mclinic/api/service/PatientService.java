@@ -8,26 +8,23 @@ import com.mclinic.api.service.impl.PatientServiceImpl;
 
 /**
  * Service handling all operation to the @{Patient} actor/model
- *
- * @author nribeka
- * @author Samuel Mbugua
  */
 @ImplementedBy(PatientServiceImpl.class)
 public interface PatientService {
 
-    Patient createPatient(Patient patient);
+    Patient createPatient(final Patient patient);
 
-    Patient updatePatient(Patient patient);
+    Patient updatePatient(final Patient patient);
 
-    Patient getPatientByIdentifier(String identifier);
+    Patient getPatientByIdentifier(final String identifier);
 
-    Patient getPatientByUUID(String uuid);
+    Patient getPatientByUuid(final String uuid);
 
     List<Patient> getAllPatients();
 
-    List<Patient> getPatientsByName(String name);
+    List<Patient> getPatientsByName(final String name);
 
-    void deletePatient(Patient patient);
+    void deletePatient(final Patient patient);
 
     void deleteAllPatients();
 

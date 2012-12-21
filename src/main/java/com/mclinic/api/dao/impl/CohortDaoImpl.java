@@ -1,5 +1,6 @@
 package com.mclinic.api.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -8,75 +9,97 @@ import com.mclinic.api.model.Cohort;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
+import com.mclinic.search.api.resource.Resource;
 import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 
 public class CohortDaoImpl implements CohortDao {
 
     @Inject
-    private RestAssuredService service;
-
-    @Inject
     private Logger log;
 
-    private String TAG = "CohortDao";
+    @Inject
+    private RestAssuredService service;
+
+    private static final String TAG = CohortDao.class.getSimpleName();
 
     @Override
-    public Cohort createCohort(Cohort cohort) {
+    public Cohort createCohort(final Cohort cohort) {
+
+        Object object = null;
         try {
-            service.createObject(cohort, Context.getResource(Constants.COHORT));
+            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
+            object = service.createObject(cohort, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error creating cohort " + e.getLocalizedMessage());
+            log.error(TAG, "Error creating cohort.", e);
+        }
+        return (Cohort) object;
+    }
+
+    @Override
+    public Cohort updateCohort(final Cohort cohort) {
+
+        try {
+            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
+            service.updateObject(cohort, resource);
+        } catch (Exception e) {
+            log.error(TAG, "Error updating cohort.", e);
         }
         return null;
     }
 
     @Override
-    public Cohort updateCohort(Cohort cohort) {
+    public Cohort getCohortByUuid(final String uuid) {
+
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(uuid))
+            searchQuery = "uuid: " + StringUtil.quote(uuid);
+
+        Cohort cohort = null;
         try {
-            service.updateObject(cohort, Context.getResource(Constants.COHORT));
+            cohort = service.getObject(searchQuery, Cohort.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error updating cohort " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting cohort using query: " + searchQuery, e);
         }
-        return null;
+        return cohort;
     }
 
     @Override
-    public Cohort getCohortByUUID(String uuid) {
-        try {
-            return service.getObject("uuid: " + StringUtil.quote(uuid), Cohort.class);
-        } catch (Exception e) {
-            log.debug(TAG, "Error in getCohortByUUID " + e.getLocalizedMessage());
-        }
-        return null;
-    }
+    public List<Cohort> getCohortsByName(final String name) {
 
-    @Override
-    public List<Cohort> getCohortsByName(String name) {
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(name))
+            searchQuery = "name: " + StringUtil.quote(name + "*");
+
+        List<Cohort> cohorts = new ArrayList<Cohort>();
         try {
-            return service.getObjects("name: " + StringUtil.quote(name + "*"), Cohort.class);
+            cohorts = service.getObjects(searchQuery, Cohort.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error in getCohortsByName " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting cohorts using query: " + searchQuery, e);
         }
-        return null;
+        return cohorts;
     }
 
     @Override
     public List<Cohort> getAllCohorts() {
+
+        List<Cohort> cohorts = new ArrayList<Cohort>();
         try {
-            return service.getObjects(null, Cohort.class);
+            cohorts = service.getObjects(StringUtil.EMPTY, Cohort.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error fetching all cohorts " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting all cohorts.", e);
         }
-        return null;
+        return cohorts;
     }
 
     @Override
-    public void deleteCohort(Cohort cohort) {
+    public void deleteCohort(final Cohort cohort) {
+
         try {
-            service.invalidate(cohort, Context.getResource(Constants.COHORT));
+            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
+            service.invalidate(cohort, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error deleting cohort " + e.getLocalizedMessage());
+            log.error(TAG, "Error deleting cohort.", e);
         }
     }
 

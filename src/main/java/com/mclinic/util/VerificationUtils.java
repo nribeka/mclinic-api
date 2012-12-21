@@ -14,4 +14,5 @@
 package com.mclinic.util;
 
 public class VerificationUtils {
+
 }

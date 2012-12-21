@@ -19,10 +19,15 @@ package com.mclinic.api.model;
 public class User {
 
     private Integer id;
+
     private String systemId;
+
     private String username;
+
     private String password;
+
     private String salt;
+
     private Boolean status;
 
     /**

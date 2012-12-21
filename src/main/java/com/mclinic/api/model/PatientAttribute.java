@@ -24,9 +24,6 @@ public class PatientAttribute {
 
     private String value;
 
-    //Not sure we will use this and why we need it
-    private String attributeType;
-
     private String json;
 
     /**
@@ -69,20 +66,6 @@ public class PatientAttribute {
      */
     public void setValue(String value) {
         this.value = value;
-    }
-
-    /**
-     * @return the attributeType
-     */
-    public String getAttributeType() {
-        return attributeType;
-    }
-
-    /**
-     * @param attributeType the attributeType to set
-     */
-    public void setAttributeType(String attributeType) {
-        this.attributeType = attributeType;
     }
 
     /**

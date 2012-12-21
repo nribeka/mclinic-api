@@ -1,5 +1,6 @@
 package com.mclinic.api.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -9,70 +10,89 @@ import com.mclinic.api.model.Patient;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
+import com.mclinic.search.api.resource.Resource;
 import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 
 public class ObservationDaoImpl implements ObservationDao {
 
     @Inject
-    private RestAssuredService service;
-
-    @Inject
     private Logger log;
 
-    private String TAG = "ObservationDao";
+    @Inject
+    private RestAssuredService service;
+
+    private static final String TAG = ObservationDao.class.getSimpleName();
 
     @Override
-    public Observation createObservation(Observation observation) {
+    public Observation createObservation(final Observation observation) {
+
         try {
-            service.createObject(observation, Context.getResource(Constants.OBSERVATION));
+            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
+            service.createObject(observation, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error creating observation " + e.getLocalizedMessage());
+            log.error(TAG, "Error creating observation.", e);
         }
         return null;
     }
 
     @Override
-    public Observation updateObservation(Observation observation) {
+    public Observation updateObservation(final Observation observation) {
+
         try {
-            service.updateObject(observation, Context.getResource(Constants.OBSERVATION));
+            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
+            service.updateObject(observation, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error updating observation " + e.getLocalizedMessage());
+            log.error(TAG, "Error updating observation.", e);
         }
         return null;
     }
 
     @Override
-    public Observation getObservationByUUID(String uuid) {
+    public Observation getObservationByUuid(final String uuid) {
+
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(uuid))
+            searchQuery = "uuid: " + StringUtil.quote(uuid);
+
+        Observation observation = null;
         try {
-            return service.getObject("uuid: " + StringUtil.quote(uuid), Observation.class);
+            observation = service.getObject(searchQuery, Observation.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error getting observation by uuid " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting observation using query: " + searchQuery, e);
         }
-        return null;
+        return observation;
     }
 
     @Override
-    public List<Observation> getAllObservations(Patient patient) {
+    public List<Observation> getAllObservations(final Patient patient) {
+
+        String searchQuery = StringUtil.EMPTY;
+        if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
+            searchQuery = "patient: " + StringUtil.quote(patient.getUuid());
+
+        List<Observation> observations = new ArrayList<Observation>();
         try {
-            return service.getObjects("patientUuid: " + StringUtil.quote(patient.getUuid()), Observation.class);
+            observations = service.getObjects(searchQuery, Observation.class);
         } catch (Exception e) {
-            log.debug(TAG, "Error fetching all obs " + e.getLocalizedMessage());
+            log.error(TAG, "Error getting observations using query: " + searchQuery, e);
         }
-        return null;
+        return observations;
     }
 
     @Override
-    public void deleteObservation(Observation observation) {
+    public void deleteObservation(final Observation observation) {
+
         try {
-            service.invalidate(observation, Context.getResource(Constants.OBSERVATION));
+            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
+            service.invalidate(observation, resource);
         } catch (Exception e) {
-            log.debug(TAG, "Error delete observation " + e.getLocalizedMessage());
+            log.error(TAG, "Error deleting observation.", e);
         }
     }
 
     @Override
-    public void deleteAllObservations(Patient patient) {
+    public void deleteAllObservations(final Patient patient) {
         // TODO Auto-generated method stub
     }
 }

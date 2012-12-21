@@ -40,13 +40,12 @@ public class CohortMemberAlgorithm implements Algorithm {
         String name = JsonPath.read(jsonObject, "$.patient.person.display");
         patient.setName(name);
 
-        //this an identifier of type OpenMRS Identification Number = 1984MP-5
+        // this the example of the identifier entry: "OpenMRS Identification Number = 1984MP-5"
         String identifier = JsonPath.read(jsonObject, "$.patient.identifiers[0].display");
-        //extract the identifier
+        // extract the identifier value
         int index = identifier.indexOf("=");
-        if (index != -1) {
+        if (index != -1)
             identifier = identifier.substring(index + 1);
-        }
         patient.setIdentifier(identifier.trim());
 
         String gender = JsonPath.read(jsonObject, "$.patient.person.gender");
@@ -58,10 +57,10 @@ public class CohortMemberAlgorithm implements Algorithm {
     }
 
     /**
-     * Implementation of this method will define how the patient will be deserialized into the JSON representation.
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
      *
-     * @param object the patient
-     * @return the json representation
+     * @param object the object
+     * @return the string representation
      */
     @Override
     public String serialize(final Object object) {

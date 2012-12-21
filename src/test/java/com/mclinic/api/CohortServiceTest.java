@@ -108,7 +108,7 @@ public class CohortServiceTest {
 
     @Test
     public void getCohortsByName_shouldReturnCohortsListGivenName() {
-        System.out.println("COHORT BY NAME");
+        System.out.println("COHORT_RESOURCE BY NAME");
         List<Cohort> cohorts = cService.getCohortsByName("Male");
         Assert.assertNotNull(cohorts);
         if (cohorts != null && cohorts.size() > 0) {
@@ -123,7 +123,7 @@ public class CohortServiceTest {
 
     @Test
     public void getCohortByUUID_shouldReturnOneCohort() {
-        System.out.println("\nCOHORT BY UUID");
+        System.out.println("\nCOHORT_RESOURCE BY UUID");
         Cohort cohort = cService.getCohortByUUID("0ca78602-738f-408d-8ced-386ad12367db");
         Assert.assertNotNull(cohort);
         if (cohort != null) {
@@ -136,7 +136,7 @@ public class CohortServiceTest {
 
     @Test
     public void deleteCohort_shouldDeleteOneCohort() {
-        System.out.println("DELETE COHORT");
+        System.out.println("DELETE COHORT_RESOURCE");
         Cohort cohort = cService.getCohortByUUID("0ca78602-738f-408d-8ced-386ad12367db");
         cService.deleteCohort(cohort);
         Assert.assertNotNull(cohort);

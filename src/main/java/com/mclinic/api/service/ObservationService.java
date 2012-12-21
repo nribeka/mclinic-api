@@ -9,22 +9,19 @@ import com.mclinic.api.service.impl.ObservationServiceImpl;
 
 /**
  * Service handling all operation to the @Observation actor/model
- *
- * @author nribeka
- * @author Samuel Mbugua
  */
 @ImplementedBy(ObservationServiceImpl.class)
 public interface ObservationService {
 
-    public Observation createObservation(Observation observation);
+    public Observation createObservation(final Observation observation);
 
-    public Observation updateObservation(Observation observation);
+    public Observation updateObservation(final Observation observation);
 
-    public Observation getObservationByUUID(String uuid);
+    public Observation getObservationByUuid(final String uuid);
 
-    public List<Observation> getAllObservations(Patient patient);
+    public List<Observation> getAllObservations(final Patient patient);
 
-    public void deleteObservation(Observation observation);
+    public void deleteObservation(final Observation observation);
 
-    public void deleteAllObservations(Patient patient);
+    public void deleteAllObservations(final Patient patient);
 }

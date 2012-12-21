@@ -8,22 +8,19 @@ import com.mclinic.api.service.impl.FormServiceImpl;
 
 /**
  * Service handling all operation to the @{Form} actor/model
- *
- * @author nribeka
- * @author Samuel Mbugua
  */
 @ImplementedBy(FormServiceImpl.class)
 public interface FormService {
 
-    public Form saveForm(Form form);
+    public Form saveForm(final Form form);
 
-    public Form updateForm(Form form);
+    public Form updateForm(final Form form);
 
-    public Form getFormById(Integer id);
+    public Form getFormById(final Integer id);
 
     public List<Form> getAllForms();
 
-    public void deleteForm(Form form);
+    public void deleteForm(final Form form);
 
     public void deleteAllForms();
 }

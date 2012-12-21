@@ -15,7 +15,7 @@ public interface PatientDao {
 
     Patient getPatientByIdentifier(String identifier);
 
-    Patient getPatientByUUID(String uuid);
+    Patient getPatientByUuid(String uuid);
 
     List<Patient> getAllPatients();
 
