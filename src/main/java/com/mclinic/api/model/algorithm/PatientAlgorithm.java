@@ -2,10 +2,10 @@ package com.mclinic.api.model.algorithm;
 
 import java.text.ParseException;
 
-import com.burkeware.search.api.serialization.Algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Patient;
-import com.mclinic.util.ISO8601;
+import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.util.ISO8601Util;
 
 public class PatientAlgorithm implements Algorithm {
     /**
@@ -36,7 +36,7 @@ public class PatientAlgorithm implements Algorithm {
 
         String birthdate = JsonPath.read(jsonObject, "$.person.birthdate");
         try {
-            patient.setBirthdate(ISO8601.toCalendar(birthdate).getTime());
+            patient.setBirthdate(ISO8601Util.toCalendar(birthdate).getTime());
         } catch (ParseException e) {
             System.out.println("Unable to parse date data from json payload.");
         }

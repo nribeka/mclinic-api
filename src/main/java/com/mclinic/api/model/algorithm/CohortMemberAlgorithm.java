@@ -14,9 +14,9 @@
 
 package com.mclinic.api.model.algorithm;
 
-import com.burkeware.search.api.serialization.Algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Patient;
+import com.mclinic.search.api.serialization.Algorithm;
 
 public class CohortMemberAlgorithm implements Algorithm {
 

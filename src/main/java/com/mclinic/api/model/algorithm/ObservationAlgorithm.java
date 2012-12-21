@@ -15,10 +15,10 @@ package com.mclinic.api.model.algorithm;
 
 import java.text.ParseException;
 
-import com.burkeware.search.api.serialization.Algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Observation;
-import com.mclinic.util.ISO8601;
+import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.util.ISO8601Util;
 import net.minidev.json.JSONObject;
 
 public class ObservationAlgorithm implements Algorithm {
@@ -58,7 +58,7 @@ public class ObservationAlgorithm implements Algorithm {
 
         String obsDatetime = JsonPath.read(jsonObject, "$.obsDatetime");
         try {
-            observation.setObservationDate(ISO8601.toCalendar(obsDatetime).getTime());
+            observation.setObservationDate(ISO8601Util.toCalendar(obsDatetime).getTime());
         } catch (ParseException e) {
             System.out.println("Unable to parse date data from json payload.");
         }
@@ -71,7 +71,7 @@ public class ObservationAlgorithm implements Algorithm {
     /**
      * Implementation of this method will define how the patient will be deserialized into the JSON representation.
      *
-     * @param observation the observation
+     * @param object the observation
      * @return the json representation
      */
     @Override

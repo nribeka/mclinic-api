@@ -2,9 +2,6 @@ package com.mclinic.api.dao.impl;
 
 import java.io.File;
 
-import com.burkeware.search.api.Context;
-import com.burkeware.search.api.RestAssuredService;
-import com.burkeware.search.api.logger.Logger;
 import com.google.inject.Inject;
 import com.mclinic.api.dao.AdministrativeDao;
 import com.mclinic.api.model.Cohort;
@@ -18,6 +15,9 @@ import com.mclinic.api.model.resolver.CohortMemberResolver;
 import com.mclinic.api.model.resolver.CohortResolver;
 import com.mclinic.api.model.resolver.ObservationResolver;
 import com.mclinic.api.model.resolver.PatientResolver;
+import com.mclinic.search.api.Context;
+import com.mclinic.search.api.RestAssuredService;
+import com.mclinic.search.api.logger.Logger;
 import com.mclinic.util.Constants;
 
 @SuppressWarnings("unchecked")
@@ -29,22 +29,24 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
     @Inject
     private Logger log;
 
-    private String TAG = "AdministrativeDao";
+    private static final String TAG = "AdministrativeDao";
 
     @Override
     public void initializeDB(File j2lFile) {
         try {
-            Context.registerObject(Patient.class, Cohort.class, Observation.class);
+            Context.registerObject(Patient.class);
+            Context.registerObject(Cohort.class);
+            Context.registerObject(Observation.class);
 
-            Context.registerAlgorithm(PatientAlgorithm.class,
-                    CohortAlgorithm.class,
-                    CohortMemberAlgorithm.class,
-                    ObservationAlgorithm.class);
+            Context.registerAlgorithm(PatientAlgorithm.class);
+            Context.registerAlgorithm(CohortAlgorithm.class);
+            Context.registerAlgorithm(CohortMemberAlgorithm.class);
+            Context.registerAlgorithm(ObservationAlgorithm.class);
 
-            Context.registerResolver(PatientResolver.class,
-                    CohortResolver.class,
-                    CohortMemberResolver.class,
-                    ObservationResolver.class);
+            Context.registerResolver(PatientResolver.class);
+            Context.registerResolver(CohortResolver.class);
+            Context.registerResolver(CohortMemberResolver.class);
+            Context.registerResolver(ObservationResolver.class);
 
             Context.registerResources(j2lFile);
 

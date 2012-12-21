@@ -1,14 +1,14 @@
 {
-    "results":[
+    "results": [
         {
-            "display":"Male 19 - 23",
-            "links":[
+            "display": "Male 19 - 23",
+            "links": [
                 {
-                    "uri":"http://localhost:8081/openmrs-standalone/ws/rest/v1/cohort/0ca78602-737f-408d-8ced-386ad12367db",
-                    "rel":"self"
+                    "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/cohort/0ca78602-737f-408d-8ced-386ad12367db",
+                    "rel": "self"
                 }
             ],
-            "uuid":"0ca78602-737f-408d-8ced-386ad12367db"
+            "uuid": "0ca78602-737f-408d-8ced-386ad12367db"
         }
     ]
 }

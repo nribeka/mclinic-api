@@ -2,13 +2,13 @@ package com.mclinic.api.dao.impl;
 
 import java.util.List;
 
-import com.burkeware.search.api.Context;
-import com.burkeware.search.api.RestAssuredService;
-import com.burkeware.search.api.logger.Logger;
-import com.burkeware.search.api.util.StringUtil;
 import com.google.inject.Inject;
 import com.mclinic.api.dao.CohortDao;
 import com.mclinic.api.model.Cohort;
+import com.mclinic.search.api.Context;
+import com.mclinic.search.api.RestAssuredService;
+import com.mclinic.search.api.logger.Logger;
+import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 
 public class CohortDaoImpl implements CohortDao {

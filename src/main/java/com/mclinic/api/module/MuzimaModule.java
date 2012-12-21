@@ -1,12 +1,12 @@
 package com.mclinic.api.module;
 
-import com.burkeware.search.api.logger.LogLevel;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import com.mclinic.api.registry.ServerConfigRegistry;
+import com.mclinic.search.api.logger.LogLevel;
 import com.mclinic.util.Constants;
 
-public class MclinicAPIModule extends AbstractModule {
+public class MuzimaModule extends AbstractModule {
 
     private String luceneDir;
     private String luceneDocumentKey;
@@ -14,7 +14,7 @@ public class MclinicAPIModule extends AbstractModule {
     private String username;
     private String password;
 
-    public MclinicAPIModule(final String luceneDir, final String luceneDocumentKey) {
+    public MuzimaModule(final String luceneDir, final String luceneDocumentKey) {
         super();
         this.luceneDir = luceneDir;
         this.luceneDocumentKey = luceneDocumentKey;

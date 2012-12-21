@@ -13,7 +13,7 @@
  */
 package com.mclinic.api.model.resolver;
 
-import com.burkeware.search.api.util.StringUtil;
+import com.mclinic.search.api.util.StringUtil;
 
 public class CohortResolver extends AbstractResolver {
 

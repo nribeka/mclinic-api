@@ -1,8 +1,8 @@
 package com.mclinic.api.model.algorithm;
 
-import com.burkeware.search.api.serialization.Algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Cohort;
+import com.mclinic.search.api.serialization.Algorithm;
 
 public class CohortAlgorithm implements Algorithm {
     @Override
