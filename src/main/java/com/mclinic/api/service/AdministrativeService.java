@@ -15,13 +15,12 @@ public interface AdministrativeService {
     /**
      * Service method to initialize the internal lucene repository.
      *
-     * @param configurationFile the configuration file to convert json files into lucene objects
      * @should register available algorithm classes
      * @should register available resolver classes
      * @should register available domain object classes
      * @should load configuration file and register them
      */
-    void initializeRepository(final File configurationFile);
+    void initializeRepository();
 
     /**
      * Load all cohorts in to the lucene index. This method will load all <code>Cohort</code> as represented

@@ -38,7 +38,6 @@ public class AdministrativeServiceTest {
 
     @Before
     public void prepare() throws Exception {
-        URL configuration = AdministrativeServiceTest.class.getResource("../j2l");
         URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
         Context.initialize(new MuzimaModule(lucenePath.getPath(), "uuid"));
 
@@ -48,7 +47,7 @@ public class AdministrativeServiceTest {
         assuredService = Context.getInstance(RestAssuredService.class);
         Assert.assertNotNull(assuredService);
 
-        service.initializeRepository(new File(configuration.getPath()));
+        service.initializeRepository();
     }
 
     @After
@@ -64,7 +63,7 @@ public class AdministrativeServiceTest {
 
     /**
      * @verifies register available algorithm classes
-     * @see AdministrativeService#initializeRepository(java.io.File)
+     * @see AdministrativeService#initializeRepository()
      */
     @Test
     public void initializeRepository_shouldRegisterAvailableAlgorithmClasses() throws Exception {
@@ -85,7 +84,7 @@ public class AdministrativeServiceTest {
 
     /**
      * @verifies register available resolver classes
-     * @see AdministrativeService#initializeRepository(java.io.File)
+     * @see AdministrativeService#initializeRepository()
      */
     @Test
     public void initializeRepository_shouldRegisterAvailableResolverClasses() throws Exception {
@@ -106,7 +105,7 @@ public class AdministrativeServiceTest {
 
     /**
      * @verifies register available domain object classes
-     * @see AdministrativeService#initializeRepository(java.io.File)
+     * @see AdministrativeService#initializeRepository()
      */
     @Test
     public void initializeRepository_shouldRegisterAvailableDomainObjectClasses() throws Exception {
@@ -124,7 +123,7 @@ public class AdministrativeServiceTest {
 
     /**
      * @verifies load configuration file and register them
-     * @see AdministrativeService#initializeRepository(java.io.File)
+     * @see AdministrativeService#initializeRepository()
      */
     @Test
     public void initializeRepository_shouldLoadConfigurationFileAndRegisterThem() throws Exception {

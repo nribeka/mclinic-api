@@ -8,7 +8,7 @@ import com.mclinic.api.dao.impl.AdministrativeDaoImpl;
 @ImplementedBy(AdministrativeDaoImpl.class)
 public interface AdministrativeDao {
 
-    void initializeRepository(final File configurationFile);
+    void initializeRepository();
 
     void loadCohorts(final File jsonFiles);
 

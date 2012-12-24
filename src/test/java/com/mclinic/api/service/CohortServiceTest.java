@@ -30,21 +30,23 @@ public class CohortServiceTest {
 
     private CohortService cohortService;
 
+    private AdministrativeService service;
+
     @Before
     public void prepare() throws Exception {
-        URL configuration = AdministrativeServiceTest.class.getResource("../j2l");
         URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
         Context.initialize(new MuzimaModule(lucenePath.getPath(), "uuid"));
 
-        AdministrativeService service = Context.getInstance(AdministrativeService.class);
+        service = Context.getInstance(AdministrativeService.class);
         Assert.assertNotNull(service);
+
+        service.initializeRepository();
+
+        URL jsonPath = AdministrativeServiceTest.class.getResource("../json/cohort");
+        service.loadCohorts(new File(jsonPath.getPath()));
 
         cohortService = Context.getInstance(CohortService.class);
         Assert.assertNotNull(cohortService);
-
-        service.initializeRepository(new File(configuration.getPath()));
-        URL jsonPath = AdministrativeServiceTest.class.getResource("../json/cohort");
-        service.loadCohorts(new File(jsonPath.getPath()));
     }
 
     @After

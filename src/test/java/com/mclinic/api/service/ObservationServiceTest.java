@@ -32,26 +32,28 @@ public class ObservationServiceTest {
 
     private ObservationService observationService;
 
+    private AdministrativeService service;
+
     @Before
     public void prepare() throws Exception {
-        URL configuration = AdministrativeServiceTest.class.getResource("../j2l");
         URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
         Context.initialize(new MuzimaModule(lucenePath.getPath(), "uuid"));
 
-        AdministrativeService service = Context.getInstance(AdministrativeService.class);
+        service = Context.getInstance(AdministrativeService.class);
         Assert.assertNotNull(service);
+
+        service.initializeRepository();
+
+        URL patientPath = AdministrativeServiceTest.class.getResource("../json/patient");
+        service.loadPatients(new File(patientPath.getPath()));
+        URL observationPath = AdministrativeServiceTest.class.getResource("../json/observation");
+        service.loadObservations(new File(observationPath.getPath()));
 
         patientService = Context.getInstance(PatientService.class);
         Assert.assertNotNull(patientService);
 
         observationService = Context.getInstance(ObservationService.class);
         Assert.assertNotNull(observationService);
-
-        service.initializeRepository(new File(configuration.getPath()));
-        URL patientPath = AdministrativeServiceTest.class.getResource("../json/patient");
-        service.loadPatients(new File(patientPath.getPath()));
-        URL observationPath = AdministrativeServiceTest.class.getResource("../json/observation");
-        service.loadObservations(new File(observationPath.getPath()));
     }
 
     @After
