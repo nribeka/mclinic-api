@@ -12,15 +12,15 @@ import com.mclinic.api.service.impl.FormServiceImpl;
 @ImplementedBy(FormServiceImpl.class)
 public interface FormService {
 
-    public Form saveForm(final Form form);
+    Form saveForm(final Form form);
 
-    public Form updateForm(final Form form);
+    Form updateForm(final Form form);
 
-    public Form getFormById(final Integer id);
+    Form getFormById(final Integer id);
 
-    public List<Form> getAllForms();
+    List<Form> getAllForms();
 
-    public void deleteForm(final Form form);
+    void deleteForm(final Form form);
 
-    public void deleteAllForms();
+    void deleteAllForms();
 }

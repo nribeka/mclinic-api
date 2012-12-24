@@ -13,15 +13,27 @@ import com.mclinic.api.service.impl.ObservationServiceImpl;
 @ImplementedBy(ObservationServiceImpl.class)
 public interface ObservationService {
 
-    public Observation createObservation(final Observation observation);
+    Observation createObservation(final Observation observation);
 
-    public Observation updateObservation(final Observation observation);
+    Observation updateObservation(final Observation observation);
 
-    public Observation getObservationByUuid(final String uuid);
+    /**
+     * @param uuid the observation uuid
+     * @return the observation with matching uuid or null when no observation match the uuid.
+     * @should return observation with matching uuid
+     * @should return null when no observation match the uuid
+     */
+    Observation getObservationByUuid(final String uuid);
 
-    public List<Observation> getAllObservations(final Patient patient);
+    /**
+     * @param patient the patient.
+     * @return list of all observations for the patient or empty list when no observation found for the patient.
+     * @should return list of all observations for the patient
+     * @should return empty list when no observation found for the patient
+     */
+    List<Observation> getAllObservations(final Patient patient);
 
-    public void deleteObservation(final Observation observation);
+    void deleteObservation(final Observation observation);
 
-    public void deleteAllObservations(final Patient patient);
+    void deleteAllObservations(final Patient patient);
 }

@@ -10,15 +10,15 @@ import com.mclinic.api.model.Patient;
 @ImplementedBy(ObservationDaoImpl.class)
 public interface ObservationDao {
 
-    public Observation createObservation(final Observation observation);
+    Observation createObservation(final Observation observation);
 
-    public Observation updateObservation(final Observation observation);
+    Observation updateObservation(final Observation observation);
 
-    public Observation getObservationByUuid(final String uuid);
+    Observation getObservationByUuid(final String uuid);
 
-    public List<Observation> getAllObservations(final Patient patient);
+    List<Observation> getAllObservations(final Patient patient);
 
-    public void deleteObservation(final Observation observation);
+    void deleteObservation(final Observation observation);
 
-    public void deleteAllObservations(final Patient patient);
+    void deleteAllObservations(final Patient patient);
 }
