@@ -16,10 +16,27 @@ public interface CohortService {
 
     Cohort updateCohort(final Cohort cohort);
 
-    Cohort getCohortByUUID(final String uuid);
+    /**
+     * @param uuid the cohort uuid
+     * @return cohort with matching uuid or null when no cohort match the uuid
+     * @should return cohort with matching uuid
+     * @should return null when no cohort match the uuid
+     */
+    Cohort getCohortByUuid(final String uuid);
 
+    /**
+     * @param name the partial name of the cohort
+     * @return list of all cohorts with matching uuid or empty list when no cohort match the name
+     * @should return list of all cohorts with matching name
+     * @should return empty list when no cohort match the name
+     */
     List<Cohort> getCohortsByName(final String name);
 
+    /**
+     * @return all registered cohort or empty list when no cohort is registered
+     * @should return all registered cohorts
+     * @should return empty list when no cohort is registered
+     */
     List<Cohort> getAllCohorts();
 
     void deleteCohort(final Cohort cohort);

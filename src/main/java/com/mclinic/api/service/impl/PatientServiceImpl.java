@@ -23,13 +23,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient getPatientByIdentifier(final String identifier) {
-        return dao.getPatientByIdentifier(identifier);
+    public List<Patient> getAllPatients() {
+        return dao.getAllPatients();
     }
 
     @Override
-    public List<Patient> getAllPatients() {
-        return dao.getAllPatients();
+    public Patient getPatientByIdentifier(final String identifier) {
+        return dao.getPatientByIdentifier(identifier);
     }
 
     @Override

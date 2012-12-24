@@ -12,13 +12,8 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     private AdministrativeDao dao;
 
     @Override
-    public void initializeDB(final File configurationFile) {
-        dao.initializeDB(configurationFile);
-    }
-
-    @Override
-    public void loadPatients(final File jsonFiles) {
-        dao.loadPatients(jsonFiles);
+    public void initializeRepository(final File configurationFile) {
+        dao.initializeRepository(configurationFile);
     }
 
     @Override
@@ -27,8 +22,13 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     }
 
     @Override
-    public void downloadCohorts() {
-        dao.downloadCohorts();
+    public void loadPatients(final File jsonFiles) {
+        dao.loadPatients(jsonFiles);
+    }
+
+    @Override
+    public void loadObservations(final File jsonFiles) {
+        dao.loadObservations(jsonFiles);
     }
 
     @Override
@@ -37,13 +37,18 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     }
 
     @Override
-    public void downloadCohortPatients(final String cohortUuid) {
-        dao.downloadCohortPatients(cohortUuid);
+    public void downloadCohorts() {
+        dao.downloadCohorts();
     }
 
     @Override
-    public void loadObservations(final File jsonFiles) {
-        dao.loadObservations(jsonFiles);
+    public void downloadPatients() {
+        dao.downloadPatients();
+    }
+
+    @Override
+    public void downloadCohortPatients(final String cohortUuid) {
+        dao.downloadCohortPatients(cohortUuid);
     }
 
     @Override

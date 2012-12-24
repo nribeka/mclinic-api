@@ -25,31 +25,45 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Patient createPatient(final Patient patient) {
-
+        Object object = null;
         try {
             Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
-            service.createObject(patient, resource);
+            object = service.createObject(patient, resource);
         } catch (Exception e) {
             log.error(TAG, "Error creating patient.", e);
         }
-        return null;
+        return (Patient) object;
     }
 
     @Override
     public Patient updatePatient(final Patient patient) {
-
+        Object object = null;
         try {
             Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
-            service.updateObject(patient, resource);
+            object = service.updateObject(patient, resource);
         } catch (Exception e) {
             log.error(TAG, "Error updating patient.", e);
         }
-        return null;
+        return (Patient) object;
+    }
+
+    @Override
+    public Patient getPatientByUuid(final String uuid) {
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(uuid))
+            searchQuery = "uuid: " + StringUtil.quote(uuid);
+
+        Patient patient = null;
+        try {
+            patient = service.getObject(searchQuery, Patient.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error getting patient using query: " + searchQuery, e);
+        }
+        return patient;
     }
 
     @Override
     public Patient getPatientByIdentifier(final String identifier) {
-
         String searchQuery = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(identifier))
             searchQuery = "identifier: " + StringUtil.quote(identifier);
@@ -65,7 +79,6 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public List<Patient> getAllPatients() {
-
         List<Patient> patients = new ArrayList<Patient>();
         try {
             patients = service.getObjects(StringUtil.EMPTY, Patient.class);
@@ -76,8 +89,22 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     @Override
-    public void deletePatient(final Patient patient) {
+    public List<Patient> getPatientsByName(final String name) {
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(name))
+            searchQuery = "name:" + name + "*";
 
+        List<Patient> patients = new ArrayList<Patient>();
+        try {
+            patients = service.getObjects(searchQuery, Patient.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error getting patients using query: " + searchQuery, e);
+        }
+        return patients;
+    }
+
+    @Override
+    public void deletePatient(final Patient patient) {
         try {
             Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
             service.invalidate(patient, resource);
@@ -88,38 +115,6 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public void deleteAllPatients() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public Patient getPatientByUuid(final String uuid) {
-
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(uuid))
-            searchQuery = "uuid: " + StringUtil.quote(uuid);
-
-        Patient patient = null;
-        try {
-            patient = service.getObject(searchQuery, Patient.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting patient using query: " + searchQuery, e);
-        }
-        return patient;
-    }
-
-    @Override
-    public List<Patient> getPatientsByName(final String name) {
-
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(name))
-            searchQuery = "name:" + StringUtil.quote(name + "*");
-
-        List<Patient> patients = new ArrayList<Patient>();
-        try {
-            patients = service.getObjects(searchQuery, Patient.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting patients using query: " + searchQuery, e);
-        }
-        return patients;
+        // TODO Do we need to implement delete all patients?
     }
 }

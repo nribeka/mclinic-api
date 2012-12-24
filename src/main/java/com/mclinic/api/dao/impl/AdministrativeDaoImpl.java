@@ -33,7 +33,7 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
     private static final String TAG = AdministrativeDao.class.getSimpleName();
 
     @Override
-    public void initializeDB(final File configurationFile) {
+    public void initializeRepository(final File configurationFile) {
         try {
             Context.registerObject(Patient.class);
             Context.registerObject(Cohort.class);
@@ -57,22 +57,22 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
     }
 
     @Override
+    public void loadCohorts(final File jsonFiles) {
+        try {
+            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
+        } catch (Exception e) {
+            log.error(TAG, "Error loading cohorts from local json file " + jsonFiles.getAbsolutePath(), e);
+        }
+    }
+
+    @Override
     public void loadPatients(final File jsonFiles) {
         try {
             Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
             service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
         } catch (Exception e) {
             log.error(TAG, "Error loading patients from local json file " + jsonFiles.getAbsolutePath(), e);
-        }
-    }
-
-    @Override
-    public void downloadPatients() {
-        try {
-            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading patients from remote REST resource.", e);
         }
     }
 
@@ -87,22 +87,12 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
     }
 
     @Override
-    public void downloadObservations(final String patientUuid) {
+    public void loadCohortPatients(final File jsonFiles) {
         try {
-            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            service.loadObjects(patientUuid, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading observations for patient with uuid: " + patientUuid, e);
-        }
-    }
-
-    @Override
-    public void loadCohorts(final File jsonFiles) {
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
+            Resource resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
             service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
         } catch (Exception e) {
-            log.error(TAG, "Error loading cohorts from local json file " + jsonFiles.getAbsolutePath(), e);
+            log.error(TAG, "Error loading cohort members from local json file " + jsonFiles.getAbsolutePath(), e);
         }
     }
 
@@ -117,12 +107,22 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
     }
 
     @Override
-    public void loadCohortPatients(final File jsonFiles) {
+    public void downloadPatients() {
         try {
-            Resource resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
+            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource);
         } catch (Exception e) {
-            log.error(TAG, "Error loading cohort members from local json file " + jsonFiles.getAbsolutePath(), e);
+            log.error(TAG, "Error downloading patients from remote REST resource.", e);
+        }
+    }
+
+    @Override
+    public void downloadObservations(final String patientUuid) {
+        try {
+            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
+            service.loadObjects(patientUuid, resource);
+        } catch (Exception e) {
+            log.error(TAG, "Error downloading observations for patient with uuid: " + patientUuid, e);
         }
     }
 

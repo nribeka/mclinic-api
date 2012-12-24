@@ -26,31 +26,30 @@ public class ObservationDaoImpl implements ObservationDao {
 
     @Override
     public Observation createObservation(final Observation observation) {
-
+        Object object = null;
         try {
             Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            service.createObject(observation, resource);
+            object = service.createObject(observation, resource);
         } catch (Exception e) {
             log.error(TAG, "Error creating observation.", e);
         }
-        return null;
+        return (Observation) object;
     }
 
     @Override
     public Observation updateObservation(final Observation observation) {
-
+        Object object = null;
         try {
             Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            service.updateObject(observation, resource);
+            object = service.updateObject(observation, resource);
         } catch (Exception e) {
             log.error(TAG, "Error updating observation.", e);
         }
-        return null;
+        return (Observation) object;
     }
 
     @Override
     public Observation getObservationByUuid(final String uuid) {
-
         String searchQuery = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(uuid))
             searchQuery = "uuid: " + StringUtil.quote(uuid);
@@ -66,7 +65,6 @@ public class ObservationDaoImpl implements ObservationDao {
 
     @Override
     public List<Observation> getAllObservations(final Patient patient) {
-
         String searchQuery = StringUtil.EMPTY;
         if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
             searchQuery = "patient: " + StringUtil.quote(patient.getUuid());
@@ -82,7 +80,6 @@ public class ObservationDaoImpl implements ObservationDao {
 
     @Override
     public void deleteObservation(final Observation observation) {
-
         try {
             Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
             service.invalidate(observation, resource);
@@ -93,6 +90,6 @@ public class ObservationDaoImpl implements ObservationDao {
 
     @Override
     public void deleteAllObservations(final Patient patient) {
-        // TODO Auto-generated method stub
+        // TODO Do we need to implement the delete all observations?
     }
 }

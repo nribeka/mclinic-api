@@ -36,7 +36,7 @@ public class PatientAttribute {
     /**
      * @param uuid the uuid to set
      */
-    public void setUuid(String uuid) {
+    public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
@@ -50,7 +50,7 @@ public class PatientAttribute {
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -64,7 +64,7 @@ public class PatientAttribute {
     /**
      * @param value the value to set
      */
-    public void setValue(String value) {
+    public void setValue(final String value) {
         this.value = value;
     }
 
@@ -78,7 +78,7 @@ public class PatientAttribute {
     /**
      * @param json the json to set
      */
-    public void setJson(String json) {
+    public void setJson(final String json) {
         this.json = json;
     }
 }

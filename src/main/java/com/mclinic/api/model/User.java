@@ -40,7 +40,7 @@ public class User {
     /**
      * @param id the id to set
      */
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -54,7 +54,7 @@ public class User {
     /**
      * @param systemId the systemId to set
      */
-    public void setSystemId(String systemId) {
+    public void setSystemId(final String systemId) {
         this.systemId = systemId;
     }
 
@@ -68,7 +68,7 @@ public class User {
     /**
      * @param username the username to set
      */
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -82,7 +82,7 @@ public class User {
     /**
      * @param password the password to set
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -96,7 +96,7 @@ public class User {
     /**
      * @param salt the salt to set
      */
-    public void setSalt(String salt) {
+    public void setSalt(final String salt) {
         this.salt = salt;
     }
 
@@ -110,7 +110,7 @@ public class User {
     /**
      * @param status the status to set
      */
-    public void setStatus(Boolean status) {
+    public void setStatus(final Boolean status) {
         this.status = status;
     }
 }

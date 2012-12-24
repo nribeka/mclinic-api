@@ -23,7 +23,7 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public Cohort getCohortByUUID(final String uuid) {
+    public Cohort getCohortByUuid(final String uuid) {
         return dao.getCohortByUuid(uuid);
     }
 

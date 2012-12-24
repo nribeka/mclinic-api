@@ -3,7 +3,6 @@ package com.mclinic.api;
 import java.io.File;
 import java.net.URL;
 
-import com.google.inject.Inject;
 import com.mclinic.api.model.Cohort;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.model.algorithm.CohortAlgorithm;
@@ -19,19 +18,21 @@ import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
 import com.mclinic.search.api.resource.Resource;
 import junit.framework.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class AdministrativeServiceTest {
 
-    static Logger log;
+    private Logger log;
 
-    @Inject
-    static RestAssuredService service;// = Context.getService();
+    private RestAssuredService service;
+
+    @Before
 
     /**
      * @verifies index data from the rest resource
      * @
-     * @see AdministrativeService#initializeDB(File)
+     * @see AdministrativeService#initializeRepository(File)
      */
     @SuppressWarnings("unchecked")
     @Test

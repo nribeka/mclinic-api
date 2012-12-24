@@ -124,7 +124,7 @@ public class CohortServiceTest {
     @Test
     public void getCohortByUUID_shouldReturnOneCohort() {
         System.out.println("\nCOHORT_RESOURCE BY UUID");
-        Cohort cohort = cService.getCohortByUUID("0ca78602-738f-408d-8ced-386ad12367db");
+        Cohort cohort = cService.getCohortByUuid("0ca78602-738f-408d-8ced-386ad12367db");
         Assert.assertNotNull(cohort);
         if (cohort != null) {
             System.out.print("[" + cohort.getUuid() + "]");
@@ -137,7 +137,7 @@ public class CohortServiceTest {
     @Test
     public void deleteCohort_shouldDeleteOneCohort() {
         System.out.println("DELETE COHORT_RESOURCE");
-        Cohort cohort = cService.getCohortByUUID("0ca78602-738f-408d-8ced-386ad12367db");
+        Cohort cohort = cService.getCohortByUuid("0ca78602-738f-408d-8ced-386ad12367db");
         cService.deleteCohort(cohort);
         Assert.assertNotNull(cohort);
         getAllCohorts_shouldReturnAllCohortsInDB();

@@ -2,19 +2,15 @@ package com.mclinic.api.model;
 
 import java.util.Date;
 
+import com.mclinic.search.api.util.StringUtil;
+
 public class Observation {
 
     private String uuid;
 
     private String patientUuid;
 
-    private Float valueNumeric;
-
-    private Integer valueInt;
-
-    private Date valueDate;
-
-    private String valueText = "";
+    private String valueText = StringUtil.EMPTY;
 
     private Date observationDate;
 
@@ -38,31 +34,15 @@ public class Observation {
         return patientUuid;
     }
 
-    public void setPatientUuid(String patientUuid) {
+    public void setPatientUuid(final String patientUuid) {
         this.patientUuid = patientUuid;
-    }
-
-    public Float getValueNumeric() {
-        return valueNumeric;
-    }
-
-    public void setValueNumeric(Float valueNumeric) {
-        this.valueNumeric = valueNumeric;
-    }
-
-    public Date getValueDate() {
-        return valueDate;
-    }
-
-    public void setValueDate(Date valueDate) {
-        this.valueDate = valueDate;
     }
 
     public String getValueText() {
         return valueText;
     }
 
-    public void setValueText(String valueText) {
+    public void setValueText(final String valueText) {
         this.valueText = valueText;
     }
 
@@ -70,23 +50,15 @@ public class Observation {
         return observationDate;
     }
 
-    public void setObservationDate(Date observationDate) {
+    public void setObservationDate(final Date observationDate) {
         this.observationDate = observationDate;
-    }
-
-    public Integer getValueInt() {
-        return valueInt;
-    }
-
-    public void setValueInt(Integer valueInt) {
-        this.valueInt = valueInt;
     }
 
     public String getFieldName() {
         return fieldName;
     }
 
-    public void setFieldName(String fieldName) {
+    public void setFieldName(final String fieldName) {
         this.fieldName = fieldName;
     }
 

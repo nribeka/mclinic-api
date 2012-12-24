@@ -6,8 +6,6 @@ public class Cohort {
 
     private String name;
 
-    private String description;
-
     private String json;
 
     /**
@@ -20,7 +18,7 @@ public class Cohort {
     /**
      * @param uuid the uuid to set
      */
-    public void setUuid(String uuid) {
+    public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
@@ -34,7 +32,7 @@ public class Cohort {
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -48,7 +46,7 @@ public class Cohort {
     /**
      * @param json the json to set
      */
-    public void setJson(String json) {
+    public void setJson(final String json) {
         this.json = json;
     }
 }

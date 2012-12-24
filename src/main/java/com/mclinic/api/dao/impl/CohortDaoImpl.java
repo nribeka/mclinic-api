@@ -25,7 +25,6 @@ public class CohortDaoImpl implements CohortDao {
 
     @Override
     public Cohort createCohort(final Cohort cohort) {
-
         Object object = null;
         try {
             Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
@@ -38,19 +37,18 @@ public class CohortDaoImpl implements CohortDao {
 
     @Override
     public Cohort updateCohort(final Cohort cohort) {
-
+        Object object = null;
         try {
             Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
-            service.updateObject(cohort, resource);
+            object = service.updateObject(cohort, resource);
         } catch (Exception e) {
             log.error(TAG, "Error updating cohort.", e);
         }
-        return null;
+        return (Cohort) object;
     }
 
     @Override
     public Cohort getCohortByUuid(final String uuid) {
-
         String searchQuery = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(uuid))
             searchQuery = "uuid: " + StringUtil.quote(uuid);
@@ -65,11 +63,21 @@ public class CohortDaoImpl implements CohortDao {
     }
 
     @Override
-    public List<Cohort> getCohortsByName(final String name) {
+    public List<Cohort> getAllCohorts() {
+        List<Cohort> cohorts = new ArrayList<Cohort>();
+        try {
+            cohorts = service.getObjects(StringUtil.EMPTY, Cohort.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error getting all cohorts.", e);
+        }
+        return cohorts;
+    }
 
+    @Override
+    public List<Cohort> getCohortsByName(final String name) {
         String searchQuery = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(name))
-            searchQuery = "name: " + StringUtil.quote(name + "*");
+            searchQuery = "name: " + name + "*";
 
         List<Cohort> cohorts = new ArrayList<Cohort>();
         try {
@@ -81,30 +89,17 @@ public class CohortDaoImpl implements CohortDao {
     }
 
     @Override
-    public List<Cohort> getAllCohorts() {
-
-        List<Cohort> cohorts = new ArrayList<Cohort>();
-        try {
-            cohorts = service.getObjects(StringUtil.EMPTY, Cohort.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting all cohorts.", e);
-        }
-        return cohorts;
+    public void deleteAllCohorts() {
+        // TODO Do we need to implement this delete all cohorts?
     }
 
     @Override
     public void deleteCohort(final Cohort cohort) {
-
         try {
             Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
             service.invalidate(cohort, resource);
         } catch (Exception e) {
             log.error(TAG, "Error deleting cohort.", e);
         }
-    }
-
-    @Override
-    public void deleteAllCohorts() {
-        // TODO Auto-generated method stub
     }
 }

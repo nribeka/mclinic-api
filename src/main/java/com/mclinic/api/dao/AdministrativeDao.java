@@ -8,21 +8,21 @@ import com.mclinic.api.dao.impl.AdministrativeDaoImpl;
 @ImplementedBy(AdministrativeDaoImpl.class)
 public interface AdministrativeDao {
 
-    void initializeDB(File j2lFile);
+    void initializeRepository(final File configurationFile);
 
-    void loadPatients(File jsonFilesDir);
+    void loadCohorts(final File jsonFiles);
 
-    void downloadPatients();
+    void loadPatients(final File jsonFiles);
 
-    void loadCohorts(File jsonFilesDir);
+    void loadObservations(final File jsonFiles);
+
+    void loadCohortPatients(final File jsonFiles);
 
     void downloadCohorts();
 
-    void loadCohortPatients(File jsonFilesDir);
+    void downloadPatients();
 
-    void downloadCohortPatients(String cohortUUID);
+    void downloadObservations(final String patientUuid);
 
-    void loadObservations(File jsonFilesDir);
-
-    void downloadObservations(String patientUUID);
+    void downloadCohortPatients(final String cohortUuid);
 }

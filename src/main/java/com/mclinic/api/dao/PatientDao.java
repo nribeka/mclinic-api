@@ -9,20 +9,20 @@ import com.mclinic.api.model.Patient;
 @ImplementedBy(PatientDaoImpl.class)
 public interface PatientDao {
 
-    Patient createPatient(Patient patient);
+    Patient createPatient(final Patient patient);
 
-    Patient updatePatient(Patient patient);
+    Patient updatePatient(final Patient patient);
 
-    Patient getPatientByIdentifier(String identifier);
+    Patient getPatientByUuid(final String uuid);
 
-    Patient getPatientByUuid(String uuid);
+    Patient getPatientByIdentifier(final String identifier);
 
     List<Patient> getAllPatients();
 
-    void deletePatient(Patient patient);
+    List<Patient> getPatientsByName(final String name);
+
+    void deletePatient(final Patient patient);
 
     void deleteAllPatients();
-
-    List<Patient> getPatientsByName(String name);
 
 }

@@ -1,7 +1,7 @@
 # Resource configuration
 resource.name=Patient Resource
 node.root=$
-resource.object=com.mclinic.api.model.domain.Patient
+resource.object=com.mclinic.api.model.Patient
 algorithm.class=com.mclinic.api.model.algorithm.PatientAlgorithm
 resolver.class=com.mclinic.api.model.resolver.PatientResolver
 field.unique=name

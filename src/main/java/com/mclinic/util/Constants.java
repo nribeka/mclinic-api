@@ -14,11 +14,11 @@ public class Constants {
 
     public static final String CONNECTION_AUTHORIZATION = "Authorization";
 
-    public static final String PATIENT_RESOURCE = "Patient";
+    public static final String PATIENT_RESOURCE = "Patient Resource";
 
-    public static final String COHORT_RESOURCE = "Cohort";
+    public static final String COHORT_RESOURCE = "Cohort Resource";
 
-    public static final String COHORT_MEMBER_RESOURCE = "Cohort Member";
+    public static final String COHORT_MEMBER_RESOURCE = "Cohort Member Resource";
 
-    public static final String OBSERVATION_RESOURCE = "Observation";
+    public static final String OBSERVATION_RESOURCE = "Observation Resource";
 }
