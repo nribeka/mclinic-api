@@ -12,8 +12,13 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     private AdministrativeDao dao;
 
     @Override
-    public void initializeRepository() {
-        dao.initializeRepository();
+    public void initializeRepository(final String repositoryPath) {
+        dao.initializeRepository(repositoryPath);
+    }
+
+    @Override
+    public void initializeRepository(final File repositoryDir) {
+        dao.initializeRepository(repositoryDir);
     }
 
     @Override

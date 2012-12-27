@@ -20,7 +20,9 @@ public interface AdministrativeService {
      * @should register available domain object classes
      * @should load configuration file and register them
      */
-    void initializeRepository();
+    void initializeRepository(final String repositoryPath);
+
+    void initializeRepository(final File repositoryDir);
 
     /**
      * Load all cohorts in to the lucene index. This method will load all <code>Cohort</code> as represented
