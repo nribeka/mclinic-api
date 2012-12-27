@@ -1,6 +1,7 @@
 package com.mclinic.api.dao.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import com.google.inject.Inject;
@@ -34,7 +35,12 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
     private static final String TAG = AdministrativeDao.class.getSimpleName();
 
     @Override
-    public void initializeRepository() {
+    public void initializeRepository(final String repositoryPath) {
+        initializeRepository(new File(repositoryPath));
+    }
+
+    @Override
+    public void initializeRepository(final File repositoryDir) {
         try {
             Context.registerObject(Patient.class);
             Context.registerObject(Cohort.class);
@@ -50,12 +56,9 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
             Context.registerResolver(CohortMemberResolver.class);
             Context.registerResolver(ObservationResolver.class);
 
-
-            URL configuration = AdministrativeDao.class.getResource("../j2l");
-            Context.registerResources(new File(configuration.getPath()));
-
-        } catch (Exception e) {
-            log.error(TAG, "Error initializing database.", e);
+            Context.registerResources(repositoryDir);
+        } catch (IOException e) {
+            log.error(TAG, "Error initializing repository inside: " + repositoryDir.getPath(), e);
         }
     }
 

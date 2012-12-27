@@ -34,13 +34,14 @@ public class CohortServiceTest {
 
     @Before
     public void prepare() throws Exception {
+        URL repositoryPath = AdministrativeServiceTest.class.getResource("../j2l");
         URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
         Context.initialize(new MuzimaModule(lucenePath.getPath(), "uuid"));
 
         service = Context.getInstance(AdministrativeService.class);
         Assert.assertNotNull(service);
 
-        service.initializeRepository();
+        service.initializeRepository(repositoryPath.getPath());
 
         URL jsonPath = AdministrativeServiceTest.class.getResource("../json/cohort");
         service.loadCohorts(new File(jsonPath.getPath()));
