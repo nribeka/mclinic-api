@@ -24,9 +24,6 @@ public class PatientAttribute {
 
     private String value;
 
-    //Not sure we will use this and why we need it
-    private String attributeType;
-
     private String json;
 
     /**
@@ -39,7 +36,7 @@ public class PatientAttribute {
     /**
      * @param uuid the uuid to set
      */
-    public void setUuid(String uuid) {
+    public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
@@ -53,7 +50,7 @@ public class PatientAttribute {
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -67,22 +64,8 @@ public class PatientAttribute {
     /**
      * @param value the value to set
      */
-    public void setValue(String value) {
+    public void setValue(final String value) {
         this.value = value;
-    }
-
-    /**
-     * @return the attributeType
-     */
-    public String getAttributeType() {
-        return attributeType;
-    }
-
-    /**
-     * @param attributeType the attributeType to set
-     */
-    public void setAttributeType(String attributeType) {
-        this.attributeType = attributeType;
     }
 
     /**
@@ -95,7 +78,7 @@ public class PatientAttribute {
     /**
      * @param json the json to set
      */
-    public void setJson(String json) {
+    public void setJson(final String json) {
         this.json = json;
     }
 }

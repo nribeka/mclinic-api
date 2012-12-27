@@ -9,18 +9,18 @@ import com.mclinic.api.model.Cohort;
 @ImplementedBy(CohortDaoImpl.class)
 public interface CohortDao {
 
-    Cohort createCohort(Cohort cohort);
+    Cohort createCohort(final Cohort cohort);
 
-    Cohort updateCohort(Cohort cohort);
+    Cohort updateCohort(final Cohort cohort);
 
-    Cohort getCohortByUUID(String uuid);
-
-    List<Cohort> getCohortsByName(String name);
+    Cohort getCohortByUuid(final String uuid);
 
     List<Cohort> getAllCohorts();
 
-    void deleteCohort(Cohort cohort);
+    List<Cohort> getCohortsByName(final String name);
 
     void deleteAllCohorts();
+
+    void deleteCohort(final Cohort cohort);
 
 }

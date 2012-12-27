@@ -12,18 +12,28 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     private AdministrativeDao dao;
 
     @Override
-    public void initializeDB(File j2lFile) {
-        dao.initializeDB(j2lFile);
+    public void initializeRepository() {
+        dao.initializeRepository();
     }
 
     @Override
-    public void loadPatients(File jsonFilesDir) {
-        dao.loadPatients(jsonFilesDir);
+    public void loadCohorts(final File jsonFiles) {
+        dao.loadCohorts(jsonFiles);
     }
 
     @Override
-    public void loadCohorts(File jsonFilesDir) {
-        dao.loadCohorts(jsonFilesDir);
+    public void loadPatients(final File jsonFiles) {
+        dao.loadPatients(jsonFiles);
+    }
+
+    @Override
+    public void loadObservations(final File jsonFiles) {
+        dao.loadObservations(jsonFiles);
+    }
+
+    @Override
+    public void loadCohortPatients(final File jsonFiles) {
+        dao.loadCohortPatients(jsonFiles);
     }
 
     @Override
@@ -32,22 +42,17 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     }
 
     @Override
-    public void loadCohortPatients(File jsonFilesDir) {
-        dao.loadCohortPatients(jsonFilesDir);
+    public void downloadPatients() {
+        dao.downloadPatients();
     }
 
     @Override
-    public void downloadCohortPatients(String cohortUUID) {
-        dao.downloadCohortPatients(cohortUUID);
+    public void downloadCohortPatients(final String cohortUuid) {
+        dao.downloadCohortPatients(cohortUuid);
     }
 
     @Override
-    public void loadObservations(File jsonFilesDir) {
-        dao.loadObservations(jsonFilesDir);
-    }
-
-    @Override
-    public void downloadObservations(String patientUUID) {
-        dao.downloadObservations(patientUUID);
+    public void downloadObservations(final String patientUuid) {
+        dao.downloadObservations(patientUuid);
     }
 }

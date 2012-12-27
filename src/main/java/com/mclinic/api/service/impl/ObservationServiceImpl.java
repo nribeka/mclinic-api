@@ -14,32 +14,32 @@ public class ObservationServiceImpl implements ObservationService {
     private ObservationDao dao;
 
     @Override
-    public Observation createObservation(Observation observation) {
+    public Observation createObservation(final Observation observation) {
         return dao.createObservation(observation);
     }
 
     @Override
-    public Observation updateObservation(Observation observation) {
+    public Observation updateObservation(final Observation observation) {
         return dao.updateObservation(observation);
     }
 
     @Override
-    public Observation getObservationByUUID(String uuid) {
-        return dao.getObservationByUUID(uuid);
+    public Observation getObservationByUuid(final String uuid) {
+        return dao.getObservationByUuid(uuid);
     }
 
     @Override
-    public List<Observation> getAllObservations(Patient patient) {
+    public List<Observation> getAllObservations(final Patient patient) {
         return dao.getAllObservations(patient);
     }
 
     @Override
-    public void deleteObservation(Observation observation) {
+    public void deleteObservation(final Observation observation) {
         dao.deleteObservation(observation);
     }
 
     @Override
-    public void deleteAllObservations(Patient patient) {
+    public void deleteAllObservations(final Patient patient) {
         dao.deleteAllObservations(patient);
     }
 }

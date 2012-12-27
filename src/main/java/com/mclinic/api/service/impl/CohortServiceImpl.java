@@ -13,22 +13,22 @@ public class CohortServiceImpl implements CohortService {
     private CohortDao dao;
 
     @Override
-    public Cohort createCohort(Cohort cohort) {
+    public Cohort createCohort(final Cohort cohort) {
         return dao.createCohort(cohort);
     }
 
     @Override
-    public Cohort updateCohort(Cohort cohort) {
+    public Cohort updateCohort(final Cohort cohort) {
         return dao.updateCohort(cohort);
     }
 
     @Override
-    public Cohort getCohortByUUID(String uuid) {
-        return dao.getCohortByUUID(uuid);
+    public Cohort getCohortByUuid(final String uuid) {
+        return dao.getCohortByUuid(uuid);
     }
 
     @Override
-    public List<Cohort> getCohortsByName(String name) {
+    public List<Cohort> getCohortsByName(final String name) {
         return dao.getCohortsByName(name);
     }
 
@@ -38,7 +38,7 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void deleteCohort(Cohort cohort) {
+    public void deleteCohort(final Cohort cohort) {
         dao.deleteCohort(cohort);
     }
 

@@ -1,5 +1,5 @@
 # Resource configuration
-resource.name=Cohort
+resource.name=Cohort Resource
 node.root=$.results
 resource.object=com.mclinic.api.model.Cohort
 algorithm.class=com.mclinic.api.model.algorithm.CohortAlgorithm
