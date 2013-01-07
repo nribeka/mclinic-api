@@ -8,6 +8,8 @@ import com.mclinic.api.service.impl.PatientServiceImpl;
 
 /**
  * Service handling all operation to the @{Patient} actor/model
+ *
+ * TODO: add ability to search based on lucene like query syntax (merging name and identifier).
  */
 @ImplementedBy(PatientServiceImpl.class)
 public interface PatientService {
