@@ -40,6 +40,18 @@ public interface AdministrativeService {
     void initializeRepository(final File repositoryDir);
 
     /**
+     * Load all forms in to the lucene index. This method will load all <code>Form</code> as represented
+     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
+     * <p/>
+     * The method should be called once in the life time of a project. If new json files have been added to
+     * the Json directory then update should be the method to call. <br><br>
+     *
+     * @param jsonFiles the directory containing all forms json files.
+     * @should load all form data from local directory
+     */
+    void loadForms(final File jsonFiles);
+
+    /**
      * Load all cohorts in to the lucene index. This method will load all <code>Cohort</code> as represented
      * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
      * <p/>
@@ -86,6 +98,8 @@ public interface AdministrativeService {
      * @should load all patient data from local directory
      */
     void loadCohortPatients(final File jsonFiles);
+
+    void downloadForms();;
 
     void downloadCohorts();
 

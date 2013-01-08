@@ -17,38 +17,40 @@ package com.mclinic.api.service.impl;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.mclinic.api.dao.FormDao;
+import com.mclinic.api.dao.PatientDao;
 import com.mclinic.api.model.Form;
 import com.mclinic.api.service.FormService;
 
 public class FormServiceImpl implements FormService {
 
+    @Inject
+    private FormDao dao;
+
     @Override
     public Form saveForm(final Form form) {
-        // TODO Auto-generated method stub
-        return null;
+        return dao.saveForm(form);
     }
 
     @Override
     public Form updateForm(final Form form) {
-        // TODO Auto-generated method stub
-        return null;
+        return dao.updateForm(form);
     }
 
     @Override
-    public Form getFormById(final Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+    public Form getFormByUuid(final String uuid) {
+        return dao.getFormByUuid(uuid);
     }
 
     @Override
     public List<Form> getAllForms() {
-        // TODO Auto-generated method stub
-        return null;
+        return dao.getAllForms();
     }
 
     @Override
     public void deleteForm(final Form form) {
-        // TODO Auto-generated method stub
+        dao.deleteForm(form);
 
     }
 

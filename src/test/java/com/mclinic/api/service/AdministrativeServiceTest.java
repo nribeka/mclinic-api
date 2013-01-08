@@ -18,16 +18,15 @@ package com.mclinic.api.service;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.mclinic.api.model.Cohort;
+import com.mclinic.api.model.Form;
 import com.mclinic.api.model.Observation;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.model.algorithm.CohortAlgorithm;
 import com.mclinic.api.model.algorithm.CohortMemberAlgorithm;
 import com.mclinic.api.model.algorithm.ObservationAlgorithm;
 import com.mclinic.api.model.algorithm.PatientAlgorithm;
-import com.mclinic.api.model.algorithm.PatientAttributeAlgorithm;
 import com.mclinic.api.model.resolver.CohortMemberResolver;
 import com.mclinic.api.model.resolver.CohortResolver;
 import com.mclinic.api.model.resolver.ObservationResolver;
@@ -156,6 +155,20 @@ public class AdministrativeServiceTest {
 
         resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
         Assert.assertNotNull(resource);
+    }
+
+    /**
+     * @verifies load all form data from local directory
+     * @see AdministrativeService#loadForms(java.io.File)
+     */
+    @Test
+    public void loadCohorts_shouldLoadAllFormDataFromLocalDirectory() throws Exception {
+        URL jsonPath = AdministrativeServiceTest.class.getResource("../json/form");
+        service.loadForms(new File(jsonPath.getPath()));
+
+        List<Form> forms = assuredService.getObjects(StringUtil.EMPTY, Form.class);
+        Assert.assertNotNull(forms);
+        Assert.assertFalse(forms.isEmpty());
     }
 
     /**

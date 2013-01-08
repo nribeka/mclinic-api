@@ -24,15 +24,15 @@ import com.mclinic.api.model.Form;
 @ImplementedBy(FormDaoImpl.class)
 public interface FormDao {
 
-    Form saveForm(Form form);
+    Form saveForm(final Form form);
 
-    Form updateForm(Form form);
+    Form updateForm(final Form form);
 
-    Form getFormById(Integer id);
+    Form getFormByUuid(final String uuid);
 
     List<Form> getAllForms();
 
-    void deleteForm(Form form);
+    void deleteForm(final Form form);
 
     void deleteAllForms();
 }

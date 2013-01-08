@@ -30,6 +30,6 @@ public class CohortResolver extends AbstractResolver {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
             param = "?q=" + searchString;
-        return getServer() + "ws/rest/v1/cohort" + param;
+        return getServer() + "/ws/rest/v1/cohort" + param;
     }
 }

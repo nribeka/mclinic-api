@@ -27,6 +27,8 @@ public interface AdministrativeDao {
 
     void initializeRepository(final File repositoryDir);
 
+    void loadForms(final File jsonFiles);
+
     void loadCohorts(final File jsonFiles);
 
     void loadPatients(final File jsonFiles);
@@ -34,6 +36,8 @@ public interface AdministrativeDao {
     void loadObservations(final File jsonFiles);
 
     void loadCohortPatients(final File jsonFiles);
+
+    void downloadForms();
 
     void downloadCohorts();
 

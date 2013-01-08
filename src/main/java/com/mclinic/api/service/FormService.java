@@ -31,8 +31,19 @@ public interface FormService {
 
     Form updateForm(final Form form);
 
-    Form getFormById(final Integer id);
+    /**
+     * @param uuid the form uuid
+     * @return form with matching uuid or null when no form match the uuid
+     * @should return form with matching uuid
+     * @should return null when no form match the uuid
+     */
+    Form getFormByUuid(final String uuid);
 
+    /**
+     * @return all registered forms or empty list when no form is registered
+     * @should return all registered forms
+     * @should return empty list when no form is registered
+     */
     List<Form> getAllForms();
 
     void deleteForm(final Form form);
