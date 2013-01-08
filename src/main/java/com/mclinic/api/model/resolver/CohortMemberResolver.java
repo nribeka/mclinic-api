@@ -25,6 +25,6 @@ public class CohortMemberResolver extends AbstractResolver {
      */
     @Override
     public String resolve(final String searchString) {
-        return getServer() + "ws/rest/v1/cohort/" + searchString + "/member?v=full";
+        return getServer() + "/ws/rest/v1/cohort/" + searchString + "/member?v=full";
     }
 }

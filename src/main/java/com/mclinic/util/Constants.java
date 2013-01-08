@@ -29,6 +29,8 @@ public class Constants {
 
     public static final String CONNECTION_AUTHORIZATION = "Authorization";
 
+    public static final String FORM_RESOURCE = "Form Resource";
+
     public static final String PATIENT_RESOURCE = "Patient Resource";
 
     public static final String COHORT_RESOURCE = "Cohort Resource";

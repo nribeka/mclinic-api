@@ -15,41 +15,89 @@
  */
 package com.mclinic.api.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.mclinic.api.dao.FormDao;
+import com.mclinic.api.dao.PatientDao;
 import com.mclinic.api.model.Form;
+import com.mclinic.api.model.Patient;
+import com.mclinic.search.api.Context;
+import com.mclinic.search.api.RestAssuredService;
+import com.mclinic.search.api.logger.Logger;
+import com.mclinic.search.api.resource.Resource;
+import com.mclinic.search.api.util.StringUtil;
+import com.mclinic.util.Constants;
 
 public class FormDaoImpl implements FormDao {
 
+    @Inject
+    private Logger log;
+
+    @Inject
+    private RestAssuredService service;
+
+    private static final String TAG = PatientDao.class.getSimpleName();
+
     @Override
-    public Form saveForm(Form form) {
-        // TODO Auto-generated method stub
-        return null;
+    public Form saveForm(final Form form) {
+        Object object = null;
+        try {
+            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
+            object = service.createObject(form, resource);
+        } catch (Exception e) {
+            log.error(TAG, "Error creating form.", e);
+        }
+        return (Form) object;
     }
 
     @Override
-    public Form updateForm(Form form) {
-        // TODO Auto-generated method stub
-        return null;
+    public Form updateForm(final Form form) {
+        Object object = null;
+        try {
+            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
+            object = service.updateObject(form, resource);
+        } catch (Exception e) {
+            log.error(TAG, "Error updating form.", e);
+        }
+        return (Form) object;
     }
 
     @Override
-    public Form getFormById(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+    public Form getFormByUuid(final String uuid) {
+        String searchQuery = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(uuid))
+            searchQuery = "uuid: " + StringUtil.quote(uuid);
+
+        Form form = null;
+        try {
+            form = service.getObject(searchQuery, Form.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error getting form using query: " + searchQuery, e);
+        }
+        return form;
     }
 
     @Override
     public List<Form> getAllForms() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Form> forms = new ArrayList<Form>();
+        try {
+            forms = service.getObjects(StringUtil.EMPTY, Form.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error getting all forms.", e);
+        }
+        return forms;
     }
 
     @Override
-    public void deleteForm(Form form) {
-        // TODO Auto-generated method stub
-
+    public void deleteForm(final Form form) {
+        try {
+            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
+            service.invalidate(form, resource);
+        } catch (Exception e) {
+            log.error(TAG, "Error deleting patient.", e);
+        }
     }
 
     @Override

@@ -37,6 +37,11 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     }
 
     @Override
+    public void loadForms(final File jsonFiles) {
+        dao.loadForms(jsonFiles);
+    }
+
+    @Override
     public void loadCohorts(final File jsonFiles) {
         dao.loadCohorts(jsonFiles);
     }
@@ -54,6 +59,11 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     @Override
     public void loadCohortPatients(final File jsonFiles) {
         dao.loadCohortPatients(jsonFiles);
+    }
+
+    @Override
+    public void downloadForms() {
+        dao.downloadForms();
     }
 
     @Override

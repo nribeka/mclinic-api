@@ -16,10 +16,15 @@
 package com.mclinic.api.model.resolver;
 
 
+import com.mclinic.search.api.util.StringUtil;
+
 public class PatientResolver extends AbstractResolver {
 
     @Override
     public String resolve(final String searchString) {
-        return getServer() + "ws/rest/v1/patient?q=" + searchString;
+        String param = StringUtil.EMPTY;
+        if (!StringUtil.isEmpty(searchString))
+            param = "?q=" + searchString;
+        return getServer() + "/ws/rest/v1/patient" + param;
     }
 }

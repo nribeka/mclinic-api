@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "links": [
+        {
+          "rel": "self",
+          "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/form/c0529cc3-1691-11df-97a5-7038c432aabf"
+        }
+      ],
+      "display": "AMPATH Adult Initial Visit Form - AMPATH Adult Initial Visit Form - first version",
+      "uuid": "c0529cc3-1691-11df-97a5-7038c432aabf"
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/form/c052a11b-1691-11df-97a5-7038c432aabf"
+        }
+      ],
+      "display": "AMPATH Adult Return Visit Form - AMPATH Adult Return Visit Form - first \"official\" version of adult return visit form",
+      "uuid": "c052a11b-1691-11df-97a5-7038c432aabf"
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/form/c052a537-1691-11df-97a5-7038c432aabf"
+        }
+      ],
+      "display": "AMPATH Pediatric Return Visit Form - AMPATH Pediatric Return Visit Form - first version of the pediatric return visit form.",
+      "uuid": "c052a537-1691-11df-97a5-7038c432aabf"
+    },
+    {
+      "links": [
+        {
+          "rel": "self",
+          "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/form/c05295a0-1691-11df-97a5-7038c432aabf"
+        }
+      ],
+      "display": "Basic Form - This form contains only the common/core elements needed for most forms",
+      "uuid": "c05295a0-1691-11df-97a5-7038c432aabf"
+    }
+  ]
+}

@@ -17,20 +17,43 @@ package com.mclinic.api.model;
 
 public class Form {
 
-/*
-Since am not sure how I will handle this, i leave it for now
+    private String uuid;
 
-private Integer id;
+    private String name;
 
-private String name;
+    private Boolean disabled;
 
-private String path;
+    private String json;
 
-private Boolean disabled;
+    public String getUuid() {
+        return uuid;
+    }
 
-private String json;
+    public void setUuid(final String uuid) {
+        this.uuid = uuid;
+    }
 
-private String uuid;
+    public String getName() {
+        return name;
+    }
 
-*/
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(final Boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(final String json) {
+        this.json = json;
+    }
 }
