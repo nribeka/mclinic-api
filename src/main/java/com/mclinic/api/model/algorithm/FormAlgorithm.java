@@ -16,6 +16,7 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Form;
 import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.util.StringUtil;
 
 public class FormAlgorithm implements Algorithm {
 
@@ -51,9 +52,15 @@ public class FormAlgorithm implements Algorithm {
      */
     @Override
     public String serialize(final Object object) {
-
         Form form = (Form) object;
-        return form.getJson();
+        String json = form.getJson();
+
+        Object jsonObject = JsonPath.read(json, "$");
+
+        String name = JsonPath.read(jsonObject, "$.display");
+        if (!StringUtil.isEmpty(name))
+            json = json.replaceAll(name, form.getName());
+        return json;
     }
 
 }

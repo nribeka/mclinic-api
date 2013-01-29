@@ -80,6 +80,11 @@ public class ObservationAlgorithm implements Algorithm {
     @Override
     public String serialize(final Object object) {
         Observation observation = (Observation) object;
+        // TODO: need to replace this json with values from the new user object in case there's any update
+        // Step:
+        // - Execute JsonPath.read to get the current value
+        // - Perform StringUtil.replace to replace the old value with the value from the object
+        // - Unique id are not allowed to get any kind of update.
         return observation.getJson();
     }
 }
