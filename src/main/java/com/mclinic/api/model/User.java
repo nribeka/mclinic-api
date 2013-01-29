@@ -17,9 +17,9 @@ package com.mclinic.api.model;
 
 public class User {
 
-    private Integer id;
+    private String uuid;
 
-    private String systemId;
+    private String name;
 
     private String username;
 
@@ -29,32 +29,34 @@ public class User {
 
     private Boolean status;
 
+    private String json;
+
     /**
-     * @return the id
+     * @return the uuid
      */
-    public Integer getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
     /**
-     * @param id the id to set
+     * @param uuid the uuid to set
      */
-    public void setId(final Integer id) {
-        this.id = id;
+    public void setUuid(final String uuid) {
+        this.uuid = uuid;
     }
 
     /**
-     * @return the systemId
+     * @return the name
      */
-    public String getSystemId() {
-        return systemId;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param systemId the systemId to set
+     * @param name the name to set
      */
-    public void setSystemId(final String systemId) {
-        this.systemId = systemId;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     /**
@@ -111,5 +113,19 @@ public class User {
      */
     public void setStatus(final Boolean status) {
         this.status = status;
+    }
+
+    /**
+     * @return the json
+     */
+    public String getJson() {
+        return json;
+    }
+
+    /**
+     * @param json the json to set
+     */
+    public void setJson(final String json) {
+        this.json = json;
     }
 }

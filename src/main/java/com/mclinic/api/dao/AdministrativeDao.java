@@ -33,6 +33,8 @@ public interface AdministrativeDao {
 
     void loadPatients(final File jsonFiles);
 
+    void loadUsers(final File jsonFiles);
+
     void loadObservations(final File jsonFiles);
 
     void loadCohortPatients(final File jsonFiles);
@@ -42,6 +44,8 @@ public interface AdministrativeDao {
     void downloadCohorts();
 
     void downloadPatients();
+
+    void downloadUsers(final String username);
 
     void downloadObservations(final String patientUuid);
 

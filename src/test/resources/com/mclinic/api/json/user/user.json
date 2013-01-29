@@ -1,0 +1,197 @@
+{
+    "results": [
+        {
+            "auditInfo": {
+                "changedBy": {
+                    "display": "admin - Super User",
+                    "uuid": "842f4bae-1692-11df-97a5-7038c432aabf",
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/user/842f4bae-1692-11df-97a5-7038c432aabf"
+                        }
+                    ]
+                },
+                "creator": {
+                    "display": "admin - Super User",
+                    "uuid": "842f4bae-1692-11df-97a5-7038c432aabf",
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/user/842f4bae-1692-11df-97a5-7038c432aabf"
+                        }
+                    ]
+                },
+                "dateChanged": "2012-10-31T09:22:41.000-0400",
+                "dateCreated": "2005-01-01T00:00:00.000-0500"
+            },
+            "retired": false,
+            "userProperties": {
+                "showRetired": "false",
+                "notificationAddress": "",
+                "proficientLocales": "",
+                "defaultLocation": "",
+                "defaultLocale": "en_US",
+                "patientGraphConcepts": "-5086",
+                "notification": "",
+                "showVerbose": "false",
+                "loginAttempts": "0"
+            },
+            "secretQuestion": "",
+            "person": {
+                "preferredAddress": null,
+                "deathDate": null,
+                "preferredName": {
+                    "display": "Super User",
+                    "uuid": "ded2585e-1691-11df-97a5-7038c432aabf",
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/person/dd552fc1-1691-11df-97a5-7038c432aabf/name/ded2585e-1691-11df-97a5-7038c432aabf"
+                        }
+                    ]
+                },
+                "dead": false,
+                "display": "Super User",
+                "age": null,
+                "voided": false,
+                "causeOfDeath": null,
+                "birthdate": null,
+                "gender": "",
+                "resourceVersion": "1.8",
+                "attributes": [
+
+                ],
+                "uuid": "dd552fc1-1691-11df-97a5-7038c432aabf",
+                "links": [
+                    {
+                        "rel": "self",
+                        "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/person/dd552fc1-1691-11df-97a5-7038c432aabf"
+                    },
+                    {
+                        "rel": "full",
+                        "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/person/dd552fc1-1691-11df-97a5-7038c432aabf?v=full"
+                    }
+                ],
+                "birthdateEstimated": false
+            },
+            "privileges": [
+
+            ],
+            "proficientLocales": [
+
+            ],
+            "roles": [
+                {
+                    "retired": false,
+                    "privileges": [
+
+                    ],
+                    "description": "Assigned to Administrators of OpenMRS. Gives additional access to change core aspects of the system.",
+                    "display": "System Developer",
+                    "inheritedRoles": [
+
+                    ],
+                    "name": "System Developer",
+                    "resourceVersion": "1.8",
+                    "uuid": "b3a01b5e-fbff-11df-b97d-005056a916f7",
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/b3a01b5e-fbff-11df-b97d-005056a916f7"
+                        },
+                        {
+                            "rel": "full",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/b3a01b5e-fbff-11df-b97d-005056a916f7?v=full"
+                        }
+                    ]
+                },
+                {
+                    "retired": false,
+                    "privileges": [
+
+                    ],
+                    "description": "Providers in the system",
+                    "display": "Provider",
+                    "inheritedRoles": [
+
+                    ],
+                    "name": "Provider",
+                    "resourceVersion": "1.8",
+                    "uuid": "8d94f280-c2cc-11de-8d13-0010c6dffd0f",
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/8d94f280-c2cc-11de-8d13-0010c6dffd0f"
+                        },
+                        {
+                            "rel": "full",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/8d94f280-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                        }
+                    ]
+                }
+            ],
+            "username": "",
+            "display": "admin - Super User",
+            "systemId": "admin",
+            "resourceVersion": "1.8",
+            "uuid": "842f4bae-1692-11df-97a5-7038c432aabf",
+            "links": [
+                {
+                    "rel": "self",
+                    "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/user/842f4bae-1692-11df-97a5-7038c432aabf"
+                }
+            ],
+            "allRoles": [
+                {
+                    "retired": false,
+                    "privileges": [
+
+                    ],
+                    "description": "Assigned to Administrators of OpenMRS. Gives additional access to change core aspects of the system.",
+                    "display": "System Developer",
+                    "inheritedRoles": [
+
+                    ],
+                    "name": "System Developer",
+                    "resourceVersion": "1.8",
+                    "uuid": "b3a01b5e-fbff-11df-b97d-005056a916f7",
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/b3a01b5e-fbff-11df-b97d-005056a916f7"
+                        },
+                        {
+                            "rel": "full",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/b3a01b5e-fbff-11df-b97d-005056a916f7?v=full"
+                        }
+                    ]
+                },
+                {
+                    "retired": false,
+                    "privileges": [
+
+                    ],
+                    "description": "Providers in the system",
+                    "display": "Provider",
+                    "inheritedRoles": [
+
+                    ],
+                    "name": "Provider",
+                    "resourceVersion": "1.8",
+                    "uuid": "8d94f280-c2cc-11de-8d13-0010c6dffd0f",
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/8d94f280-c2cc-11de-8d13-0010c6dffd0f"
+                        },
+                        {
+                            "rel": "full",
+                            "uri": "http://localhost:8081/openmrs-standalone/ws/rest/v1/role/8d94f280-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
