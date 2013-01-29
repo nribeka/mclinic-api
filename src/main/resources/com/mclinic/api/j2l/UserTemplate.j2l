@@ -1,0 +1,10 @@
+# Resource configuration
+resource.name=User Resource
+node.root=$.results
+resource.object=com.mclinic.api.model.User
+algorithm.class=com.mclinic.api.model.algorithm.UserAlgorithm
+resolver.class=com.mclinic.api.model.resolver.UserResolver
+field.unique=uuid
+# Mapping
+uuid=$.uuid
+display=$.display

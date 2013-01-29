@@ -25,16 +25,19 @@ import com.mclinic.api.model.Cohort;
 import com.mclinic.api.model.Form;
 import com.mclinic.api.model.Observation;
 import com.mclinic.api.model.Patient;
+import com.mclinic.api.model.User;
 import com.mclinic.api.model.algorithm.CohortAlgorithm;
 import com.mclinic.api.model.algorithm.CohortMemberAlgorithm;
 import com.mclinic.api.model.algorithm.FormAlgorithm;
 import com.mclinic.api.model.algorithm.ObservationAlgorithm;
 import com.mclinic.api.model.algorithm.PatientAlgorithm;
+import com.mclinic.api.model.algorithm.UserAlgorithm;
 import com.mclinic.api.model.resolver.CohortMemberResolver;
 import com.mclinic.api.model.resolver.CohortResolver;
 import com.mclinic.api.model.resolver.FormResolver;
 import com.mclinic.api.model.resolver.ObservationResolver;
 import com.mclinic.api.model.resolver.PatientResolver;
+import com.mclinic.api.model.resolver.UserResolver;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
@@ -64,18 +67,21 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
             Context.registerObject(Cohort.class);
             Context.registerObject(Patient.class);
             Context.registerObject(Observation.class);
+            Context.registerObject(User.class);
 
             Context.registerAlgorithm(FormAlgorithm.class);
             Context.registerAlgorithm(CohortAlgorithm.class);
             Context.registerAlgorithm(PatientAlgorithm.class);
             Context.registerAlgorithm(CohortMemberAlgorithm.class);
             Context.registerAlgorithm(ObservationAlgorithm.class);
+            Context.registerAlgorithm(UserAlgorithm.class);
 
             Context.registerResolver(FormResolver.class);
             Context.registerResolver(CohortResolver.class);
             Context.registerResolver(PatientResolver.class);
             Context.registerResolver(CohortMemberResolver.class);
             Context.registerResolver(ObservationResolver.class);
+            Context.registerResolver(UserResolver.class);
 
             Context.registerResources(repositoryDir);
         } catch (IOException e) {
@@ -110,6 +116,16 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
             service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
         } catch (Exception e) {
             log.error(TAG, "Error loading patients from local json file " + jsonFiles.getAbsolutePath(), e);
+        }
+    }
+
+    @Override
+    public void loadUsers(final File jsonFiles) {
+        try {
+            Resource resource = Context.getResource(Constants.USER_RESOURCE);
+            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
+        } catch (Exception e) {
+            log.error(TAG, "Error loading users from local json file " + jsonFiles.getAbsolutePath(), e);
         }
     }
 
@@ -160,6 +176,16 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
             service.loadObjects(StringUtil.EMPTY, resource);
         } catch (Exception e) {
             log.error(TAG, "Error downloading patients from remote REST resource.", e);
+        }
+    }
+
+    @Override
+    public void downloadUsers(final String username) {
+        try {
+            Resource resource = Context.getResource(Constants.USER_RESOURCE);
+            service.loadObjects(username, resource);
+        } catch (Exception e) {
+            log.error(TAG, "Error downloading users from remote REST resource.", e);
         }
     }
 

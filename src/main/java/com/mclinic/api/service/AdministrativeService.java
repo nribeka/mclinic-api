@@ -44,7 +44,7 @@ public interface AdministrativeService {
      * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
      * <p/>
      * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then update should be the method to call. <br><br>
+     * the Json directory then updateForm should be the method to call. <br><br>
      *
      * @param jsonFiles the directory containing all forms json files.
      * @should load all form data from local directory
@@ -56,7 +56,7 @@ public interface AdministrativeService {
      * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
      * <p/>
      * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then update should be the method to call. <br><br>
+     * the Json directory then updateCohort should be the method to call. <br><br>
      *
      * @param jsonFiles the directory containing all cohorts json files.
      * @should load all cohort data from local directory
@@ -68,12 +68,25 @@ public interface AdministrativeService {
      * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
      * <p/>
      * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then update should be the method to call. <br><br>
+     * the Json directory then updatePatient should be the method to call. <br><br>
      *
      * @param jsonFiles the directory containing all patients json files.
      * @should load all patient data from local directory
      */
     void loadPatients(final File jsonFiles);
+
+    /**
+     * Load all users in to the lucene index. This method will load all <code>User</code> as represented
+     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
+     * <p/>
+     * The method should be called once in the life time of a project. If new json files have been added to
+     * the Json directory then updateUser should be the method to call. <br><br>
+     *
+     * @param jsonFiles the directory containing all users json files.
+     * @should load all user data from local directory
+     */
+
+    void loadUsers(final File jsonFiles);
 
     /**
      * Load all observations in to the lucene index. This method will load all <code>Observation</code> as represented
@@ -99,11 +112,13 @@ public interface AdministrativeService {
      */
     void loadCohortPatients(final File jsonFiles);
 
-    void downloadForms();;
+    void downloadForms();
 
     void downloadCohorts();
 
     void downloadPatients();
+
+    void downloadUsers(final String username);
 
     void downloadObservations(final String patientUuid);
 
