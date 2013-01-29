@@ -44,7 +44,7 @@ public class CohortMemberAlgorithm implements Algorithm {
         // this the example of the identifier entry: "OpenMRS Identification Number = 1984MP-5"
         String identifier = JsonPath.read(jsonObject, "$.patient.identifiers[0].display");
         // extract the identifier value
-        int index = identifier.indexOf("=");
+        int index = identifier.indexOf("-");
         if (index != -1)
             identifier = identifier.substring(index + 1);
         patient.setIdentifier(identifier.trim());
@@ -66,6 +66,11 @@ public class CohortMemberAlgorithm implements Algorithm {
     @Override
     public String serialize(final Object object) {
         Patient patient = (Patient) object;
+        // TODO: need to replace this json with values from the new user object in case there's any update
+        // Step:
+        // - Execute JsonPath.read to get the current value
+        // - Perform StringUtil.replace to replace the old value with the value from the object
+        // - Unique id are not allowed to get any kind of update.
         return patient.getJson();
     }
 }

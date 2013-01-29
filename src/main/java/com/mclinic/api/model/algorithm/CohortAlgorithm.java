@@ -18,6 +18,7 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Cohort;
 import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.util.StringUtil;
 
 public class CohortAlgorithm implements Algorithm {
 
@@ -53,6 +54,14 @@ public class CohortAlgorithm implements Algorithm {
     @Override
     public String serialize(final Object object) {
         Cohort cohort = (Cohort) object;
-        return cohort.getJson();
+        String json = cohort.getJson();
+
+        Object jsonObject = JsonPath.read(json, "$");
+
+        String name = JsonPath.read(jsonObject, "$.display");
+        if (!StringUtil.isEmpty(name))
+            json = json.replaceAll(name, cohort.getName());
+
+        return json;
     }
 }
