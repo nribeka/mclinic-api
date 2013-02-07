@@ -120,4 +120,28 @@ public class ObservationServiceTest {
         Assert.assertNotNull(observations);
         Assert.assertTrue(observations.isEmpty());
     }
+
+    /**
+     * @verifies return list of all observations with matching search term on the searchable fields
+     * @see ObservationService#searchObservations(String)
+     */
+    @Test
+    public void searchObservations_shouldReturnListOfAllObservationsWithMatchingSearchTermOnTheSearchableFields() throws Exception {
+        String term = "NO";
+        List<Observation> observations = observationService.searchObservations(term);
+        Assert.assertNotNull(observations);
+        Assert.assertFalse(observations.isEmpty());
+    }
+
+    /**
+     * @verifies return empty list when no observation match the search term
+     * @see ObservationService#searchObservations(String)
+     */
+    @Test
+    public void searchObservations_shouldReturnEmptyListWhenNoObservationMatchTheSearchTerm() throws Exception {
+        String term = "BLEH";
+        List<Observation> observations = observationService.searchObservations(term);
+        Assert.assertNotNull(observations);
+        Assert.assertTrue(observations.isEmpty());
+    }
 }

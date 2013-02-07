@@ -36,6 +36,8 @@ public interface PatientDao {
 
     List<Patient> getPatientsByName(final String name);
 
+    List<Patient> searchPatients(final String term);
+
     void deletePatient(final Patient patient);
 
     void deleteAllPatients();

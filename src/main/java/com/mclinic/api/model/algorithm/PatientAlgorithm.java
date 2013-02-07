@@ -17,12 +17,17 @@ package com.mclinic.api.model.algorithm;
 
 import java.text.ParseException;
 
+import com.google.inject.Inject;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Patient;
+import com.mclinic.search.api.logger.Logger;
 import com.mclinic.search.api.serialization.Algorithm;
 import com.mclinic.search.api.util.ISO8601Util;
 
 public class PatientAlgorithm implements Algorithm {
+
+    @Inject
+    private Logger logger;
 
     /**
      * Implementation of this method will define how the observation will be serialized from the JSON representation.
@@ -55,7 +60,7 @@ public class PatientAlgorithm implements Algorithm {
         try {
             patient.setBirthdate(ISO8601Util.toCalendar(birthdate).getTime());
         } catch (ParseException e) {
-            System.out.println("Unable to parse date data from json payload.");
+            logger.error(PatientAlgorithm.class.getSimpleName(), "Unable to parse date data from json payload.", e);
         }
 
         patient.setJson(json);

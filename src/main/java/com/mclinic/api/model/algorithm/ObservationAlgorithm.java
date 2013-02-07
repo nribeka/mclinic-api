@@ -51,13 +51,12 @@ public class ObservationAlgorithm implements Algorithm {
         String conceptUuid = JsonPath.read(jsonObject, "$.concept.uuid");
         observation.setFieldUuid(conceptUuid);
 
-        Object jsonValue = JsonPath.read(jsonObject, "$.value");
-        if (jsonValue != null) {
-            String value = jsonValue.toString();
-            if (jsonValue instanceof JSONObject)
-                value = JsonPath.read(jsonValue, "$.name.display");
-            observation.setValueText(value);
-        }
+        String obsValue = JsonPath.read(jsonObject, "$.display");
+        // extract the observation value information
+        int index = obsValue.indexOf("=");
+        if (index != -1)
+            obsValue = obsValue.substring(index + 1);
+        observation.setValueText(obsValue.trim());
 
         String obsDatetime = JsonPath.read(jsonObject, "$.obsDatetime");
         try {

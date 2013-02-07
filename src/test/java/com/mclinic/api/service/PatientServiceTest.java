@@ -44,8 +44,11 @@ public class PatientServiceTest {
 
         service.initializeRepository(repositoryPath.getPath());
 
-        URL jsonPath = AdministrativeServiceTest.class.getResource("../json/patient");
-        service.loadPatients(new File(jsonPath.getPath()));
+        URL patientJsonPath = AdministrativeServiceTest.class.getResource("../json/patient");
+        service.loadPatients(new File(patientJsonPath.getPath()));
+
+        URL memberJsonPath = AdministrativeServiceTest.class.getResource("../json/cohort_member");
+        service.loadCohortPatients(new File(memberJsonPath.getPath()));
 
         patientService = Context.getInstance(PatientService.class);
         Assert.assertNotNull(patientService);
@@ -127,8 +130,11 @@ public class PatientServiceTest {
         Assert.assertNotNull(patients);
         Assert.assertFalse(patients.isEmpty());
 
-        for (Patient patient : patients)
-            patientService.deletePatient(patient);
+        while (patients.size() > 0) {
+            for (Patient patient : patients)
+                patientService.deletePatient(patient);
+            patients = patientService.getAllPatients();
+        }
 
         patients = patientService.getAllPatients();
         Assert.assertNotNull(patients);
@@ -157,5 +163,40 @@ public class PatientServiceTest {
         List<Patient> patients = patientService.getPatientsByName(name);
         Assert.assertNotNull(patients);
         Assert.assertTrue(patients.isEmpty());
+    }
+
+    /**
+     * @verifies return list of all patients with matching search term on the searchable fields
+     * @see PatientService#searchPatients(String)
+     */
+    @Test
+    public void searchPatients_shouldReturnListOfAllPatientsWithMatchingSearchTermOnTheSearchableFields() throws Exception {
+        String term = "513MO";
+        List<Patient> patients = patientService.searchPatients(term);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(1, patients.size());
+
+        term = "9*";
+        patients = patientService.searchPatients(term);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(6, patients.size());
+
+        term = "Tes*";
+        patients = patientService.searchPatients(term);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(3, patients.size());
+    }
+
+    /**
+     * @verifies return empty list when no patient match the search term
+     * @see PatientService#searchPatients(String)
+     */
+    @Test
+    public void searchPatients_shouldReturnEmptyListWhenNoPatientMatchTheSearchTerm() throws Exception {
+        String term = "MAMA";
+        List<Patient> patients = patientService.searchPatients(term);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(0, patients.size());
+
     }
 }

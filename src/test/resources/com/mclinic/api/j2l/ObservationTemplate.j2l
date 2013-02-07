@@ -7,5 +7,6 @@ resolver.class=com.mclinic.api.model.resolver.ObservationResolver
 field.unique=uuid
 # Mapping
 uuid=$.uuid
-patient=$.person.uuid
-concept=$.concept.uuid
+patientUuid=$.person.uuid
+conceptUuid=$.concept.uuid
+display=$.display

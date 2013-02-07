@@ -33,6 +33,8 @@ public interface ObservationDao {
 
     List<Observation> getAllObservations(final Patient patient);
 
+    List<Observation> searchObservations(final String term);
+
     void deleteObservation(final Observation observation);
 
     void deleteAllObservations(final Patient patient);
