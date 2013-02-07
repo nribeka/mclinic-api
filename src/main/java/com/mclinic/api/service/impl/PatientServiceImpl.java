@@ -38,13 +38,28 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> getAllPatients() {
-        return dao.getAllPatients();
+    public Patient getPatientByUuid(final String uuid) {
+        return dao.getPatientByUuid(uuid);
     }
 
     @Override
     public Patient getPatientByIdentifier(final String identifier) {
         return dao.getPatientByIdentifier(identifier);
+    }
+
+    @Override
+    public List<Patient> getAllPatients() {
+        return dao.getAllPatients();
+    }
+
+    @Override
+    public List<Patient> getPatientsByName(final String name) {
+        return dao.getPatientsByName(name);
+    }
+
+    @Override
+    public List<Patient> searchPatients(final String term) {
+        return dao.searchPatients(term);
     }
 
     @Override
@@ -55,15 +70,5 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void deleteAllPatients() {
         dao.deleteAllPatients();
-    }
-
-    @Override
-    public Patient getPatientByUuid(final String uuid) {
-        return dao.getPatientByUuid(uuid);
-    }
-
-    @Override
-    public List<Patient> getPatientsByName(final String name) {
-        return dao.getPatientsByName(name);
     }
 }

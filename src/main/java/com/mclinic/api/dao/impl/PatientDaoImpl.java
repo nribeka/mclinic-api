@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.dao.PatientDao;
 import com.mclinic.api.model.Patient;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
 import com.mclinic.search.api.resource.Resource;
+import com.mclinic.search.api.resource.SearchableField;
 import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 
@@ -42,6 +44,8 @@ public class PatientDaoImpl implements PatientDao {
     public Patient createPatient(final Patient patient) {
         Object object = null;
         try {
+            // by default all locally created patient record will use the patient resource
+            // because it's a single patient record and not necessarily part of a certain cohort
             Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
             object = service.createObject(patient, resource);
         } catch (Exception e) {
@@ -54,8 +58,20 @@ public class PatientDaoImpl implements PatientDao {
     public Patient updatePatient(final Patient patient) {
         Object object = null;
         try {
-            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
-            object = service.updateObject(patient, resource);
+            String searchQuery = "uuid: " + StringUtil.quote(patient.getUuid());
+            // before performing update we need to check which resource is being used to create this patient
+            Resource patientResource = Context.getResource(Constants.PATIENT_RESOURCE);
+            Object savedPatientObject = service.getObject(searchQuery, patientResource);
+            if (savedPatientObject != null)
+                // update the patient using the patient resource
+                object = service.updateObject(patient, patientResource);
+            else {
+                // check whether this resource is created using the cohort member resource
+                Resource memberResource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
+                Object savedMemberObject = service.getObject(searchQuery, memberResource);
+                if (savedMemberObject != null)
+                    object = service.updateObject(patient, memberResource);
+            }
         } catch (Exception e) {
             log.error(TAG, "Error updating patient.", e);
         }
@@ -119,10 +135,55 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     @Override
+    public List<Patient> searchPatients(final String term) {
+        StringBuilder queryBuilder = new StringBuilder();
+
+        // we need to perform search on both patient resource and cohort member resource
+        // this is because we mapped both regular patient and cohort member object into single patient object
+        Resource patientResource = Context.getResource(Constants.PATIENT_RESOURCE);
+        Resource cohortMemberResource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
+
+        List<SearchableField> searchableFields = new ArrayList<SearchableField>();
+        searchableFields.addAll(patientResource.getSearchableFields());
+        searchableFields.addAll(cohortMemberResource.getSearchableFields());
+
+        for (SearchableField searchableField : searchableFields) {
+            if (!searchableField.isUnique()) {
+                if (!StringUtil.isBlank(queryBuilder.toString()))
+                    queryBuilder.append(" OR ");
+                String query = searchableField.getName() + ": " + term;
+                queryBuilder.append(query);
+            }
+        }
+
+        List<Patient> patients = new ArrayList<Patient>();
+        try {
+            String searchQuery = queryBuilder.toString();
+            if (!StringUtil.isBlank(searchQuery))
+                patients = service.getObjects(searchQuery, Patient.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error searching patients using query: " + queryBuilder.toString(), e);
+        }
+        return patients;
+    }
+
+    @Override
     public void deletePatient(final Patient patient) {
         try {
-            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
-            service.invalidate(patient, resource);
+            String searchQuery = "uuid: " + StringUtil.quote(patient.getUuid());
+            // before performing update we need to check which resource is being used to create this patient
+            Resource patientResource = Context.getResource(Constants.PATIENT_RESOURCE);
+            Object savedPatientObject = service.getObject(searchQuery, patientResource);
+            if (savedPatientObject != null)
+                // update the patient using the patient resource
+                service.invalidate(patient, patientResource);
+            else {
+                // check whether this resource is created using the cohort member resource
+                Resource memberResource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
+                Object savedMemberObject = service.getObject(searchQuery, memberResource);
+                if (savedMemberObject != null)
+                    service.invalidate(patient, memberResource);
+            }
         } catch (Exception e) {
             log.error(TAG, "Error deleting patient.", e);
         }

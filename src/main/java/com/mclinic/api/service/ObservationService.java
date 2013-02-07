@@ -48,6 +48,14 @@ public interface ObservationService {
      */
     List<Observation> getAllObservations(final Patient patient);
 
+    /**
+     * @param term the search term
+     * @return list of all observations with matching search term on the searchable fields or empty list
+     * @should return list of all observations with matching search term on the searchable fields
+     * @should return empty list when no observation match the search term
+     */
+    List<Observation> searchObservations(final String term);
+
     void deleteObservation(final Observation observation);
 
     void deleteAllObservations(final Patient patient);

@@ -3,6 +3,7 @@ package com.mclinic.api.service;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
+import com.mclinic.api.model.Observation;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.impl.PatientServiceImpl;
 
@@ -48,6 +49,14 @@ public interface PatientService {
      * @should return empty list when no patient match the name
      */
     List<Patient> getPatientsByName(final String name);
+
+    /**
+     * @param term the search term
+     * @return list of all patients with matching search term on the searchable fields or empty list
+     * @should return list of all patients with matching search term on the searchable fields
+     * @should return empty list when no patient match the search term
+     */
+    List<Patient> searchPatients(final String term);
 
     void deletePatient(final Patient patient);
 

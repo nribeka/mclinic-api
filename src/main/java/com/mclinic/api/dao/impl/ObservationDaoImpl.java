@@ -26,6 +26,7 @@ import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
 import com.mclinic.search.api.resource.Resource;
+import com.mclinic.search.api.resource.SearchableField;
 import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 
@@ -82,13 +83,39 @@ public class ObservationDaoImpl implements ObservationDao {
     public List<Observation> getAllObservations(final Patient patient) {
         String searchQuery = StringUtil.EMPTY;
         if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
-            searchQuery = "patient: " + StringUtil.quote(patient.getUuid());
+            searchQuery = "patientUuid: " + StringUtil.quote(patient.getUuid());
 
         List<Observation> observations = new ArrayList<Observation>();
         try {
             observations = service.getObjects(searchQuery, Observation.class);
         } catch (Exception e) {
             log.error(TAG, "Error getting observations using query: " + searchQuery, e);
+        }
+        return observations;
+    }
+
+    @Override
+    public List<Observation> searchObservations(final String term) {
+        StringBuilder queryBuilder = new StringBuilder();
+
+        Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
+        for (SearchableField searchableField : resource.getSearchableFields()) {
+            String searchableFieldName = searchableField.getName().toLowerCase();
+            if (!searchableField.isUnique() && !searchableFieldName.contains("uuid")) {
+                if (!StringUtil.isBlank(queryBuilder.toString()))
+                    queryBuilder.append(" OR ");
+                String query = searchableField.getName() + ": " + term;
+                queryBuilder.append(query);
+            }
+        }
+
+        List<Observation> observations = new ArrayList<Observation>();
+        try {
+            String searchQuery = queryBuilder.toString();
+            if (!StringUtil.isBlank(searchQuery))
+                observations = service.getObjects(searchQuery, Observation.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error searching observations using query: " + queryBuilder.toString(), e);
         }
         return observations;
     }

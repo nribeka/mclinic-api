@@ -49,6 +49,11 @@ public class ObservationServiceImpl implements ObservationService {
     }
 
     @Override
+    public List<Observation> searchObservations(final String term) {
+        return dao.searchObservations(term);
+    }
+
+    @Override
     public void deleteObservation(final Observation observation) {
         dao.deleteObservation(observation);
     }
