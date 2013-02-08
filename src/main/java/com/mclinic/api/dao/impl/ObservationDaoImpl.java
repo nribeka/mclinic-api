@@ -95,9 +95,13 @@ public class ObservationDaoImpl implements ObservationDao {
     }
 
     @Override
-    public List<Observation> searchObservations(final String term) {
-        StringBuilder queryBuilder = new StringBuilder();
+    public List<Observation> searchObservations(final Patient patient, final String term) {
 
+        String patientQuery = StringUtil.EMPTY;
+        if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
+            patientQuery = "(patientUuid: " + StringUtil.quote(patient.getUuid()) + ") AND";
+
+        StringBuilder queryBuilder = new StringBuilder();
         Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
         for (SearchableField searchableField : resource.getSearchableFields()) {
             String searchableFieldName = searchableField.getName().toLowerCase();
@@ -113,7 +117,7 @@ public class ObservationDaoImpl implements ObservationDao {
         try {
             String searchQuery = queryBuilder.toString();
             if (!StringUtil.isBlank(searchQuery))
-                observations = service.getObjects(searchQuery, Observation.class);
+                observations = service.getObjects(patientQuery + "(" + searchQuery + ")", Observation.class);
         } catch (Exception e) {
             log.error(TAG, "Error searching observations using query: " + queryBuilder.toString(), e);
         }

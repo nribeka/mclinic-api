@@ -123,24 +123,33 @@ public class ObservationServiceTest {
 
     /**
      * @verifies return list of all observations with matching search term on the searchable fields
-     * @see ObservationService#searchObservations(String)
+     * @see ObservationService#searchObservations(com.mclinic.api.model.Patient, String)
      */
     @Test
     public void searchObservations_shouldReturnListOfAllObservationsWithMatchingSearchTermOnTheSearchableFields() throws Exception {
+        String patientUuid = "dda926e4-1691-11df-97a5-7038c432aabf";
+        Patient patient = patientService.getPatientByUuid(patientUuid);
+        Assert.assertNotNull(patient);
         String term = "NO";
-        List<Observation> observations = observationService.searchObservations(term);
+        List<Observation> observations = observationService.searchObservations(patient, term);
+        Assert.assertNotNull(observations);
+        Assert.assertTrue(observations.isEmpty());
+        observations = observationService.searchObservations(null, term);
         Assert.assertNotNull(observations);
         Assert.assertFalse(observations.isEmpty());
     }
 
     /**
      * @verifies return empty list when no observation match the search term
-     * @see ObservationService#searchObservations(String)
+     * @see ObservationService#searchObservations(com.mclinic.api.model.Patient, String)
      */
     @Test
     public void searchObservations_shouldReturnEmptyListWhenNoObservationMatchTheSearchTerm() throws Exception {
+        String patientUuid = "dda926e4-1691-11df-97a5-7038c432aabf";
+        Patient patient = patientService.getPatientByUuid(patientUuid);
+        Assert.assertNotNull(patient);
         String term = "BLEH";
-        List<Observation> observations = observationService.searchObservations(term);
+        List<Observation> observations = observationService.searchObservations(patient, term);
         Assert.assertNotNull(observations);
         Assert.assertTrue(observations.isEmpty());
     }
