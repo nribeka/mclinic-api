@@ -51,6 +51,14 @@ public interface PatientService {
     List<Patient> getPatientsByName(final String name);
 
     /**
+     * @param uuid the cohort uuid
+     * @return list of all patients from the cohort or empty list when no patient come from the cohort
+     * @should return list of all patients from the cohort
+     * @should return empty list when no patient match the cohort uuid
+     */
+    List<Patient> getPatientsByCohort(final String uuid);
+
+    /**
      * @param term the search term
      * @return list of all patients with matching search term on the searchable fields or empty list
      * @should return list of all patients with matching search term on the searchable fields

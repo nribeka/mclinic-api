@@ -58,6 +58,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public List<Patient> getPatientsByCohort(final String uuid) {
+        return dao.getPatientsByCohort(uuid);
+    }
+
+    @Override
     public List<Patient> searchPatients(final String term) {
         return dao.searchPatients(term);
     }

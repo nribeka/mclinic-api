@@ -22,6 +22,7 @@ import java.util.List;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.module.MuzimaModule;
 import com.mclinic.search.api.Context;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,9 +36,15 @@ public class PatientServiceTest {
 
     @Before
     public void prepare() throws Exception {
-        URL repositoryPath = AdministrativeServiceTest.class.getResource("../j2l");
+
         URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
-        Context.initialize(new MuzimaModule(lucenePath.getPath(), "uuid"));
+        MuzimaModule module = new MuzimaModule(lucenePath.getPath(), "uuid");
+        // we set this value for testing only because our mock data come from this server
+        // see: the json folder to check for the correct server value
+        module.setServer("http://localhost:8081/openmrs-standalone");
+        Context.initialize(module);
+
+        URL repositoryPath = AdministrativeServiceTest.class.getResource("../j2l");
 
         service = Context.getInstance(AdministrativeService.class);
         Assert.assertNotNull(service);
@@ -166,28 +173,6 @@ public class PatientServiceTest {
     }
 
     /**
-     * @verifies return list of all patients with matching search term on the searchable fields
-     * @see PatientService#searchPatients(String)
-     */
-    @Test
-    public void searchPatients_shouldReturnListOfAllPatientsWithMatchingSearchTermOnTheSearchableFields() throws Exception {
-        String term = "513MO";
-        List<Patient> patients = patientService.searchPatients(term);
-        Assert.assertNotNull(patients);
-        Assert.assertEquals(1, patients.size());
-
-        term = "9*";
-        patients = patientService.searchPatients(term);
-        Assert.assertNotNull(patients);
-        Assert.assertEquals(6, patients.size());
-
-        term = "Tes*";
-        patients = patientService.searchPatients(term);
-        Assert.assertNotNull(patients);
-        Assert.assertEquals(3, patients.size());
-    }
-
-    /**
      * @verifies return empty list when no patient match the search term
      * @see PatientService#searchPatients(String)
      */
@@ -198,5 +183,51 @@ public class PatientServiceTest {
         Assert.assertNotNull(patients);
         Assert.assertEquals(0, patients.size());
 
+    }
+
+    /**
+     * @verifies return list of all patients from the cohort
+     * @see PatientService#getPatientsByCohort(String)
+     */
+    @Test
+    public void getPatientsByCohort_shouldReturnListOfAllPatientsFromTheCohort() throws Exception {
+        String uuid = "0ca78602-737f-408d-8ced-386ad12367db";
+        List<Patient> patients = patientService.getPatientsByCohort(uuid);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(20, patients.size());
+    }
+
+    /**
+     * @verifies return empty list when no patient match the cohort uuid
+     * @see PatientService#getPatientsByCohort(String)
+     */
+    @Test
+    public void getPatientsByCohort_shouldReturnEmptyListWhenNoPatientMatchTheCohortUuid() throws Exception {
+        String uuid = "Some Random Uuid";
+        List<Patient> patients = patientService.getPatientsByCohort(uuid);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(0, patients.size());
+    }
+
+    /**
+     * @verifies return list of all patients with matching search term on the searchable fields
+     * @see PatientService#searchPatients(String)
+     */
+    @Test
+    public void searchPatients_shouldReturnListOfAllPatientsWithMatchingSearchTermOnTheSearchableFields() throws Exception {
+        String term = "513MO";
+        List<Patient> patients = patientService.searchPatients(term);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(1, patients.size());
+
+        term = "51*";
+        patients = patientService.searchPatients(term);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(3, patients.size());
+
+        term = "Tes*";
+        patients = patientService.searchPatients(term);
+        Assert.assertNotNull(patients);
+        Assert.assertEquals(3, patients.size());
     }
 }

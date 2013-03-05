@@ -82,6 +82,7 @@ public class UserDaoImpl implements UserDao {
         String searchQuery = StringUtil.EMPTY;
         // special query string for the user
         // the structure from the rest is: "username - full name"
+        // TODO: maybe we need to change the unique field of the user to the username
         if (!StringUtil.isEmpty(username))
             searchQuery = "display: " + username + "\\ \\-\\ ";
 

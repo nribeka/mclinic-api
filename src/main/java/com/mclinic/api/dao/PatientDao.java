@@ -36,10 +36,11 @@ public interface PatientDao {
 
     List<Patient> getPatientsByName(final String name);
 
+    List<Patient> getPatientsByCohort(final String uuid);
+
     List<Patient> searchPatients(final String term);
 
     void deletePatient(final Patient patient);
 
     void deleteAllPatients();
-
 }
