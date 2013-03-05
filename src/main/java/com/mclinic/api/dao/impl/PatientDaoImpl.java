@@ -25,6 +25,7 @@ import com.mclinic.api.model.Patient;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
+import com.mclinic.search.api.resolver.Resolver;
 import com.mclinic.search.api.resource.Resource;
 import com.mclinic.search.api.resource.SearchableField;
 import com.mclinic.search.api.util.StringUtil;
@@ -124,6 +125,26 @@ public class PatientDaoImpl implements PatientDao {
         String searchQuery = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(name))
             searchQuery = "name:" + name + "*";
+
+        List<Patient> patients = new ArrayList<Patient>();
+        try {
+            patients = service.getObjects(searchQuery, Patient.class);
+        } catch (Exception e) {
+            log.error(TAG, "Error getting patients using query: " + searchQuery, e);
+        }
+        return patients;
+    }
+
+    @Override
+    public List<Patient> getPatientsByCohort(final String uuid) {
+        String searchQuery = StringUtil.EMPTY;
+
+        if (!StringUtil.isEmpty(uuid)) {
+            Resource resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
+            Resolver resolver = resource.getResolver();
+            String resolvedUri = resolver.resolve(uuid).replaceAll("\\?v=full", "");
+            searchQuery = "uri:" + StringUtil.quote(StringUtil.escapeUri(resolvedUri));
+        }
 
         List<Patient> patients = new ArrayList<Patient>();
         try {

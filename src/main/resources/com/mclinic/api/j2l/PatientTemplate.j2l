@@ -12,3 +12,4 @@ name=$.person.display
 age=$.person.age
 gender=$.person.gender
 birthdate=$.person.birthdate
+uri=$.links[0].uri

@@ -12,3 +12,4 @@ name=$.patient.person.display
 age=$.patient.person.age
 gender=$.patient.person.gender
 birthdate=$.patient.person.birthdate
+uri=$.links[0].uri
