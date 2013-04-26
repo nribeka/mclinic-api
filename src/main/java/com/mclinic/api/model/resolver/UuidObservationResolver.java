@@ -15,7 +15,10 @@
  */
 package com.mclinic.api.model.resolver;
 
-public class CohortMemberResolver extends AbstractResolver {
+
+import java.io.IOException;
+
+public class UuidObservationResolver extends BaseOpenmrsResolver {
 
     /**
      * Return the full REST resource based on the search string passed to the method.
@@ -24,7 +27,7 @@ public class CohortMemberResolver extends AbstractResolver {
      * @return full URI to the REST resource
      */
     @Override
-    public String resolve(final String searchString) {
-        return getServer() + "/ws/rest/v1/cohort/" + searchString + "/member?v=full";
+    public String resolve(String searchString) throws IOException {
+        return getConfiguration().getServer() + "/ws/rest/v1/obs/" + searchString;
     }
 }

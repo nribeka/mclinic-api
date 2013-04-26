@@ -15,51 +15,110 @@
  */
 package com.mclinic.api.service.impl;
 
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.mclinic.api.dao.ObservationDao;
 import com.mclinic.api.model.Observation;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.ObservationService;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 public class ObservationServiceImpl implements ObservationService {
 
     @Inject
     private ObservationDao dao;
 
+    /**
+     * Download a single observation record from the observation rest resource into the local lucene repository.
+     *
+     * @param uuid the uuid of the observation.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should download observation with matching uuid.
+     */
     @Override
-    public Observation createObservation(final Observation observation) {
-        return dao.createObservation(observation);
+    public void downloadObservationByUuid(final String uuid) throws IOException, ParseException {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Download all observations with name similar to the partial name passed in the parameter.
+     *
+     * @param name the partial name of the observation to be downloaded. When empty, will return all observations available.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should download all observation with partially matched name.
+     * @should download all observation when name is empty.
+     */
     @Override
-    public Observation updateObservation(final Observation observation) {
-        return dao.updateObservation(observation);
+    public void downloadObservationsByName(final String name) throws IOException, ParseException {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get a single observation record from the repository using the uuid of the observation.
+     *
+     * @param uuid the observation uuid.
+     * @return the observation with matching uuid or null when no observation match the uuid.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should return observation with matching uuid.
+     * @should return null when no observation match the uuid.
+     */
     @Override
-    public Observation getObservationByUuid(final String uuid) {
-        return dao.getObservationByUuid(uuid);
+    public Observation getObservationByUuid(final String uuid) throws IOException, ParseException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get all observations for the particular patient.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @return list of all observations for the patient or empty list when no observation found for the patient.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should return list of all observations for the patient.
+     * @should return empty list when no observation found for the patient.
+     */
     @Override
-    public List<Observation> getAllObservations(final Patient patient) {
-        return dao.getAllObservations(patient);
+    public List<Observation> getAllObservations(final String patientUuid) throws IOException, ParseException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Search for all observations for the particular patient with matching search term.
+     *
+     * @param patient the patient.
+     * @param term    the search term.
+     * @return list of all observations with matching search term on the searchable fields or empty list.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should return list of all observations with matching search term on the searchable fields.
+     * @should return empty list when no observation match the search term.
+     */
     @Override
-    public List<Observation> searchObservations(final Patient patient, final String term) {
-        return dao.searchObservations(patient, term);
+    public List<Observation> searchObservations(final Patient patient, final String term) throws IOException, ParseException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Delete a single observation from the local repository.
+     *
+     * @param observation the observation.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should delete the observation from the local repository.
+     */
     @Override
-    public void deleteObservation(final Observation observation) {
-        dao.deleteObservation(observation);
-    }
-
-    @Override
-    public void deleteAllObservations(final Patient patient) {
-        dao.deleteAllObservations(patient);
+    public void deleteObservation(final Observation observation) throws IOException, ParseException {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

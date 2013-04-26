@@ -13,8 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mclinic.util;
+package com.mclinic.api.dao.impl;
 
-public class VerificationUtils {
+import com.mclinic.api.dao.FormDataDao;
+import com.mclinic.api.model.FormData;
 
+public class FormDataDaoImpl extends LocalDaoImpl<FormData> implements FormDataDao {
+
+    private static final String TAG = FormDataDaoImpl.class.getSimpleName();
+
+    public FormDataDaoImpl() {
+        super(FormData.class);
+    }
 }

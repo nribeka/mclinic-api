@@ -15,18 +15,17 @@
  */
 package com.mclinic.api.service;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
 import com.mclinic.api.model.Cohort;
 import com.mclinic.api.module.MuzimaModule;
 import com.mclinic.search.api.Context;
-import com.mclinic.search.api.RestAssuredService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 public class CohortServiceTest {
 

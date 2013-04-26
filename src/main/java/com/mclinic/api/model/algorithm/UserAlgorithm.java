@@ -15,12 +15,13 @@ package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.User;
-import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.model.object.Searchable;
+import com.mclinic.search.api.util.DigestUtil;
 import com.mclinic.search.api.util.StringUtil;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
-public class UserAlgorithm implements Algorithm {
+import java.io.IOException;
+
+public class UserAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the object will be serialized from the String representation.
@@ -29,7 +30,7 @@ public class UserAlgorithm implements Algorithm {
      * @return the concrete object
      */
     @Override
-    public Object deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
         User user = new User();
 
         Object jsonObject = JsonPath.read(json, "$");
@@ -42,38 +43,12 @@ public class UserAlgorithm implements Algorithm {
         user.setUsername(displayElements[0]);
         user.setName(displayElements[1]);
 
-        try {
-            String password = JsonPath.read(json, "$.password");
-            user.setPassword(password);
-            String salt = JsonPath.read(json, "$.salt");
-            user.setSalt(salt);
-        } catch (Exception e) {
-            // TODO: damn this is totally bogus!!!
-        }
+        String checksum = DigestUtil.getSHA1Checksum(json);
+        user.setChecksum(checksum);
 
-        user.setJson(json);
+        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
+        user.setUri(uri);
 
         return user;
-    }
-
-    /**
-     * Implementation of this method will define how the object will be de-serialized into the String representation.
-     *
-     * @param object the object
-     * @return the string representation
-     */
-    @Override
-    public String serialize(final Object object) {
-        User user = (User) object;
-        String json = user.getJson();
-
-        String display = JsonPath.read(json, "$.display");
-        if (!StringUtil.isEmpty(display))
-            json = json.replaceAll(display, user.getUsername() + " - " + user.getName());
-
-        JSONObject jsonObject = JsonPath.read(json, "$");
-        jsonObject.put("password", user.getPassword());
-        jsonObject.put("salt", user.getSalt());
-        return json;
     }
 }

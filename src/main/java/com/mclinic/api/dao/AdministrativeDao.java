@@ -15,39 +15,25 @@
  */
 package com.mclinic.api.dao;
 
-import java.io.File;
-
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.AdministrativeDaoImpl;
 
+import java.io.File;
+import java.io.IOException;
+
 @ImplementedBy(AdministrativeDaoImpl.class)
 public interface AdministrativeDao {
+    /**
+     * Initialize the lucene repository with the resource configurations in the path.
+     *
+     * @param resourcePath the path where the resource configurations are stored.
+     */
+    void initializeRepository(final String resourcePath) throws IOException;
 
-    void initializeRepository(final String repositoryPath);
-
-    void initializeRepository(final File repositoryDir);
-
-    void loadForms(final File jsonFiles);
-
-    void loadCohorts(final File jsonFiles);
-
-    void loadPatients(final File jsonFiles);
-
-    void loadUsers(final File jsonFiles);
-
-    void loadObservations(final File jsonFiles);
-
-    void loadCohortPatients(final File jsonFiles);
-
-    void downloadForms();
-
-    void downloadCohorts();
-
-    void downloadPatients();
-
-    void downloadUsers(final String username);
-
-    void downloadObservations(final String patientUuid);
-
-    void downloadCohortPatients(final String cohortUuid);
+    /**
+     * Initialize the lucene repository with the resource configurations in the path.
+     *
+     * @param resourceDir the path where the resource configurations are stored.
+     */
+    void initializeRepository(final File resourceDir) throws IOException;
 }

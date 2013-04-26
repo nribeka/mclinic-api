@@ -15,11 +15,12 @@
  */
 package com.mclinic.api.service.impl;
 
-import java.io.File;
-
 import com.google.inject.Inject;
 import com.mclinic.api.dao.AdministrativeDao;
 import com.mclinic.api.service.AdministrativeService;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AdministrativeServiceImpl implements AdministrativeService {
 
@@ -27,72 +28,12 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     private AdministrativeDao dao;
 
     @Override
-    public void initializeRepository(final String repositoryPath) {
-        dao.initializeRepository(repositoryPath);
+    public void initializeRepository(final String resourcePath) throws IOException {
+        dao.initializeRepository(resourcePath);
     }
 
     @Override
-    public void initializeRepository(final File repositoryDir) {
-        dao.initializeRepository(repositoryDir);
-    }
-
-    @Override
-    public void loadForms(final File jsonFiles) {
-        dao.loadForms(jsonFiles);
-    }
-
-    @Override
-    public void loadCohorts(final File jsonFiles) {
-        dao.loadCohorts(jsonFiles);
-    }
-
-    @Override
-    public void loadPatients(final File jsonFiles) {
-        dao.loadPatients(jsonFiles);
-    }
-
-    @Override
-    public void loadUsers(final File jsonFiles) {
-        dao.loadUsers(jsonFiles);
-    }
-
-    @Override
-    public void loadObservations(final File jsonFiles) {
-        dao.loadObservations(jsonFiles);
-    }
-
-    @Override
-    public void loadCohortPatients(final File jsonFiles) {
-        dao.loadCohortPatients(jsonFiles);
-    }
-
-    @Override
-    public void downloadForms() {
-        dao.downloadForms();
-    }
-
-    @Override
-    public void downloadCohorts() {
-        dao.downloadCohorts();
-    }
-
-    @Override
-    public void downloadPatients() {
-        dao.downloadPatients();
-    }
-
-    @Override
-    public void downloadUsers(final String username) {
-        dao.downloadUsers(username);
-    }
-
-    @Override
-    public void downloadCohortPatients(final String cohortUuid) {
-        dao.downloadCohortPatients(cohortUuid);
-    }
-
-    @Override
-    public void downloadObservations(final String patientUuid) {
-        dao.downloadObservations(patientUuid);
+    public void initializeRepository(final File resourceDir) throws IOException {
+        dao.initializeRepository(resourceDir);
     }
 }

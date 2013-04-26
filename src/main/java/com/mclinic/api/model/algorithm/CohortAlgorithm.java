@@ -17,10 +17,12 @@ package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Cohort;
-import com.mclinic.search.api.serialization.Algorithm;
-import com.mclinic.search.api.util.StringUtil;
+import com.mclinic.search.api.model.object.Searchable;
+import com.mclinic.search.api.util.DigestUtil;
 
-public class CohortAlgorithm implements Algorithm {
+import java.io.IOException;
+
+public class CohortAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the object will be serialized from the String representation.
@@ -29,7 +31,7 @@ public class CohortAlgorithm implements Algorithm {
      * @return the concrete object
      */
     @Override
-    public Object deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
         Cohort cohort = new Cohort();
 
         Object jsonObject = JsonPath.read(json, "$");
@@ -37,31 +39,15 @@ public class CohortAlgorithm implements Algorithm {
         String uuid = JsonPath.read(jsonObject, "$.uuid");
         cohort.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.display");
+        String name = JsonPath.read(jsonObject, "$.name");
         cohort.setName(name);
 
-        cohort.setJson(json);
+        String checksum = DigestUtil.getSHA1Checksum(json);
+        cohort.setChecksum(checksum);
+
+        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
+        cohort.setUri(uri);
 
         return cohort;
-    }
-
-    /**
-     * Implementation of this method will define how the object will be de-serialized into the String representation.
-     *
-     * @param object the object
-     * @return the string representation
-     */
-    @Override
-    public String serialize(final Object object) {
-        Cohort cohort = (Cohort) object;
-        String json = cohort.getJson();
-
-        Object jsonObject = JsonPath.read(json, "$");
-
-        String name = JsonPath.read(jsonObject, "$.display");
-        if (!StringUtil.isEmpty(name))
-            json = json.replaceAll(name, cohort.getName());
-
-        return json;
     }
 }

@@ -13,9 +13,9 @@
  */
 package com.mclinic.api.model.resolver;
 
-import com.mclinic.search.api.util.StringUtil;
+import java.io.IOException;
 
-public class FormResolver extends AbstractResolver {
+public class UuidPrivilegeResolver extends BaseOpenmrsResolver {
 
     /**
      * Return the full REST resource based on the search string passed to the method.
@@ -24,10 +24,7 @@ public class FormResolver extends AbstractResolver {
      * @return full URI to the REST resource
      */
     @Override
-    public String resolve(final String searchString) {
-        String param = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(searchString))
-            param = "?q=" + searchString;
-        return getServer() + "/ws/rest/v1/form" + param;
+    public String resolve(final String searchString) throws IOException {
+        return getConfiguration().getServer() + "/ws/rest/v1/form/" + searchString;
     }
 }

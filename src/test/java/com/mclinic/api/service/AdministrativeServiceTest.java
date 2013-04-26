@@ -15,22 +15,18 @@
  */
 package com.mclinic.api.service;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
 import com.mclinic.api.model.Cohort;
 import com.mclinic.api.model.Form;
 import com.mclinic.api.model.Observation;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.model.algorithm.CohortAlgorithm;
-import com.mclinic.api.model.algorithm.CohortMemberAlgorithm;
+import com.mclinic.api.model.algorithm.MemberAlgorithm;
 import com.mclinic.api.model.algorithm.ObservationAlgorithm;
 import com.mclinic.api.model.algorithm.PatientAlgorithm;
-import com.mclinic.api.model.resolver.CohortMemberResolver;
-import com.mclinic.api.model.resolver.CohortResolver;
-import com.mclinic.api.model.resolver.ObservationResolver;
-import com.mclinic.api.model.resolver.PatientResolver;
+import com.mclinic.api.model.resolver.MemberCohortResolver;
+import com.mclinic.api.model.resolver.SearchCohortResolver;
+import com.mclinic.api.model.resolver.SearchObservationResolver;
+import com.mclinic.api.model.resolver.SearchPatientResolver;
 import com.mclinic.api.module.MuzimaModule;
 import com.mclinic.search.api.Context;
 import com.mclinic.search.api.RestAssuredService;
@@ -43,6 +39,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 public class AdministrativeServiceTest {
 
@@ -87,7 +87,7 @@ public class AdministrativeServiceTest {
         algorithmClass = Context.getAlgorithm(CohortAlgorithm.class);
         Assert.assertNotNull(algorithmClass);
 
-        algorithmClass = Context.getAlgorithm(CohortMemberAlgorithm.class);
+        algorithmClass = Context.getAlgorithm(MemberAlgorithm.class);
         Assert.assertNotNull(algorithmClass);
 
         algorithmClass = Context.getAlgorithm(ObservationAlgorithm.class);
@@ -105,16 +105,16 @@ public class AdministrativeServiceTest {
     public void initializeRepository_shouldRegisterAvailableResolverClasses() throws Exception {
         Class<? extends Resolver> resolverClass;
 
-        resolverClass = Context.getResolver(CohortResolver.class);
+        resolverClass = Context.getResolver(SearchCohortResolver.class);
         Assert.assertNotNull(resolverClass);
 
-        resolverClass = Context.getResolver(CohortMemberResolver.class);
+        resolverClass = Context.getResolver(MemberCohortResolver.class);
         Assert.assertNotNull(resolverClass);
 
-        resolverClass = Context.getResolver(ObservationResolver.class);
+        resolverClass = Context.getResolver(SearchObservationResolver.class);
         Assert.assertNotNull(resolverClass);
 
-        resolverClass = Context.getResolver(PatientResolver.class);
+        resolverClass = Context.getResolver(SearchPatientResolver.class);
         Assert.assertNotNull(resolverClass);
     }
 
@@ -150,7 +150,7 @@ public class AdministrativeServiceTest {
         resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
         Assert.assertNotNull(resource);
 
-        resource = Context.getResource(Constants.COHORT_RESOURCE);
+        resource = Context.getResource(Constants.SEARCH_COHORT_RESOURCE);
         Assert.assertNotNull(resource);
 
         resource = Context.getResource(Constants.OBSERVATION_RESOURCE);

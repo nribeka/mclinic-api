@@ -15,7 +15,7 @@
  */
 package com.mclinic.api.model;
 
-public class User {
+public class User extends OpenmrsSearchable {
 
     private String uuid;
 
@@ -23,13 +23,9 @@ public class User {
 
     private String username;
 
-    private String password;
-
-    private String salt;
-
     private Boolean status;
 
-    private String json;
+    private String checksum;
 
     /**
      * @return the uuid
@@ -74,34 +70,6 @@ public class User {
     }
 
     /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the salt
-     */
-    public String getSalt() {
-        return salt;
-    }
-
-    /**
-     * @param salt the salt to set
-     */
-    public void setSalt(final String salt) {
-        this.salt = salt;
-    }
-
-    /**
      * @return the status
      */
     public Boolean getStatus() {
@@ -116,16 +84,22 @@ public class User {
     }
 
     /**
-     * @return the json
+     * Get the checksum for the searchable object.
+     *
+     * @return the searchable object's checksum.
      */
-    public String getJson() {
-        return json;
+    @Override
+    public String getChecksum() {
+        return checksum;
     }
 
     /**
-     * @param json the json to set
+     * Set the checksum for the searchable object.
+     *
+     * @param checksum the checksum for the searchable object.
      */
-    public void setJson(final String json) {
-        this.json = json;
+    @Override
+    public void setChecksum(final String checksum) {
+        this.checksum = checksum;
     }
 }

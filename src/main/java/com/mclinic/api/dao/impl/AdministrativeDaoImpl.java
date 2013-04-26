@@ -15,197 +15,117 @@
  */
 package com.mclinic.api.dao.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
 import com.google.inject.Inject;
 import com.mclinic.api.dao.AdministrativeDao;
 import com.mclinic.api.model.Cohort;
+import com.mclinic.api.model.Credential;
 import com.mclinic.api.model.Form;
+import com.mclinic.api.model.FormData;
+import com.mclinic.api.model.FormTemplate;
+import com.mclinic.api.model.Member;
 import com.mclinic.api.model.Observation;
 import com.mclinic.api.model.Patient;
+import com.mclinic.api.model.Privilege;
+import com.mclinic.api.model.Role;
 import com.mclinic.api.model.User;
 import com.mclinic.api.model.algorithm.CohortAlgorithm;
-import com.mclinic.api.model.algorithm.CohortMemberAlgorithm;
+import com.mclinic.api.model.algorithm.CredentialAlgorithm;
 import com.mclinic.api.model.algorithm.FormAlgorithm;
+import com.mclinic.api.model.algorithm.FormDataAlgorithm;
+import com.mclinic.api.model.algorithm.FormTemplateAlgorithm;
+import com.mclinic.api.model.algorithm.MemberAlgorithm;
 import com.mclinic.api.model.algorithm.ObservationAlgorithm;
 import com.mclinic.api.model.algorithm.PatientAlgorithm;
+import com.mclinic.api.model.algorithm.PrivilegeAlgorithm;
+import com.mclinic.api.model.algorithm.RoleAlgorithm;
 import com.mclinic.api.model.algorithm.UserAlgorithm;
-import com.mclinic.api.model.resolver.CohortMemberResolver;
-import com.mclinic.api.model.resolver.CohortResolver;
-import com.mclinic.api.model.resolver.FormResolver;
-import com.mclinic.api.model.resolver.ObservationResolver;
-import com.mclinic.api.model.resolver.PatientResolver;
-import com.mclinic.api.model.resolver.UserResolver;
+import com.mclinic.api.model.resolver.LocalResolver;
+import com.mclinic.api.model.resolver.MemberCohortResolver;
+import com.mclinic.api.model.resolver.SearchCohortResolver;
+import com.mclinic.api.model.resolver.SearchFormResolver;
+import com.mclinic.api.model.resolver.SearchObservationResolver;
+import com.mclinic.api.model.resolver.SearchPatientResolver;
+import com.mclinic.api.model.resolver.SearchPrivilegeResolver;
+import com.mclinic.api.model.resolver.SearchRoleResolver;
+import com.mclinic.api.model.resolver.SearchUserResolver;
+import com.mclinic.api.model.resolver.UuidCohortResolver;
+import com.mclinic.api.model.resolver.UuidFormResolver;
+import com.mclinic.api.model.resolver.UuidObservationResolver;
+import com.mclinic.api.model.resolver.UuidPatientResolver;
+import com.mclinic.api.model.resolver.UuidPrivilegeResolver;
+import com.mclinic.api.model.resolver.UuidRoleResolver;
+import com.mclinic.api.model.resolver.UuidUserResolver;
 import com.mclinic.search.api.Context;
-import com.mclinic.search.api.RestAssuredService;
 import com.mclinic.search.api.logger.Logger;
-import com.mclinic.search.api.resource.Resource;
-import com.mclinic.search.api.util.StringUtil;
-import com.mclinic.util.Constants;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AdministrativeDaoImpl implements AdministrativeDao {
 
     @Inject
     private Logger log;
 
-    @Inject
-    private RestAssuredService service;
+    private static final String TAG = AdministrativeDaoImpl.class.getSimpleName();
 
-    private static final String TAG = AdministrativeDao.class.getSimpleName();
-
+    /**
+     * Initialize the lucene repository with the resource configurations in the path.
+     *
+     * @param resourcePath the path where the resource configurations are stored.
+     */
     @Override
-    public void initializeRepository(final String repositoryPath) {
-        initializeRepository(new File(repositoryPath));
+    public void initializeRepository(final String resourcePath) throws IOException {
+        initializeRepository(new File(resourcePath));
     }
 
+    /**
+     * Initialize the lucene repository with the resource configurations in the path.
+     *
+     * @param resourceDir the path where the resource configurations are stored.
+     */
     @Override
-    public void initializeRepository(final File repositoryDir) {
-        try {
-            Context.registerObject(Form.class);
-            Context.registerObject(Cohort.class);
-            Context.registerObject(Patient.class);
-            Context.registerObject(Observation.class);
-            Context.registerObject(User.class);
+    public void initializeRepository(final File resourceDir) throws IOException {
+        Context.registerObject(new Cohort());
+        Context.registerObject(new Member());
+        Context.registerObject(new Credential());
+        Context.registerObject(new Form());
+        Context.registerObject(new FormData());
+        Context.registerObject(new FormTemplate());
+        Context.registerObject(new Observation());
+        Context.registerObject(new Patient());
+        Context.registerObject(new Privilege());
+        Context.registerObject(new Role());
+        Context.registerObject(new User());
 
-            Context.registerAlgorithm(FormAlgorithm.class);
-            Context.registerAlgorithm(CohortAlgorithm.class);
-            Context.registerAlgorithm(PatientAlgorithm.class);
-            Context.registerAlgorithm(CohortMemberAlgorithm.class);
-            Context.registerAlgorithm(ObservationAlgorithm.class);
-            Context.registerAlgorithm(UserAlgorithm.class);
+        Context.registerAlgorithm(new CohortAlgorithm());
+        Context.registerAlgorithm(new MemberAlgorithm());
+        Context.registerAlgorithm(new CredentialAlgorithm());
+        Context.registerAlgorithm(new FormAlgorithm());
+        Context.registerAlgorithm(new FormDataAlgorithm());
+        Context.registerAlgorithm(new FormTemplateAlgorithm());
+        Context.registerAlgorithm(new ObservationAlgorithm());
+        Context.registerAlgorithm(new PatientAlgorithm());
+        Context.registerAlgorithm(new PrivilegeAlgorithm());
+        Context.registerAlgorithm(new RoleAlgorithm());
+        Context.registerAlgorithm(new UserAlgorithm());
 
-            Context.registerResolver(FormResolver.class);
-            Context.registerResolver(CohortResolver.class);
-            Context.registerResolver(PatientResolver.class);
-            Context.registerResolver(CohortMemberResolver.class);
-            Context.registerResolver(ObservationResolver.class);
-            Context.registerResolver(UserResolver.class);
+        Context.registerResolver(new MemberCohortResolver());
+        Context.registerResolver(new LocalResolver());
+        Context.registerResolver(new SearchCohortResolver());
+        Context.registerResolver(new SearchFormResolver());
+        Context.registerResolver(new SearchObservationResolver());
+        Context.registerResolver(new SearchPatientResolver());
+        Context.registerResolver(new SearchPrivilegeResolver());
+        Context.registerResolver(new SearchRoleResolver());
+        Context.registerResolver(new SearchUserResolver());
+        Context.registerResolver(new UuidCohortResolver());
+        Context.registerResolver(new UuidFormResolver());
+        Context.registerResolver(new UuidObservationResolver());
+        Context.registerResolver(new UuidPatientResolver());
+        Context.registerResolver(new UuidPrivilegeResolver());
+        Context.registerResolver(new UuidRoleResolver());
+        Context.registerResolver(new UuidUserResolver());
 
-            Context.registerResources(repositoryDir);
-        } catch (IOException e) {
-            log.error(TAG, "Error initializing repository inside: " + repositoryDir.getPath(), e);
-        }
-    }
-
-    @Override
-    public void loadForms(final File jsonFiles) {
-        try {
-            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
-        } catch (Exception e) {
-            log.error(TAG, "Error loading forms from local json file " + jsonFiles.getAbsolutePath(), e);
-        }
-    }
-
-    @Override
-    public void loadCohorts(final File jsonFiles) {
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
-        } catch (Exception e) {
-            log.error(TAG, "Error loading cohorts from local json file " + jsonFiles.getAbsolutePath(), e);
-        }
-    }
-
-    @Override
-    public void loadPatients(final File jsonFiles) {
-        try {
-            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
-        } catch (Exception e) {
-            log.error(TAG, "Error loading patients from local json file " + jsonFiles.getAbsolutePath(), e);
-        }
-    }
-
-    @Override
-    public void loadUsers(final File jsonFiles) {
-        try {
-            Resource resource = Context.getResource(Constants.USER_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
-        } catch (Exception e) {
-            log.error(TAG, "Error loading users from local json file " + jsonFiles.getAbsolutePath(), e);
-        }
-    }
-
-    @Override
-    public void loadObservations(final File jsonFiles) {
-        try {
-            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
-        } catch (Exception e) {
-            log.error(TAG, "Error loading observations from local json file " + jsonFiles.getAbsolutePath(), e);
-        }
-    }
-
-    @Override
-    public void loadCohortPatients(final File jsonFiles) {
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource, jsonFiles);
-        } catch (Exception e) {
-            log.error(TAG, "Error loading cohort members from local json file " + jsonFiles.getAbsolutePath(), e);
-        }
-    }
-
-    @Override
-    public void downloadForms() {
-        try {
-            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading cohorts from remote REST resource.", e);
-        }
-    }
-
-    @Override
-    public void downloadCohorts() {
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading cohorts from remote REST resource.", e);
-        }
-    }
-
-    @Override
-    public void downloadPatients() {
-        try {
-            Resource resource = Context.getResource(Constants.PATIENT_RESOURCE);
-            service.loadObjects(StringUtil.EMPTY, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading patients from remote REST resource.", e);
-        }
-    }
-
-    @Override
-    public void downloadUsers(final String username) {
-        try {
-            Resource resource = Context.getResource(Constants.USER_RESOURCE);
-            service.loadObjects(username, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading users from remote REST resource.", e);
-        }
-    }
-
-    @Override
-    public void downloadObservations(final String patientUuid) {
-        try {
-            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            service.loadObjects(patientUuid, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading observations for patient with uuid: " + patientUuid, e);
-        }
-    }
-
-    @Override
-    public void downloadCohortPatients(final String cohortUuid) {
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_MEMBER_RESOURCE);
-            service.loadObjects(cohortUuid, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error downloading cohort members for cohort = " + cohortUuid, e);
-        }
+        Context.registerResources(resourceDir);
     }
 }

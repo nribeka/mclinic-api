@@ -15,9 +15,12 @@
  */
 package com.mclinic.api.model.resolver;
 
+
 import com.mclinic.search.api.util.StringUtil;
 
-public class CohortResolver extends AbstractResolver {
+import java.io.IOException;
+
+public class SearchPatientResolver extends BaseOpenmrsResolver {
 
     /**
      * Return the full REST resource based on the search string passed to the method.
@@ -26,10 +29,10 @@ public class CohortResolver extends AbstractResolver {
      * @return full URI to the REST resource
      */
     @Override
-    public String resolve(final String searchString) {
+    public String resolve(final String searchString) throws IOException {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
             param = "?q=" + searchString;
-        return getServer() + "/ws/rest/v1/cohort" + param;
+        return getConfiguration().getServer() + "/ws/rest/v1/patient" + param;
     }
 }

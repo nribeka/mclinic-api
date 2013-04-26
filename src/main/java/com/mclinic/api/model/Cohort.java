@@ -15,53 +15,67 @@
  */
 package com.mclinic.api.model;
 
-public class Cohort {
+public class Cohort extends OpenmrsSearchable {
 
     private String uuid;
 
     private String name;
 
-    private String json;
+    private String checksum;
 
     /**
-     * @return the uuid
+     * Get the uuid for the cohort.
+     *
+     * @return the uuid.
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * @param uuid the uuid to set
+     * Set the uuid for the cohort.
+     *
+     * @param uuid the uuid to set.
      */
     public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
     /**
-     * @return the name
+     * Get the name for the cohort.
+     *
+     * @return the name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
+     * Set the name for the cohort.
+     *
+     * @param name the name to set.
      */
     public void setName(final String name) {
         this.name = name;
     }
 
     /**
-     * @return the json
+     * Get the checksum for the searchable object.
+     *
+     * @return the searchable object's checksum.
      */
-    public String getJson() {
-        return json;
+    @Override
+    public String getChecksum() {
+        return checksum;
     }
 
     /**
-     * @param json the json to set
+     * Set the checksum for the searchable object.
+     *
+     * @param checksum the checksum for the searchable object.
      */
-    public void setJson(final String json) {
-        this.json = json;
+    @Override
+    public void setChecksum(final String checksum) {
+        this.checksum = checksum;
     }
 }

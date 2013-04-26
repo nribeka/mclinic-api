@@ -15,7 +15,7 @@
  */
 package com.mclinic.api.model;
 
-public class Form {
+public class Form extends OpenmrsSearchable {
 
     private String uuid;
 
@@ -23,37 +23,79 @@ public class Form {
 
     private Boolean disabled;
 
-    private String json;
+    private String checksum;
 
+    /**
+     * Get the uuid for the cohort.
+     *
+     * @return the uuid.
+     */
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * Set the uuid for the cohort.
+     *
+     * @param uuid the uuid to set.
+     */
     public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * Get the name for the cohort.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name for the cohort.
+     *
+     * @param name the name to set.
+     */
     public void setName(final String name) {
         this.name = name;
     }
 
+    /**
+     * Get whether the form is disabled or not.
+     *
+     * @return the disabled flag.
+     */
     public Boolean getDisabled() {
         return disabled;
     }
 
+    /**
+     * Set whether the form is disabled or not.
+     *
+     * @param disabled the disabled flag.
+     */
     public void setDisabled(final Boolean disabled) {
         this.disabled = disabled;
     }
 
-    public String getJson() {
-        return json;
+    /**
+     * Get the checksum for the searchable object.
+     *
+     * @return the searchable object's checksum.
+     */
+    @Override
+    public String getChecksum() {
+        return checksum;
     }
 
-    public void setJson(final String json) {
-        this.json = json;
+    /**
+     * Set the checksum for the searchable object.
+     *
+     * @param checksum the checksum for the searchable object.
+     */
+    @Override
+    public void setChecksum(final String checksum) {
+        this.checksum = checksum;
     }
 }

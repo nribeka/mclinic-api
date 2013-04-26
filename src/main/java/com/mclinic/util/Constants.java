@@ -21,23 +21,31 @@ public class Constants {
 
     public static final String LUCENE_DOCUMENT_KEY = "configuration.lucene.document.key";
 
-    public static final String SERVER = "server";
+    public static final String CONNECTION_SERVER = "connection.openmrs.server";
 
-    public static final String CONNECTION_USERNAME = "username";
+    public static final String CONNECTION_USERNAME = "connection.openmrs.username";
 
-    public static final String CONNECTION_PASSWORD = "password";
+    public static final String CONNECTION_PASSWORD = "connection.openmrs.password";
 
-    public static final String CONNECTION_AUTHORIZATION = "Authorization";
+    public static final String SEARCH_USER_RESOURCE = "Search User Resource";
 
-    public static final String USER_RESOURCE = "User Resource";
+    public static final String UUID_USER_RESOURCE = "Uuid User Resource";
 
-    public static final String FORM_RESOURCE = "Form Resource";
+    public static final String SEARCH_FORM_RESOURCE = "Search Form Resource";
 
-    public static final String PATIENT_RESOURCE = "Patient Resource";
+    public static final String UUID_FORM_RESOURCE = "Uuid Form Resource";
 
-    public static final String COHORT_RESOURCE = "Cohort Resource";
+    public static final String SEARCH_PATIENT_RESOURCE = "Search Patient Resource";
+
+    public static final String UUID_PATIENT_RESOURCE = "Uuid Patient Resource";
+
+    public static final String SEARCH_COHORT_RESOURCE = "Search Cohort Resource";
+
+    public static final String UUID_COHORT_RESOURCE = "Uuid Cohort Resource";
 
     public static final String COHORT_MEMBER_RESOURCE = "Cohort Member Resource";
 
-    public static final String OBSERVATION_RESOURCE = "Observation Resource";
+    public static final String SEARCH_OBSERVATION_RESOURCE = "Search Observation Resource";
+
+    public static final String UUID_OBSERVATION_RESOURCE = "Uuid Observation Resource";
 }

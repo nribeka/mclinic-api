@@ -15,10 +15,11 @@
  */
 package com.mclinic.api.service;
 
-import java.io.File;
-
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.service.impl.AdministrativeServiceImpl;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -28,99 +29,22 @@ import com.mclinic.api.service.impl.AdministrativeServiceImpl;
 public interface AdministrativeService {
 
     /**
-     * Service method to initialize the internal lucene repository.
+     * Initialize the lucene repository with the resource configurations in the path.
      *
-     * @should register available algorithm classes
-     * @should register available resolver classes
-     * @should register available domain object classes
-     * @should load configuration file and register them
+     * @param resourcePath the path where the resource configurations are stored.
+     * @throws IOException when initialization failed.
+     * @should register available algorithm classes.
+     * @should register available resolver classes.
+     * @should register available domain object classes.
+     * @should load configuration file and register them.
      */
-    void initializeRepository(final String repositoryPath);
-
-    void initializeRepository(final File repositoryDir);
+    void initializeRepository(final String resourcePath) throws IOException;
 
     /**
-     * Load all forms in to the lucene index. This method will load all <code>Form</code> as represented
-     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
-     * <p/>
-     * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then updateForm should be the method to call. <br><br>
+     * Initialize the lucene repository with the resource configurations in the path.
      *
-     * @param jsonFiles the directory containing all forms json files.
-     * @should load all form data from local directory
+     * @param resourceDir file pointing to the resource descriptors location.
+     * @throws IOException when initialization failed.
      */
-    void loadForms(final File jsonFiles);
-
-    /**
-     * Load all cohorts in to the lucene index. This method will load all <code>Cohort</code> as represented
-     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
-     * <p/>
-     * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then updateCohort should be the method to call. <br><br>
-     *
-     * @param jsonFiles the directory containing all cohorts json files.
-     * @should load all cohort data from local directory
-     */
-    void loadCohorts(final File jsonFiles);
-
-    /**
-     * Load all patients in to the lucene index. This method will load all <code>Patient</code> as represented
-     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
-     * <p/>
-     * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then updatePatient should be the method to call. <br><br>
-     *
-     * @param jsonFiles the directory containing all patients json files.
-     * @should load all patient data from local directory
-     */
-    void loadPatients(final File jsonFiles);
-
-    /**
-     * Load all users in to the lucene index. This method will load all <code>User</code> as represented
-     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
-     * <p/>
-     * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then updateUser should be the method to call. <br><br>
-     *
-     * @param jsonFiles the directory containing all users json files.
-     * @should load all user data from local directory
-     */
-
-    void loadUsers(final File jsonFiles);
-
-    /**
-     * Load all observations in to the lucene index. This method will load all <code>Observation</code> as represented
-     * by all json files in @dojsonFiles directory into the lucene search index engine. <br><br>
-     * <p/>
-     * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then update should be the method to call. <br><br>
-     *
-     * @param jsonFiles the directory containing all observations json files.
-     * @should load all observations data from local directory
-     */
-    void loadObservations(final File jsonFiles);
-
-    /**
-     * Load all patients in to the lucene index. This method will load all <code>Patient</code> as represented
-     * by all json files in @jsonFiles directory into the lucene search index engine. <br><br>
-     * <p/>
-     * The method should be called once in the life time of a project. If new json files have been added to
-     * the Json directory then update should be the method to call. <br><br>
-     *
-     * @param jsonFiles the directory containing all patients json files.
-     * @should load all patient data from local directory
-     */
-    void loadCohortPatients(final File jsonFiles);
-
-    void downloadForms();
-
-    void downloadCohorts();
-
-    void downloadPatients();
-
-    void downloadUsers(final String username);
-
-    void downloadObservations(final String patientUuid);
-
-    void downloadCohortPatients(final String cohortUuid);
+    void initializeRepository(final File resourceDir) throws IOException;
 }

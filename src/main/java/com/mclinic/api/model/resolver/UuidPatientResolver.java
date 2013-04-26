@@ -13,10 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mclinic.api.registry;
+package com.mclinic.api.model.resolver;
 
-import com.mclinic.search.api.registry.DefaultRegistry;
 
-public class ServerConfigRegistry extends DefaultRegistry<String, String> {
+import java.io.IOException;
 
+public class UuidPatientResolver extends BaseOpenmrsResolver {
+
+    /**
+     * Return the full REST resource based on the search string passed to the method.
+     *
+     * @param searchString the search string
+     * @return full URI to the REST resource
+     */
+    @Override
+    public String resolve(final String searchString) throws IOException {
+        return getConfiguration().getServer() + "/ws/rest/v1/patient/" + searchString;
+    }
 }

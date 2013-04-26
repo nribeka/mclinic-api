@@ -15,10 +15,12 @@ package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Form;
-import com.mclinic.search.api.serialization.Algorithm;
-import com.mclinic.search.api.util.StringUtil;
+import com.mclinic.search.api.model.object.Searchable;
+import com.mclinic.search.api.util.DigestUtil;
 
-public class FormAlgorithm implements Algorithm {
+import java.io.IOException;
+
+public class FormAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the observation will be serialized from the JSON representation.
@@ -27,7 +29,7 @@ public class FormAlgorithm implements Algorithm {
      * @return the concrete observation object
      */
     @Override
-    public Form deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
 
         Form form = new Form();
 
@@ -39,28 +41,12 @@ public class FormAlgorithm implements Algorithm {
         String name = JsonPath.read(jsonObject, "$.display");
         form.setName(name);
 
-        form.setJson(json);
+        String checksum = DigestUtil.getSHA1Checksum(json);
+        form.setChecksum(checksum);
+
+        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
+        form.setUri(uri);
 
         return form;
     }
-
-    /**
-     * Implementation of this method will define how the observation will be de-serialized into the JSON representation.
-     *
-     * @param object the observation
-     * @return the json representation
-     */
-    @Override
-    public String serialize(final Object object) {
-        Form form = (Form) object;
-        String json = form.getJson();
-
-        Object jsonObject = JsonPath.read(json, "$");
-
-        String name = JsonPath.read(jsonObject, "$.display");
-        if (!StringUtil.isEmpty(name))
-            json = json.replaceAll(name, form.getName());
-        return json;
-    }
-
 }

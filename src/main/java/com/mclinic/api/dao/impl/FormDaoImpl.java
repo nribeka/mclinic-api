@@ -15,95 +15,36 @@
  */
 package com.mclinic.api.dao.impl;
 
-import java.util.ArrayList;
+import com.mclinic.api.dao.FormDao;
+import com.mclinic.api.model.Form;
+import com.mclinic.search.api.util.StringUtil;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
 import java.util.List;
 
-import com.google.inject.Inject;
-import com.mclinic.api.dao.FormDao;
-import com.mclinic.api.dao.PatientDao;
-import com.mclinic.api.model.Form;
-import com.mclinic.api.model.Patient;
-import com.mclinic.search.api.Context;
-import com.mclinic.search.api.RestAssuredService;
-import com.mclinic.search.api.logger.Logger;
-import com.mclinic.search.api.resource.Resource;
-import com.mclinic.search.api.util.StringUtil;
-import com.mclinic.util.Constants;
+public class FormDaoImpl extends OpenmrsDaoImpl<Form> implements FormDao {
 
-public class FormDaoImpl implements FormDao {
+    private static final String TAG = FormDaoImpl.class.getSimpleName();
 
-    @Inject
-    private Logger log;
-
-    @Inject
-    private RestAssuredService service;
-
-    private static final String TAG = PatientDao.class.getSimpleName();
-
-    @Override
-    public Form saveForm(final Form form) {
-        Object object = null;
-        try {
-            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
-            object = service.createObject(form, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error creating form.", e);
-        }
-        return (Form) object;
+    public FormDaoImpl() {
+        super(Form.class);
     }
 
+    /**
+     * Get form by the name of the form. Passing empty string will returns all registered forms.
+     *
+     * @param name the partial name of the form or empty string.
+     * @return the list of all matching form on the form name.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when parsing lucene query in the internal saving process happen.
+     * @throws java.io.IOException when reading resource descriptor happen.
+     */
     @Override
-    public Form updateForm(final Form form) {
-        Object object = null;
-        try {
-            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
-            object = service.updateObject(form, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error updating form.", e);
-        }
-        return (Form) object;
-    }
-
-    @Override
-    public Form getFormByUuid(final String uuid) {
+    public List<Form> getByName(final String name) throws ParseException, IOException {
         String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(uuid))
-            searchQuery = "uuid: " + StringUtil.quote(uuid);
-
-        Form form = null;
-        try {
-            form = service.getObject(searchQuery, Form.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting form using query: " + searchQuery, e);
-        }
-        return form;
+        if (!StringUtil.isEmpty(name))
+            searchQuery = "name: " + name + "*";
+        return service.getObjects(searchQuery, Form.class);
     }
-
-    @Override
-    public List<Form> getAllForms() {
-        List<Form> forms = new ArrayList<Form>();
-        try {
-            forms = service.getObjects(StringUtil.EMPTY, Form.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting all forms.", e);
-        }
-        return forms;
-    }
-
-    @Override
-    public void deleteForm(final Form form) {
-        try {
-            Resource resource = Context.getResource(Constants.FORM_RESOURCE);
-            service.invalidate(form, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error deleting patient.", e);
-        }
-    }
-
-    @Override
-    public void deleteAllForms() {
-        // TODO Auto-generated method stub
-
-    }
-
 }
