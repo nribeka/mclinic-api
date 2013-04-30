@@ -15,6 +15,10 @@
  */
 package com.mclinic.api.model;
 
+/**
+ * Cohort is a structure to hold collection of patients. Cohort will have a one to one connection with a Member object
+ * where we can find the uuid of patients in the cohort.
+ */
 public class Cohort extends OpenmrsSearchable {
 
     private String uuid;

@@ -15,8 +15,6 @@
  */
 package com.mclinic.api.configuration;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.mclinic.search.api.registry.Registry;
 import com.mclinic.util.Constants;
 
@@ -41,8 +39,6 @@ public class Configuration {
      *
      * @param server the base url of the openmrs server.
      */
-    @Inject
-    @Named("connection.openmrs.server")
     public void setServer(final String server) {
         registry.putEntry(Constants.CONNECTION_SERVER, server);
     }
@@ -61,8 +57,6 @@ public class Configuration {
      *
      * @param username the username of the openmrs server.
      */
-    @Inject
-    @Named("connection.openmrs.username")
     public void setUsername(final String username) {
         registry.putEntry(Constants.CONNECTION_USERNAME, username);
     }
@@ -81,8 +75,6 @@ public class Configuration {
      *
      * @param password the password of the openmrs server.
      */
-    @Inject
-    @Named("connection.openmrs.password")
     public void setPassword(final String password) {
         registry.putEntry(Constants.CONNECTION_PASSWORD, password);
     }

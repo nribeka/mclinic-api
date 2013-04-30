@@ -28,7 +28,7 @@ public class PrivilegeDaoImpl extends OpenmrsDaoImpl<Privilege> implements Privi
 
     private static final String TAG = CohortDao.class.getSimpleName();
 
-    public PrivilegeDaoImpl() {
+    protected PrivilegeDaoImpl() {
         super(Privilege.class);
     }
 

@@ -17,9 +17,9 @@ package com.mclinic.api.dao.impl;
 
 import com.google.inject.Inject;
 import com.mclinic.api.dao.SearchableDao;
+import com.mclinic.search.api.context.ServiceContext;
 import com.mclinic.search.api.logger.Logger;
 import com.mclinic.search.api.model.object.BaseSearchable;
-import com.mclinic.search.api.resource.Resource;
 import com.mclinic.search.api.service.RestAssuredService;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
@@ -38,6 +38,9 @@ public abstract class SearchableDaoImpl<T extends BaseSearchable> implements Sea
     protected Class<T> daoClass;
 
     @Inject
+    private ServiceContext context;
+
+    @Inject
     protected RestAssuredService service;
 
     protected SearchableDaoImpl(final Class<T> daoClass) {
@@ -53,8 +56,8 @@ public abstract class SearchableDaoImpl<T extends BaseSearchable> implements Sea
      * @throws IOException    when search api unable to process the resource.
      */
     @Override
-    public void delete(final T searchable, final Resource resource) throws ParseException, IOException {
-        service.invalidate(searchable, resource);
+    public void delete(final T searchable, final String resource) throws ParseException, IOException {
+        service.invalidate(searchable, context.getResource(resource));
     }
 
     /**
@@ -67,16 +70,5 @@ public abstract class SearchableDaoImpl<T extends BaseSearchable> implements Sea
     @Override
     public List<T> getAll() throws ParseException, IOException {
         return service.getObjects(StringUtil.EMPTY, daoClass);
-    }
-
-    /**
-     * Delete all searchable object from the lucene repository.
-     *
-     * @throws ParseException when query parser from lucene unable to parse the query string.
-     * @throws IOException    when search api unable to process the resource.
-     */
-    @Override
-    public void deleteAll() throws ParseException, IOException {
-        // TODO: Do we need to implement this delete all cohorts?
     }
 }

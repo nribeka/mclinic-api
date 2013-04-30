@@ -22,7 +22,7 @@ public class FormTemplateDaoImpl extends LocalDaoImpl<FormTemplate> implements F
 
     private static final String TAG = FormTemplateDaoImpl.class.getSimpleName();
 
-    public FormTemplateDaoImpl() {
+    protected FormTemplateDaoImpl() {
         super(FormTemplate.class);
     }
 }

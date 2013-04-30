@@ -15,125 +15,23 @@
  */
 package com.mclinic.api.service;
 
-import com.mclinic.api.model.Cohort;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.mclinic.api.module.MuzimaModule;
-import com.mclinic.search.api.Context;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import com.mclinic.search.api.module.SearchModule;
 import org.junit.Test;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
+/**
+ * TODO: Write brief description about the class here.
+ */
 public class CohortServiceTest {
 
-    private CohortService cohortService;
-
-    private AdministrativeService service;
-
-    @Before
-    public void prepare() throws Exception {
-        URL repositoryPath = AdministrativeServiceTest.class.getResource("../j2l");
-        URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
-        Context.initialize(new MuzimaModule(lucenePath.getPath(), "uuid"));
-
-        service = Context.getInstance(AdministrativeService.class);
-        Assert.assertNotNull(service);
-
-        service.initializeRepository(repositoryPath.getPath());
-
-        URL jsonPath = AdministrativeServiceTest.class.getResource("../json/cohort");
-        service.loadCohorts(new File(jsonPath.getPath()));
-
-        cohortService = Context.getInstance(CohortService.class);
-        Assert.assertNotNull(cohortService);
-    }
-
-    @After
-    public void cleanUp() {
-        URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
-
-        File luceneDirectory = new File(lucenePath.getPath());
-        for (String filename : luceneDirectory.list()) {
-            File file = new File(luceneDirectory, filename);
-            Assert.assertTrue(file.delete());
-        }
-    }
-
-    /**
-     * @verifies return cohort with matching uuid
-     * @see CohortService#getCohortByUuid(String)
-     */
     @Test
-    public void getCohortByUuid_shouldReturnCohortWithMatchingUuid() throws Exception {
-        String uuid = "0ca78602-738f-408d-8ced-386ad12367db";
-        Cohort cohort = cohortService.getCohortByUuid(uuid);
-        Assert.assertNotNull(cohort);
-    }
-
-    /**
-     * @verifies return null when no cohort match the uuid
-     * @see CohortService#getCohortByUuid(String)
-     */
-    @Test
-    public void getCohortByUuid_shouldReturnNullWhenNoCohortMatchTheUuid() throws Exception {
-        String randomUuid = "1234";
-        Cohort cohort = cohortService.getCohortByUuid(randomUuid);
-        Assert.assertNull(cohort);
-    }
-
-    /**
-     * @verifies return list of all cohorts with matching name
-     * @see CohortService#getCohortsByName(String)
-     */
-    @Test
-    public void getCohortsByName_shouldReturnListOfAllCohortsWithMatchingName() throws Exception {
-        String name = "Fem";
-        List<Cohort> cohorts = cohortService.getCohortsByName(name);
-        Assert.assertNotNull(cohorts);
-        Assert.assertFalse(cohorts.isEmpty());
-    }
-
-    /**
-     * @verifies return empty list when no cohort match the name
-     * @see CohortService#getCohortsByName(String)
-     */
-    @Test
-    public void getCohortsByName_shouldReturnEmptyListWhenNoCohortMatchTheName() throws Exception {
-        String randomName = "RandomName";
-        List<Cohort> cohorts = cohortService.getCohortsByName(randomName);
-        Assert.assertNotNull(cohorts);
-        Assert.assertTrue(cohorts.isEmpty());
-    }
-
-    /**
-     * @verifies return all registered cohorts
-     * @see CohortService#getAllCohorts()
-     */
-    @Test
-    public void getAllCohorts_shouldReturnAllRegisteredCohorts() throws Exception {
-        List<Cohort> cohorts = cohortService.getAllCohorts();
-        Assert.assertNotNull(cohorts);
-        Assert.assertFalse(cohorts.isEmpty());
-    }
-
-    /**
-     * @verifies return empty list when no cohort is registered
-     * @see CohortService#getAllCohorts()
-     */
-    @Test
-    public void getAllCohorts_shouldReturnEmptyListWhenNoCohortIsRegistered() throws Exception {
-        List<Cohort> cohorts = cohortService.getAllCohorts();
-        Assert.assertNotNull(cohorts);
-        Assert.assertFalse(cohorts.isEmpty());
-
-        for (Cohort cohort : cohorts)
-            cohortService.deleteCohort(cohort);
-
-        cohorts = cohortService.getAllCohorts();
-        Assert.assertNotNull(cohorts);
-        Assert.assertTrue(cohorts.isEmpty());
+    public void aspectTest() throws Exception {
+        String tmpDirectory = System.getProperty("java.io.tmpdir");
+        Injector injector = Guice.createInjector(new SearchModule(), new MuzimaModule(tmpDirectory, "uuid"));
+        CohortService cohortService = injector.getInstance(CohortService.class);
+        cohortService.getAllCohorts();
+        cohortService.getCohortByUuid("Example UUID");
     }
 }

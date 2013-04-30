@@ -27,6 +27,9 @@ public class AdministrativeServiceImpl implements AdministrativeService {
     @Inject
     private AdministrativeDao dao;
 
+    protected AdministrativeServiceImpl() {
+    }
+
     @Override
     public void initializeRepository(final String resourcePath) throws IOException {
         dao.initializeRepository(resourcePath);

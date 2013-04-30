@@ -43,9 +43,25 @@ public class Constants {
 
     public static final String UUID_COHORT_RESOURCE = "Uuid Cohort Resource";
 
-    public static final String COHORT_MEMBER_RESOURCE = "Cohort Member Resource";
+    public static final String MEMBER_COHORT_RESOURCE = "Cohort Member Resource";
 
     public static final String SEARCH_OBSERVATION_RESOURCE = "Search Observation Resource";
 
     public static final String UUID_OBSERVATION_RESOURCE = "Uuid Observation Resource";
+
+    public static final String LOCAL_CREDENTIAL_RESOURCE = "Local Credential Resource";
+
+    public static final String LOCAL_FORM_DATA_RESOURCE = "Local Form Data Resource";
+
+    public static final String LOCAL_FORM_TEMPLATE_RESOURCE = "Local Form Template Resource";
+
+    public static final String LOCAL_MEMBER_RESOURCE = "Local Member Resource";
+
+    public static final String UUID_PRIVILEGE_RESOURCE = "Uuid Privilege Resource";
+
+    public static final String SEARCH_PRIVILEGE_RESOURCE = "Search Privilege Resource";
+
+    public static final String UUID_ROLE_RESOURCE = "Uuid Role Resource";
+
+    public static final String SEARCH_ROLE_RESOURCE = "Search Role Resource";
 }

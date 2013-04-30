@@ -1,7 +1,6 @@
 package com.mclinic.api.dao;
 
 import com.mclinic.search.api.model.object.BaseSearchable;
-import com.mclinic.search.api.resource.Resource;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public interface SearchableDao<T extends BaseSearchable> {
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
-    void delete(final T searchable, final Resource resource) throws ParseException, IOException;
+    void delete(final T searchable, final String resource) throws ParseException, IOException;
 
     /**
      * Get all searchable object for the particular type.
@@ -30,12 +29,4 @@ public interface SearchableDao<T extends BaseSearchable> {
      * @throws IOException    when search api unable to process the resource.
      */
     List<T> getAll() throws ParseException, IOException;
-
-    /**
-     * Delete all searchable object from the lucene repository.
-     *
-     * @throws ParseException when query parser from lucene unable to parse the query string.
-     * @throws IOException    when search api unable to process the resource.
-     */
-    void deleteAll() throws ParseException, IOException;
 }

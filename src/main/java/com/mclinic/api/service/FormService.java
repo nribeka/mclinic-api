@@ -127,41 +127,51 @@ public interface FormService {
     void saveFormData(final FormData formData) throws IOException, ParseException;
 
     /**
-     * @param uuid
-     * @return
+     * Get a single form data object from the local data repository.
+     *
+     * @param uuid the uuid for the form data.
+     * @return the form data object.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
     FormData getFormDataByUuid(final String uuid) throws IOException, ParseException;
 
     /**
-     * @param status
-     * @return
+     * Get all form data filtering on the status of the form data.
+     *
+     * @param status the status of the form data (optional).
+     * @return all form data with matching status.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
     List<FormData> getAllFormData(final String status) throws IOException, ParseException;
 
     /**
-     * @param userUuid
-     * @param status
-     * @return
+     * Get form data associated with certain user with filtering on the status of the form data.
+     *
+     * @param userUuid the uuid of the user.
+     * @param status   the status of the form data (optional).
+     * @return all form data for the user with matching status.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
     List<FormData> getFormDataByUser(final String userUuid, final String status) throws IOException, ParseException;
 
     /**
-     * @param patientUuid
-     * @param status
-     * @return
+     * Get form data associated with certain user with filtering on the status of the form data.
+     *
+     * @param patientUuid the uuid of the patient
+     * @param status      the status of the form data (optional).
+     * @return all form data for the patient with matching status.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
     List<FormData> getFormDataByPatient(final String patientUuid, final String status) throws IOException, ParseException;
 
     /**
-     * @param formData
+     * Delete an instance of form data.
+     *
+     * @param formData the form data
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */

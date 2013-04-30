@@ -23,6 +23,7 @@ import com.mclinic.api.model.Form;
 import com.mclinic.api.model.FormData;
 import com.mclinic.api.model.FormTemplate;
 import com.mclinic.api.service.FormService;
+import com.mclinic.util.Constants;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void downloadFormByUuid(final String uuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        formDao.download(uuid, Constants.UUID_FORM_RESOURCE);
     }
 
     /**
@@ -65,7 +66,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void downloadFormsByName(final String name) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        formDao.download(name, Constants.SEARCH_FORM_RESOURCE);
     }
 
     /**
@@ -79,7 +80,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public Form getFormByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formDao.getByUuid(uuid);
     }
 
     /**
@@ -92,7 +93,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public List<Form> getAllForms() throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formDao.getAll();
     }
 
     /**
@@ -105,54 +106,145 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void deleteForm(final Form form) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            formDao.delete(form, Constants.UUID_FORM_RESOURCE);
+        } catch (IOException e) {
+            formDao.delete(form, Constants.SEARCH_FORM_RESOURCE);
+        }
     }
 
+    /**
+     * Save a new form template to the repository.
+     *
+     * @param formTemplate the form template to be saved.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public void saveFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get a form template by the uuid.
+     *
+     * @param uuid the form template uuid.
+     * @return the form template.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
-    public FormTemplate getFormTemplateByUuid(final String uuid) {
+    public FormTemplate getFormTemplateByUuid(final String uuid) throws IOException, ParseException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get all saved form templates from the local repository.
+     *
+     * @return all saved form templates or empty list when there's no form template saved.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public List<FormTemplate> getAllFormTemplates() throws IOException, ParseException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Delete a form template from the repository.
+     *
+     * @param formTemplate the form template to be deleted.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public void deleteFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Save a new form data object to the database.
+     *
+     * @param formData the form data to be saved.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public void saveFormData(final FormData formData) throws IOException, ParseException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get a single form data object from the local data repository.
+     *
+     * @param uuid the uuid for the form data.
+     * @return the form data object.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public FormData getFormDataByUuid(final String uuid) throws IOException, ParseException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get all form data filtering on the status of the form data.
+     *
+     * @param status the status of the form data (optional).
+     * @return all form data with matching status.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public List<FormData> getAllFormData(final String status) throws IOException, ParseException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get form data associated with certain user with filtering on the status of the form data.
+     *
+     * @param userUuid the uuid of the user.
+     * @param status   the status of the form data (optional).
+     * @return all form data for the user with matching status.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public List<FormData> getFormDataByUser(final String userUuid, final String status) throws IOException, ParseException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Get form data associated with certain user with filtering on the status of the form data.
+     *
+     * @param patientUuid the uuid of the patient
+     * @param status      the status of the form data (optional).
+     * @return all form data for the patient with matching status.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public List<FormData> getFormDataByPatient(final String patientUuid, final String status) throws IOException, ParseException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Delete an instance of form data.
+     *
+     * @param formData the form data
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
     @Override
     public void deleteFormDate(final FormData formData) throws IOException, ParseException {
         //To change body of implemented methods use File | Settings | File Templates.

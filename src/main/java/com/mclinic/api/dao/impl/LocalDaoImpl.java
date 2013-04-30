@@ -27,9 +27,9 @@ import java.util.List;
 /**
  * TODO: Write brief description about the class here.
  */
-public class LocalDaoImpl<T extends BaseSearchable> extends SearchableDaoImpl<T> implements LocalDao<T> {
+public abstract class LocalDaoImpl<T extends BaseSearchable> extends SearchableDaoImpl<T> implements LocalDao<T> {
 
-    public LocalDaoImpl(final Class<T> daoClass) {
+    protected LocalDaoImpl(final Class<T> daoClass) {
         super(daoClass);
     }
 

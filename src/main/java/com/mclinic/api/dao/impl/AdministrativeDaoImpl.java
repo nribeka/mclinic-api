@@ -55,7 +55,7 @@ import com.mclinic.api.model.resolver.UuidPatientResolver;
 import com.mclinic.api.model.resolver.UuidPrivilegeResolver;
 import com.mclinic.api.model.resolver.UuidRoleResolver;
 import com.mclinic.api.model.resolver.UuidUserResolver;
-import com.mclinic.search.api.Context;
+import com.mclinic.search.api.context.ServiceContext;
 import com.mclinic.search.api.logger.Logger;
 
 import java.io.File;
@@ -65,6 +65,9 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
 
     @Inject
     private Logger log;
+
+    @Inject
+    private ServiceContext context;
 
     private static final String TAG = AdministrativeDaoImpl.class.getSimpleName();
 
@@ -85,47 +88,47 @@ public class AdministrativeDaoImpl implements AdministrativeDao {
      */
     @Override
     public void initializeRepository(final File resourceDir) throws IOException {
-        Context.registerObject(new Cohort());
-        Context.registerObject(new Member());
-        Context.registerObject(new Credential());
-        Context.registerObject(new Form());
-        Context.registerObject(new FormData());
-        Context.registerObject(new FormTemplate());
-        Context.registerObject(new Observation());
-        Context.registerObject(new Patient());
-        Context.registerObject(new Privilege());
-        Context.registerObject(new Role());
-        Context.registerObject(new User());
+        context.registerObject(new Cohort());
+        context.registerObject(new Member());
+        context.registerObject(new Credential());
+        context.registerObject(new Form());
+        context.registerObject(new FormData());
+        context.registerObject(new FormTemplate());
+        context.registerObject(new Observation());
+        context.registerObject(new Patient());
+        context.registerObject(new Privilege());
+        context.registerObject(new Role());
+        context.registerObject(new User());
 
-        Context.registerAlgorithm(new CohortAlgorithm());
-        Context.registerAlgorithm(new MemberAlgorithm());
-        Context.registerAlgorithm(new CredentialAlgorithm());
-        Context.registerAlgorithm(new FormAlgorithm());
-        Context.registerAlgorithm(new FormDataAlgorithm());
-        Context.registerAlgorithm(new FormTemplateAlgorithm());
-        Context.registerAlgorithm(new ObservationAlgorithm());
-        Context.registerAlgorithm(new PatientAlgorithm());
-        Context.registerAlgorithm(new PrivilegeAlgorithm());
-        Context.registerAlgorithm(new RoleAlgorithm());
-        Context.registerAlgorithm(new UserAlgorithm());
+        context.registerAlgorithm(new CohortAlgorithm());
+        context.registerAlgorithm(new MemberAlgorithm());
+        context.registerAlgorithm(new CredentialAlgorithm());
+        context.registerAlgorithm(new FormAlgorithm());
+        context.registerAlgorithm(new FormDataAlgorithm());
+        context.registerAlgorithm(new FormTemplateAlgorithm());
+        context.registerAlgorithm(new ObservationAlgorithm());
+        context.registerAlgorithm(new PatientAlgorithm());
+        context.registerAlgorithm(new PrivilegeAlgorithm());
+        context.registerAlgorithm(new RoleAlgorithm());
+        context.registerAlgorithm(new UserAlgorithm());
 
-        Context.registerResolver(new MemberCohortResolver());
-        Context.registerResolver(new LocalResolver());
-        Context.registerResolver(new SearchCohortResolver());
-        Context.registerResolver(new SearchFormResolver());
-        Context.registerResolver(new SearchObservationResolver());
-        Context.registerResolver(new SearchPatientResolver());
-        Context.registerResolver(new SearchPrivilegeResolver());
-        Context.registerResolver(new SearchRoleResolver());
-        Context.registerResolver(new SearchUserResolver());
-        Context.registerResolver(new UuidCohortResolver());
-        Context.registerResolver(new UuidFormResolver());
-        Context.registerResolver(new UuidObservationResolver());
-        Context.registerResolver(new UuidPatientResolver());
-        Context.registerResolver(new UuidPrivilegeResolver());
-        Context.registerResolver(new UuidRoleResolver());
-        Context.registerResolver(new UuidUserResolver());
+        context.registerResolver(new MemberCohortResolver());
+        context.registerResolver(new LocalResolver());
+        context.registerResolver(new SearchCohortResolver());
+        context.registerResolver(new SearchFormResolver());
+        context.registerResolver(new SearchObservationResolver());
+        context.registerResolver(new SearchPatientResolver());
+        context.registerResolver(new SearchPrivilegeResolver());
+        context.registerResolver(new SearchRoleResolver());
+        context.registerResolver(new SearchUserResolver());
+        context.registerResolver(new UuidCohortResolver());
+        context.registerResolver(new UuidFormResolver());
+        context.registerResolver(new UuidObservationResolver());
+        context.registerResolver(new UuidPatientResolver());
+        context.registerResolver(new UuidPrivilegeResolver());
+        context.registerResolver(new UuidRoleResolver());
+        context.registerResolver(new UuidUserResolver());
 
-        Context.registerResources(resourceDir);
+        context.registerResources(resourceDir);
     }
 }

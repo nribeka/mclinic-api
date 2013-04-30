@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import com.mclinic.api.dao.PatientDao;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.PatientService;
+import com.mclinic.util.Constants;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService {
 
     @Inject
-    private PatientDao dao;
+    private PatientDao patientDao;
 
     /**
      * Download a single patient record from the patient rest resource into the local lucene repository.
@@ -40,7 +41,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void downloadPatientByUuid(final String uuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        patientDao.download(uuid, Constants.UUID_PATIENT_RESOURCE);
     }
 
     /**
@@ -55,7 +56,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void downloadPatientsByName(final String name) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        patientDao.download(name, Constants.SEARCH_PATIENT_RESOURCE);
     }
 
     /**
@@ -71,7 +72,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public Patient getPatientByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return patientDao.getByUuid(uuid);
     }
 
     /**
@@ -87,7 +88,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public Patient getPatientByIdentifier(final String identifier) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return patientDao.getByIdentifier(identifier);
     }
 
     /**
@@ -102,7 +103,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public List<Patient> getAllPatients() throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return patientDao.getAll();
     }
 
     /**
@@ -118,7 +119,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public List<Patient> getPatientsByName(final String name) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return patientDao.getByName(name);
     }
 
     /**
@@ -134,7 +135,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public List<Patient> searchPatients(final String term) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return patientDao.search(term);
     }
 
     /**
@@ -148,6 +149,10 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void deletePatient(final Patient patient) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            patientDao.delete(patient, Constants.UUID_PATIENT_RESOURCE);
+        } catch (IOException e) {
+            patientDao.delete(patient, Constants.SEARCH_PATIENT_RESOURCE);
+        }
     }
 }

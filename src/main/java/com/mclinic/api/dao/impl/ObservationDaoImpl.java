@@ -17,7 +17,6 @@ package com.mclinic.api.dao.impl;
 
 import com.mclinic.api.dao.ObservationDao;
 import com.mclinic.api.model.Observation;
-import com.mclinic.api.model.Patient;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -28,23 +27,24 @@ public class ObservationDaoImpl extends OpenmrsDaoImpl<Observation> implements O
 
     private static final String TAG = ObservationDao.class.getSimpleName();
 
-    public ObservationDaoImpl() {
+    protected ObservationDaoImpl() {
         super(Observation.class);
     }
 
+    /**
+     * Search observations for patient with matching partial search term.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param term        the search term for the question of the observations.
+     * @return all observations for the patient with question matching the search term.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
     @Override
-    public List<Observation> getAll(final Patient patient) throws ParseException, IOException {
-        String searchQuery = StringUtil.EMPTY;
-        if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
-            searchQuery = "patientUuid: " + StringUtil.quote(patient.getUuid());
-        return service.getObjects(searchQuery, Observation.class);
-    }
-
-    @Override
-    public List<Observation> search(final Patient patient, final String term) throws ParseException, IOException {
+    public List<Observation> search(final String patientUuid, final String term) throws ParseException, IOException {
         String patientQuery = StringUtil.EMPTY;
-        if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
-            patientQuery = "(patientUuid: " + StringUtil.quote(patient.getUuid()) + ")";
+        if (patientUuid != null && !StringUtil.isEmpty(patientUuid))
+            patientQuery = "(patientUuid: " + StringUtil.quote(patientUuid) + ")";
         // TODO: fix the search query later on!
         return service.getObjects(patientQuery + "(" + patientQuery + ")", Observation.class);
     }

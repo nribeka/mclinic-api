@@ -18,8 +18,9 @@ package com.mclinic.api.service.impl;
 import com.google.inject.Inject;
 import com.mclinic.api.dao.ObservationDao;
 import com.mclinic.api.model.Observation;
-import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.ObservationService;
+import com.mclinic.search.api.util.StringUtil;
+import com.mclinic.util.Constants;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.util.List;
 public class ObservationServiceImpl implements ObservationService {
 
     @Inject
-    private ObservationDao dao;
+    private ObservationDao observationDao;
 
     /**
      * Download a single observation record from the observation rest resource into the local lucene repository.
@@ -41,7 +42,7 @@ public class ObservationServiceImpl implements ObservationService {
      */
     @Override
     public void downloadObservationByUuid(final String uuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        observationDao.download(uuid, Constants.UUID_OBSERVATION_RESOURCE);
     }
 
     /**
@@ -56,7 +57,7 @@ public class ObservationServiceImpl implements ObservationService {
      */
     @Override
     public void downloadObservationsByName(final String name) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        observationDao.download(name, Constants.SEARCH_OBSERVATION_RESOURCE);
     }
 
     /**
@@ -72,7 +73,7 @@ public class ObservationServiceImpl implements ObservationService {
      */
     @Override
     public Observation getObservationByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return observationDao.getByUuid(uuid);
     }
 
     /**
@@ -88,14 +89,14 @@ public class ObservationServiceImpl implements ObservationService {
      */
     @Override
     public List<Observation> getAllObservations(final String patientUuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return observationDao.search(patientUuid, StringUtil.EMPTY);
     }
 
     /**
      * Search for all observations for the particular patient with matching search term.
      *
-     * @param patient the patient.
-     * @param term    the search term.
+     * @param patientUuid the patient.
+     * @param term        the search term.
      * @return list of all observations with matching search term on the searchable fields or empty list.
      * @throws org.apache.lucene.queryParser.ParseException
      *                             when query parser from lucene unable to parse the query string.
@@ -104,8 +105,8 @@ public class ObservationServiceImpl implements ObservationService {
      * @should return empty list when no observation match the search term.
      */
     @Override
-    public List<Observation> searchObservations(final Patient patient, final String term) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<Observation> searchObservations(final String patientUuid, final String term) throws IOException, ParseException {
+        return observationDao.search(patientUuid, term);
     }
 
     /**
@@ -119,6 +120,10 @@ public class ObservationServiceImpl implements ObservationService {
      */
     @Override
     public void deleteObservation(final Observation observation) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            observationDao.delete(observation, Constants.SEARCH_OBSERVATION_RESOURCE);
+        } catch (IOException e) {
+            observationDao.delete(observation, Constants.UUID_OBSERVATION_RESOURCE);
+        }
     }
 }

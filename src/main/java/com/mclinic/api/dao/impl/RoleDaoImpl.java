@@ -28,7 +28,7 @@ public class RoleDaoImpl extends OpenmrsDaoImpl<Role> implements RoleDao {
 
     private static final String TAG = CohortDao.class.getSimpleName();
 
-    public RoleDaoImpl() {
+    protected RoleDaoImpl() {
         super(Role.class);
     }
 

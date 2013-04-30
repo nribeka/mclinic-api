@@ -15,15 +15,19 @@
  */
 package com.mclinic.api.dao.impl;
 
+import com.google.inject.Inject;
 import com.mclinic.api.dao.OpenmrsDao;
 import com.mclinic.api.model.OpenmrsSearchable;
-import com.mclinic.search.api.Context;
+import com.mclinic.search.api.context.ServiceContext;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 
 public abstract class OpenmrsDaoImpl<T extends OpenmrsSearchable> extends SearchableDaoImpl<T> implements OpenmrsDao<T> {
+
+    @Inject
+    private ServiceContext serviceContext;
 
     protected OpenmrsDaoImpl(final Class<T> daoClass) {
         super(daoClass);
@@ -33,14 +37,14 @@ public abstract class OpenmrsDaoImpl<T extends OpenmrsSearchable> extends Search
      * Download the searchable object matching the uuid. This process involve executing the REST call, pulling the
      * resource and then saving it to local lucene repository.
      *
-     * @param uuid     the uuid of the searchable object.
+     * @param term     the term to be passed to search object to filter the searchable object.
      * @param resource resource descriptor used to convert the resource to the correct object.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
     @Override
-    public void download(final String uuid, final String resource) throws ParseException, IOException {
-        service.loadObjects(uuid, Context.getResource(resource));
+    public void download(final String term, final String resource) throws ParseException, IOException {
+        service.loadObjects(term, serviceContext.getResource(resource));
     }
 
     /**

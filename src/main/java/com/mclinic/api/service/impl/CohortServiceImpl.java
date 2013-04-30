@@ -16,11 +16,13 @@
 package com.mclinic.api.service.impl;
 
 import com.google.inject.Inject;
+import com.mclinic.api.annotation.Authorization;
 import com.mclinic.api.dao.CohortDao;
 import com.mclinic.api.dao.MemberDao;
 import com.mclinic.api.model.Cohort;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.CohortService;
+import com.mclinic.util.Constants;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -34,6 +36,9 @@ public class CohortServiceImpl implements CohortService {
     @Inject
     private MemberDao memberDao;
 
+    protected CohortServiceImpl() {
+    }
+
     /**
      * Download a single cohort record from the cohort rest resource into the local lucene repository.
      *
@@ -45,7 +50,7 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public void downloadCohortByUuid(final String uuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        cohortDao.download(uuid, Constants.UUID_COHORT_RESOURCE);
     }
 
     /**
@@ -60,7 +65,7 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public void downloadCohortsByName(final String name) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        cohortDao.download(name, Constants.SEARCH_COHORT_RESOURCE);
     }
 
     /**
@@ -76,7 +81,7 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public Cohort getCohortByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return cohortDao.getByUuid(uuid);
     }
 
     /**
@@ -92,7 +97,7 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public List<Cohort> getCohortsByName(final String name) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return cohortDao.getByName(name);
     }
 
     /**
@@ -104,8 +109,9 @@ public class CohortServiceImpl implements CohortService {
      * @should return empty list when no cohort is registered.
      */
     @Override
+    @Authorization(privileges = {"Example Privilege"})
     public List<Cohort> getAllCohorts() throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return cohortDao.getAll();
     }
 
     /**
@@ -119,7 +125,11 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public void deleteCohort(final Cohort cohort) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            cohortDao.delete(cohort, Constants.UUID_COHORT_RESOURCE);
+        } catch (IOException e) {
+            cohortDao.delete(cohort, Constants.SEARCH_COHORT_RESOURCE);
+        }
     }
 
     /**

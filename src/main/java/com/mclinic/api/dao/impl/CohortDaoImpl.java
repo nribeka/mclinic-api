@@ -27,7 +27,7 @@ public class CohortDaoImpl extends OpenmrsDaoImpl<Cohort> implements CohortDao {
 
     private static final String TAG = CohortDao.class.getSimpleName();
 
-    public CohortDaoImpl() {
+    protected CohortDaoImpl() {
         super(Cohort.class);
     }
 

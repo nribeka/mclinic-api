@@ -22,7 +22,7 @@ public class CredentialDaoImpl extends LocalDaoImpl<Credential> implements Crede
 
     private static final String TAG = CredentialDao.class.getSimpleName();
 
-    public CredentialDaoImpl() {
+    protected CredentialDaoImpl() {
         super(Credential.class);
     }
 

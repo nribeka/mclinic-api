@@ -18,6 +18,8 @@ package com.mclinic.api.model;
 import com.mclinic.search.api.model.object.BaseSearchable;
 
 /**
+ * FormTemplate is a single reference to the physical raw data that can be rendered for form filling process. The result
+ * of a form filling process is the FormData object. FormTemplate hold a reference to the Form object.
  */
 public class FormTemplate extends BaseSearchable {
 

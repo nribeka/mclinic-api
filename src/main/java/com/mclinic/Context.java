@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mclinic.api.dao.impl;
+package com.mclinic;
 
-import com.mclinic.api.dao.CredentialDao;
-import com.mclinic.api.dao.MemberDao;
-import com.mclinic.api.model.Member;
+import com.google.inject.Singleton;
+import com.mclinic.api.model.Credential;
 
-public class MemberDaoImpl extends LocalDaoImpl<Member> implements MemberDao {
+/**
+ * TODO: Write brief description about the class here.
+ */
+@Singleton
+public class Context {
 
-    private static final String TAG = CredentialDao.class.getSimpleName();
+    private Credential credential;
 
-    protected MemberDaoImpl() {
-        super(Member.class);
+    public Credential getCredential() {
+        return credential;
     }
 
+    public void setCredential(final Credential credential) {
+        this.credential = credential;
+    }
 }

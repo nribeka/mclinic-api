@@ -15,7 +15,11 @@ package com.mclinic.api.model;
 
 import com.mclinic.search.api.model.object.BaseSearchable;
 
+import java.util.List;
+
 /**
+ * Credential is a class to hold and persist authentication information for a user locally. User will be allowed to
+ * access the system when a credential record for that user is found in the local repository.
  */
 public class Credential extends BaseSearchable {
 
@@ -30,6 +34,10 @@ public class Credential extends BaseSearchable {
     private String password;
 
     private String checksum;
+
+    private List<Role> roles;
+
+    private List<Privilege> privileges;
 
     /**
      * Get the uuid of the credential.

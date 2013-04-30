@@ -18,7 +18,9 @@ package com.mclinic.api.model;
 import com.mclinic.search.api.model.object.BaseSearchable;
 
 /**
- * TODO: Write brief description about the class here.
+ * FormData is a class to persist a single reference of filled form. The status of the filling could be complete,
+ * incomplete or sent. The class also hold reference to the FormTemplate from which the FormData originate, User who
+ * fill the form and Patient to whom the form is associated with.
  */
 public class FormData extends BaseSearchable {
 

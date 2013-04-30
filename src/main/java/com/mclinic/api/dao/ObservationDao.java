@@ -18,7 +18,6 @@ package com.mclinic.api.dao;
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.ObservationDaoImpl;
 import com.mclinic.api.model.Observation;
-import com.mclinic.api.model.Patient;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -26,14 +25,15 @@ import java.util.List;
 
 @ImplementedBy(ObservationDaoImpl.class)
 public interface ObservationDao extends OpenmrsDao<Observation> {
+
     /**
      * Search observations for patient with matching partial search term.
      *
-     * @param patient the patient.
-     * @param term    the search term for the question of the observations.
+     * @param patientUuid the uuid of the patient.
+     * @param term        the search term for the question of the observations.
      * @return all observations for the patient with question matching the search term.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
-    List<Observation> search(final Patient patient, final String term) throws ParseException, IOException;
+    List<Observation> search(final String patientUuid, final String term) throws ParseException, IOException;
 }

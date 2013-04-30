@@ -29,12 +29,12 @@ public interface OpenmrsDao<T extends OpenmrsSearchable> extends SearchableDao<T
      * Download the searchable object matching the uuid. This process involve executing the REST call, pulling the
      * resource and then saving it to local lucene repository.
      *
-     * @param uuid     the uuid of the searchable object.
+     * @param term     the term to be passed to search object to filter the searchable object.
      * @param resource resource descriptor used to convert the resource to the correct object.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
-    void download(final String uuid, final String resource) throws ParseException, IOException;
+    void download(final String term, final String resource) throws ParseException, IOException;
 
     /**
      * Get the OpenMRS searchable object using the uuid.

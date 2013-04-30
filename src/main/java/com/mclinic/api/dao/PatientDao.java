@@ -25,6 +25,15 @@ import java.util.List;
 
 @ImplementedBy(PatientDaoImpl.class)
 public interface PatientDao extends OpenmrsDao<Patient> {
+
+    /**
+     * Get patient by using the identifier.
+     *
+     * @param identifier the identifier of the patient.
+     * @return the patient with matching identifier.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
     Patient getByIdentifier(final String identifier) throws ParseException, IOException;
 
     /**

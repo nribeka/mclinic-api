@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The Member class will reference to uuid of all patients for which the Member is associated with.
+ * <br/>
  * This class is an exception from all of the other model classes where it's a local object but have the name similar
  * with the same remote resource. This class must not be associated with the <code>MemberCohortResolver</code>.
  */

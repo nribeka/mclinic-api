@@ -25,6 +25,17 @@ import java.util.List;
 
 @ImplementedBy(UserDaoImpl.class)
 public interface UserDao extends OpenmrsDao<User> {
+
+    /**
+     * Get a user record by the user name of the user.
+     *
+     * @param username the username
+     * @return user with matching username.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    User getByUsername(final String username) throws ParseException, IOException;
+
     /**
      * Get user by the name of the user. Passing empty string will returns all registered users.
      *

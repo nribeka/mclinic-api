@@ -27,7 +27,7 @@ public class FormDaoImpl extends OpenmrsDaoImpl<Form> implements FormDao {
 
     private static final String TAG = FormDaoImpl.class.getSimpleName();
 
-    public FormDaoImpl() {
+    protected FormDaoImpl() {
         super(Form.class);
     }
 

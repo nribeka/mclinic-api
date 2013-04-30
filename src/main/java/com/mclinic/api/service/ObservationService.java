@@ -17,7 +17,6 @@ package com.mclinic.api.service;
 
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.model.Observation;
-import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.impl.ObservationServiceImpl;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -78,15 +77,15 @@ public interface ObservationService {
     /**
      * Search for all observations for the particular patient with matching search term.
      *
-     * @param patient the patient.
-     * @param term    the search term.
+     * @param patientUuid the patient.
+     * @param term        the search term.
      * @return list of all observations with matching search term on the searchable fields or empty list.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      * @should return list of all observations with matching search term on the searchable fields.
      * @should return empty list when no observation match the search term.
      */
-    List<Observation> searchObservations(final Patient patient, final String term) throws IOException, ParseException;
+    List<Observation> searchObservations(final String patientUuid, final String term) throws IOException, ParseException;
 
     /**
      * Delete a single observation from the local repository.

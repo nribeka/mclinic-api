@@ -22,7 +22,7 @@ public class FormDataDaoImpl extends LocalDaoImpl<FormData> implements FormDataD
 
     private static final String TAG = FormDataDaoImpl.class.getSimpleName();
 
-    public FormDataDaoImpl() {
+    protected FormDataDaoImpl() {
         super(FormData.class);
     }
 }
