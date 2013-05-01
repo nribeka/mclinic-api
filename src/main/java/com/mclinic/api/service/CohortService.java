@@ -16,6 +16,7 @@
 package com.mclinic.api.service;
 
 import com.google.inject.ImplementedBy;
+import com.mclinic.api.annotation.Authorization;
 import com.mclinic.api.model.Cohort;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.impl.CohortServiceImpl;
@@ -82,6 +83,7 @@ public interface CohortService {
      * @should return all registered cohorts.
      * @should return empty list when no cohort is registered.
      */
+    @Authorization(privileges = {"Cohort Privilege"})
     List<Cohort> getAllCohorts() throws IOException, ParseException;
 
     /**

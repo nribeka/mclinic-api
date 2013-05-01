@@ -17,6 +17,8 @@ package com.mclinic.api.service;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.mclinic.api.context.Context;
+import com.mclinic.api.context.UserContext;
 import com.mclinic.api.module.MuzimaModule;
 import com.mclinic.search.api.module.SearchModule;
 import org.junit.Test;
@@ -30,8 +32,18 @@ public class CohortServiceTest {
     public void aspectTest() throws Exception {
         String tmpDirectory = System.getProperty("java.io.tmpdir");
         Injector injector = Guice.createInjector(new SearchModule(), new MuzimaModule(tmpDirectory, "uuid"));
+
         CohortService cohortService = injector.getInstance(CohortService.class);
         cohortService.getAllCohorts();
         cohortService.getCohortByUuid("Example UUID");
+
+        System.out.println();
+        System.out.println("Authentication ...");
+
+        Context.setUserContext(new UserContext());
+        Context.authenticate("username", "password");
+        cohortService.getAllCohorts();
+        cohortService.getCohortByUuid("Example UUID");
+
     }
 }

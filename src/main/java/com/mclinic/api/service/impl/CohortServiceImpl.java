@@ -109,7 +109,7 @@ public class CohortServiceImpl implements CohortService {
      * @should return empty list when no cohort is registered.
      */
     @Override
-    @Authorization(privileges = {"Example Privilege"})
+    @Authorization(privileges = {"Cohort Privilege"})
     public List<Cohort> getAllCohorts() throws IOException, ParseException {
         return cohortDao.getAll();
     }

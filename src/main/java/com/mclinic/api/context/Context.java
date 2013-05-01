@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mclinic;
+package com.mclinic.api.context;
 
 import com.google.inject.Singleton;
-import com.mclinic.api.model.Credential;
 
 /**
  * TODO: Write brief description about the class here.
@@ -24,13 +23,25 @@ import com.mclinic.api.model.Credential;
 @Singleton
 public class Context {
 
-    private Credential credential;
+    private static final ThreadLocal<UserContext> credentialHolder = new ThreadLocal<UserContext>();
 
-    public Credential getCredential() {
-        return credential;
+    public static UserContext getUserContext() {
+        return credentialHolder.get();
     }
 
-    public void setCredential(final Credential credential) {
-        this.credential = credential;
+    public static void setUserContext(final UserContext userContext) {
+        credentialHolder.set(userContext);
+    }
+
+    public static void removeUserContext() {
+        credentialHolder.remove();
+    }
+
+    public static void authenticate(String username, String password) {
+        getUserContext().authenticate(username, password);
+    }
+
+    public static boolean isAuthenticated() {
+        return getUserContext().isAuthenticated();
     }
 }
