@@ -30,6 +30,9 @@ public class PatientServiceImpl implements PatientService {
     @Inject
     private PatientDao patientDao;
 
+    protected PatientServiceImpl() {
+    }
+
     /**
      * Download a single patient record from the patient rest resource into the local lucene repository.
      *

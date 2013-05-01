@@ -21,7 +21,7 @@ import com.mclinic.api.model.User;
 /**
  * TODO: Write brief description about the class here.
  */
-public class UserContext {
+class UserContext {
 
     private User user;
 
@@ -34,7 +34,7 @@ public class UserContext {
      * @param password the password.
      */
     public void authenticate(String username, String password) {
-        // search for the correct user and credential and then set it here.
+        //TODO: search for the correct user and credential and then set it here.
         user = new User();
     }
 

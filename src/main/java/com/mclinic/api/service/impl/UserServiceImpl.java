@@ -41,6 +41,9 @@ public class UserServiceImpl implements UserService {
     @Inject
     private RoleDao roleDao;
 
+    protected UserServiceImpl() {
+    }
+
     /**
      * Download a single user record from the user rest resource into the local lucene repository.
      *

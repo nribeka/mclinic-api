@@ -19,14 +19,10 @@ public aspect AuthenticationAspect {
             System.out.printf("Privilege: %s.\n", privilege);
         }
 
-        if (Context.getUserContext() == null)
-            System.out.println("User context is null!");
-        else {
-            if (!Context.isAuthenticated())
-                System.out.println("Context is not authenticated!");
-            else
-                System.out.println("Context is authenticated!");
-        }
+        if (!Context.isAuthenticated())
+            System.out.println("Context is not authenticated!");
+        else
+            System.out.println("Context is authenticated!");
 
     }
 }

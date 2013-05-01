@@ -40,6 +40,9 @@ public class FormServiceImpl implements FormService {
     @Inject
     private FormTemplateDao formTemplateDao;
 
+    protected FormServiceImpl() {
+    }
+
     /**
      * Download a single form record from the form rest resource into the local lucene repository.
      *

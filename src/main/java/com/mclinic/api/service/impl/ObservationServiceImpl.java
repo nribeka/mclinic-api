@@ -31,6 +31,9 @@ public class ObservationServiceImpl implements ObservationService {
     @Inject
     private ObservationDao observationDao;
 
+    protected ObservationServiceImpl() {
+    }
+
     /**
      * Download a single observation record from the observation rest resource into the local lucene repository.
      *

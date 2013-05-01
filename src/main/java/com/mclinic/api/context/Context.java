@@ -15,33 +15,86 @@
  */
 package com.mclinic.api.context;
 
-import com.google.inject.Singleton;
+import com.mclinic.api.service.CohortService;
+import com.mclinic.api.service.FormService;
+import com.mclinic.api.service.ObservationService;
+import com.mclinic.api.service.PatientService;
+import com.mclinic.api.service.UserService;
 
 /**
  * TODO: Write brief description about the class here.
  */
-@Singleton
 public class Context {
+
+    private static final ServiceContext serviceContext = ServiceContext.getInstance();
 
     private static final ThreadLocal<UserContext> credentialHolder = new ThreadLocal<UserContext>();
 
-    public static UserContext getUserContext() {
+    private Context() {
+    }
+
+    private static UserContext getUserContext() {
         return credentialHolder.get();
     }
 
-    public static void setUserContext(final UserContext userContext) {
+    private static void setUserContext(final UserContext userContext) {
         credentialHolder.set(userContext);
     }
 
-    public static void removeUserContext() {
+    private static void removeUserContext() {
         credentialHolder.remove();
     }
 
-    public static void authenticate(String username, String password) {
+    private static ServiceContext getServiceContext() {
+        return serviceContext;
+    }
+
+    public static void openSession() {
+        setUserContext(new UserContext());
+    }
+
+    public static void closeSession() {
+        removeUserContext();
+    }
+
+    //TODO: Need to throw AuthorizationException when userContext is null
+    public static void authenticate(final String username, final String password) {
         getUserContext().authenticate(username, password);
     }
 
+    public static void deauthenticate() {
+        getUserContext().logout();
+    }
+
     public static boolean isAuthenticated() {
-        return getUserContext().isAuthenticated();
+        return getUserContext() != null && getUserContext().isAuthenticated();
+    }
+
+    public static void startService() {
+        getServiceContext().start();
+    }
+
+    public static CohortService getCohortService() {
+        return getServiceContext().getService(CohortService.class);
+    }
+
+    public static FormService getFormService() {
+        return getServiceContext().getService(FormService.class);
+    }
+
+    public static ObservationService getObservationService() {
+        return getServiceContext().getService(ObservationService.class);
+    }
+
+    public static PatientService getPatientService() {
+        return getServiceContext().getService(PatientService.class);
+    }
+
+    public static UserService getUserService() {
+        return getServiceContext().getService(UserService.class);
+    }
+
+    public static <T> T getService(final Class<T> serviceClass) {
+        return getServiceContext().getService(serviceClass);
     }
 }
