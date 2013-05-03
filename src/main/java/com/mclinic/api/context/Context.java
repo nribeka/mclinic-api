@@ -15,6 +15,7 @@
  */
 package com.mclinic.api.context;
 
+import com.google.inject.Injector;
 import com.mclinic.api.service.CohortService;
 import com.mclinic.api.service.FormService;
 import com.mclinic.api.service.ObservationService;
@@ -26,75 +27,69 @@ import com.mclinic.api.service.UserService;
  */
 public class Context {
 
-    private static final ServiceContext serviceContext = ServiceContext.getInstance();
+    private Injector injector;
 
-    private static final ThreadLocal<UserContext> credentialHolder = new ThreadLocal<UserContext>();
+    private static final ThreadLocal<UserContext> userContextHolder = new ThreadLocal<UserContext>();
 
-    private Context() {
+    public Context(final Injector injector) {
+        this.injector = injector;
     }
 
-    private static UserContext getUserContext() {
-        return credentialHolder.get();
+    private UserContext getUserContext() {
+        return userContextHolder.get();
     }
 
-    private static void setUserContext(final UserContext userContext) {
-        credentialHolder.set(userContext);
+    private void setUserContext(final UserContext userContext) {
+        userContextHolder.set(userContext);
     }
 
-    private static void removeUserContext() {
-        credentialHolder.remove();
+    private void removeUserContext() {
+        userContextHolder.remove();
     }
 
-    private static ServiceContext getServiceContext() {
-        return serviceContext;
-    }
-
-    public static void openSession() {
+    public void openSession() {
         setUserContext(new UserContext());
     }
 
-    public static void closeSession() {
+    public void closeSession() {
         removeUserContext();
     }
 
     //TODO: Need to throw AuthorizationException when userContext is null
-    public static void authenticate(final String username, final String password) {
+    public void authenticate(final String username, final String password) {
         getUserContext().authenticate(username, password);
     }
 
-    public static void deauthenticate() {
+    public void deauthenticate() {
         getUserContext().logout();
     }
 
-    public static boolean isAuthenticated() {
+    public boolean isAuthenticated() {
         return getUserContext() != null && getUserContext().isAuthenticated();
     }
 
-    public static void startService() {
-        getServiceContext().start();
+    // TODO: Need to throw exception when the injector is still null
+    public CohortService getCohortService() {
+        return injector.getInstance(CohortService.class);
     }
 
-    public static CohortService getCohortService() {
-        return getServiceContext().getService(CohortService.class);
+    public FormService getFormService() {
+        return injector.getInstance(FormService.class);
     }
 
-    public static FormService getFormService() {
-        return getServiceContext().getService(FormService.class);
+    public ObservationService getObservationService() {
+        return injector.getInstance(ObservationService.class);
     }
 
-    public static ObservationService getObservationService() {
-        return getServiceContext().getService(ObservationService.class);
+    public PatientService getPatientService() {
+        return injector.getInstance(PatientService.class);
     }
 
-    public static PatientService getPatientService() {
-        return getServiceContext().getService(PatientService.class);
+    public UserService getUserService() {
+        return injector.getInstance(UserService.class);
     }
 
-    public static UserService getUserService() {
-        return getServiceContext().getService(UserService.class);
-    }
-
-    public static <T> T getService(final Class<T> serviceClass) {
-        return getServiceContext().getService(serviceClass);
+    public <T> T getService(final Class<T> serviceClass) {
+        return injector.getInstance(serviceClass);
     }
 }

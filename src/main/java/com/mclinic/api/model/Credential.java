@@ -29,7 +29,7 @@ public class Credential extends BaseSearchable {
 
     private String username;
 
-    private String seed;
+    private String salt;
 
     private String password;
 
@@ -94,21 +94,21 @@ public class Credential extends BaseSearchable {
     }
 
     /**
-     * Get the seed for hashing the password.
+     * Get the salt for hashing the password.
      *
-     * @return the seed for hashing the password.
+     * @return the salt for hashing the password.
      */
-    public String getSeed() {
-        return seed;
+    public String getSalt() {
+        return salt;
     }
 
     /**
-     * Set the seed for hashing the password.
+     * Set the salt for hashing the password.
      *
-     * @param seed the seed for hashing the password.
+     * @param salt the salt for hashing the password.
      */
-    public void setSeed(final String seed) {
-        this.seed = seed;
+    public void setSalt(final String salt) {
+        this.salt = salt;
     }
 
     /**

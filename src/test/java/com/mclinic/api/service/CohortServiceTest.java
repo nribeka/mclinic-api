@@ -16,6 +16,7 @@
 package com.mclinic.api.service;
 
 import com.mclinic.api.context.Context;
+import com.mclinic.api.context.ContextFactory;
 import org.junit.Test;
 
 /**
@@ -26,17 +27,17 @@ public class CohortServiceTest {
     @Test
     public void aspectTest() throws Exception {
 
-        Context.startService();
-        CohortService cohortService = Context.getCohortService();
+        Context context = ContextFactory.createContext();
+        CohortService cohortService = context.getCohortService();
         cohortService.getAllCohorts();
 
         System.out.println();
         System.out.println("Authentication ...");
 
-        Context.openSession();
-        Context.authenticate("username", "password");
+        context.openSession();
+        context.authenticate("username", "password");
         cohortService.getAllCohorts();
-        Context.closeSession();
+        context.closeSession();
 
         cohortService.getAllCohorts();
     }

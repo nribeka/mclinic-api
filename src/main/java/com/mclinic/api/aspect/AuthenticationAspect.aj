@@ -2,12 +2,14 @@ package com.mclinic.api.aspect;
 
 import com.mclinic.api.annotation.Authorization;
 import com.mclinic.api.context.Context;
+import com.mclinic.api.context.ContextFactory;
 import org.aspectj.lang.Signature;
 
 /**
  * TODO: Write brief description about the class here.
  */
 public aspect AuthenticationAspect {
+
     pointcut serviceMethod(Authorization authorization): execution(@Authorization * *(..))
             && @annotation(authorization);
 
@@ -19,7 +21,8 @@ public aspect AuthenticationAspect {
             System.out.printf("Privilege: %s.\n", privilege);
         }
 
-        if (!Context.isAuthenticated())
+        Context context = ContextFactory.createContext();
+        if (!context.isAuthenticated())
             System.out.println("Context is not authenticated!");
         else
             System.out.println("Context is authenticated!");

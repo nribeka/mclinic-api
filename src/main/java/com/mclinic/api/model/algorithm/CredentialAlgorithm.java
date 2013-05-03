@@ -49,7 +49,7 @@ public class CredentialAlgorithm extends BaseAlgorithm {
         user.setPassword(password);
 
         String seed = JsonPath.read(jsonObject, "$.seed");
-        user.setSeed(seed);
+        user.setSalt(seed);
 
         String checksum = DigestUtil.getSHA1Checksum(json);
         user.setChecksum(checksum);
@@ -71,7 +71,7 @@ public class CredentialAlgorithm extends BaseAlgorithm {
         jsonObject.put("userUuid", credential.getUserUuid());
         jsonObject.put("username", credential.getUsername());
         jsonObject.put("password", credential.getPassword());
-        jsonObject.put("seed", credential.getSeed());
+        jsonObject.put("seed", credential.getSalt());
         return jsonObject.toJSONString();
     }
 }
