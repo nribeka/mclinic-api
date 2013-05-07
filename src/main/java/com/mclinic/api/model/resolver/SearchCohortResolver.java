@@ -32,6 +32,7 @@ public class SearchCohortResolver extends BaseOpenmrsResolver {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
             param = "&q=" + searchString;
+        System.out.println("Configuration is null: " + (getConfiguration() == null));
         return getConfiguration().getServer() + "/ws/rest/v1/cohort?v=full" + param;
     }
 }

@@ -25,6 +25,8 @@ public class Observation extends OpenmrsSearchable {
 
     private String patientUuid;
 
+    private String encounterUuid;
+
     private String value = StringUtil.EMPTY;
 
     private Date observationDate;
@@ -71,6 +73,24 @@ public class Observation extends OpenmrsSearchable {
      */
     public void setPatientUuid(final String patientUuid) {
         this.patientUuid = patientUuid;
+    }
+
+    /**
+     * Get the encounter uuid for this observation.
+     *
+     * @return the encounter uuid.
+     */
+    public String getEncounterUuid() {
+        return encounterUuid;
+    }
+
+    /**
+     * Set the encounter uuid for this observation.
+     *
+     * @param encounterUuid the encounter id.
+     */
+    public void setEncounterUuid(final String encounterUuid) {
+        this.encounterUuid = encounterUuid;
     }
 
     /**

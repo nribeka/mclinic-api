@@ -1,0 +1,10 @@
+# Resource configuration
+resource.name=Uuid User Resource
+node.root=$
+resource.object=com.mclinic.api.model.User
+algorithm.class=com.mclinic.api.model.algorithm.UserAlgorithm
+resolver.class=com.mclinic.api.model.resolver.UuidUserResolver
+field.unique=uuid
+
+# Searchable Fields
+uuid=$.uuid

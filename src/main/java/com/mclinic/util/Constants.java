@@ -16,17 +16,25 @@
 package com.mclinic.util;
 
 public class Constants {
-
+    /*
+     * Context configuration.
+     */
     public static final String LUCENE_DIRECTORY_NAME = "configuration.lucene.directory";
 
     public static final String LUCENE_DOCUMENT_KEY = "configuration.lucene.document.key";
 
+    public static final String RESOURCE_CONFIGURATION_PATH = "configuration.resource.path";
+    /*
+     * OpenMRS server configuration.
+     */
     public static final String CONNECTION_SERVER = "connection.openmrs.server";
 
     public static final String CONNECTION_USERNAME = "connection.openmrs.username";
 
     public static final String CONNECTION_PASSWORD = "connection.openmrs.password";
-
+    /*
+     * Resource configuration.
+     */
     public static final String SEARCH_USER_RESOURCE = "Search User Resource";
 
     public static final String UUID_USER_RESOURCE = "Uuid User Resource";

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mclinic.api.configuration;
+package com.mclinic.api.config;
 
+import com.mclinic.search.api.registry.DefaultRegistry;
 import com.mclinic.search.api.registry.Registry;
 import com.mclinic.util.Constants;
 
@@ -24,6 +25,23 @@ import com.mclinic.util.Constants;
 public class Configuration {
 
     private Registry<String, String> registry;
+
+    public Configuration() {
+        registry = new DefaultRegistry<String, String>();
+    }
+
+    /**
+     * Configure this configuration with the username, password and the server.
+     *
+     * @param username the username.
+     * @param password the password.
+     * @param server   the server.
+     */
+    public void configure(final String username, final String password, final String server) {
+        setUsername(username);
+        setPassword(password);
+        setServer(server);
+    }
 
     /**
      * Get the base url of the openmrs server.

@@ -17,28 +17,36 @@ package com.mclinic.api.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
-import com.mclinic.api.configuration.Configuration;
+import com.mclinic.api.config.Configuration;
 import com.mclinic.search.api.logger.LogLevel;
 import com.mclinic.util.Constants;
 
 public class MuzimaModule extends AbstractModule {
 
-    private String repositoryPath;
-
     private String documentKey;
 
+    private String repositoryPath;
+
+    private Configuration configuration;
+
     public MuzimaModule(final String repositoryPath, final String documentKey) {
-        this.repositoryPath = repositoryPath;
         this.documentKey = documentKey;
+        this.repositoryPath = repositoryPath;
+        this.configuration = new Configuration();
     }
 
     @Override
     protected void configure() {
-        bind(String.class).annotatedWith(Names.named(Constants.LUCENE_DIRECTORY_NAME)).toInstance(repositoryPath);
-        bind(String.class).annotatedWith(Names.named(Constants.LUCENE_DOCUMENT_KEY)).toInstance(documentKey);
-        bind(LogLevel.class).toInstance(LogLevel.DEBUG);
+        bind(String.class)
+                .annotatedWith(Names.named(Constants.LUCENE_DIRECTORY_NAME))
+                .toInstance(repositoryPath);
+        bind(String.class)
+                .annotatedWith(Names.named(Constants.LUCENE_DOCUMENT_KEY))
+                .toInstance(documentKey);
 
-        Configuration configuration = new Configuration();
         bind(Configuration.class).toInstance(configuration);
+
+        // TODO: change the debug level in production by binding the log level to info.
+        bind(LogLevel.class).toInstance(LogLevel.DEBUG);
     }
 }

@@ -46,6 +46,9 @@ public class ObservationAlgorithm extends BaseOpenmrsAlgorithm {
         String patientUuid = JsonPath.read(jsonObject, "$.person.uuid");
         observation.setPatientUuid(patientUuid);
 
+        String encounterUuid = JsonPath.read(jsonObject, "$.encounter.uuid");
+        observation.setEncounterUuid(encounterUuid);
+
         String conceptName = JsonPath.read(jsonObject, "$.concept.display");
         observation.setQuestionName(conceptName);
 

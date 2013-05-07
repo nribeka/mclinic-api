@@ -1,12 +1,10 @@
 # Resource configuration
-resource.name=Observation Resource
+resource.name=Search Observation Resource
 node.root=$.results
 resource.object=com.mclinic.api.model.Observation
 algorithm.class=com.mclinic.api.model.algorithm.ObservationAlgorithm
-resolver.class=com.mclinic.api.model.resolver.ObservationResolver
+resolver.class=com.mclinic.api.model.resolver.SearchObservationResolver
 field.unique=uuid
-# Mapping
+
+# Searchable Fields
 uuid=$.uuid
-patientUuid=$.person.uuid
-conceptUuid=$.concept.uuid
-display=$.display

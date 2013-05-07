@@ -5,6 +5,8 @@ import com.mclinic.api.context.Context;
 import com.mclinic.api.context.ContextFactory;
 import org.aspectj.lang.Signature;
 
+import java.io.IOException;
+
 /**
  * TODO: Write brief description about the class here.
  */
@@ -21,11 +23,15 @@ public aspect AuthenticationAspect {
             System.out.printf("Privilege: %s.\n", privilege);
         }
 
-        Context context = ContextFactory.createContext();
-        if (!context.isAuthenticated())
-            System.out.println("Context is not authenticated!");
-        else
-            System.out.println("Context is authenticated!");
+        try {
+            Context context = ContextFactory.createContext();
+            if (!context.isAuthenticated())
+                System.out.println("Context is not authenticated!");
+            else
+                System.out.println("Context is authenticated!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

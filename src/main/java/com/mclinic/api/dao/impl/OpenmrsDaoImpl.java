@@ -41,6 +41,8 @@ public abstract class OpenmrsDaoImpl<T extends OpenmrsSearchable> extends Search
      * @param resource resource descriptor used to convert the resource to the correct object.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
+     *                        TODO: Change the signature of this to return list of downloaded objects.
+     *                        TODO: Change the signature of the service to match the param (uuid return one, name return list).
      */
     @Override
     public void download(final String term, final String resource) throws ParseException, IOException {

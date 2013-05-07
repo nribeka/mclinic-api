@@ -17,7 +17,11 @@ package com.mclinic.api.service;
 
 import com.mclinic.api.context.Context;
 import com.mclinic.api.context.ContextFactory;
+import com.mclinic.api.model.Cohort;
+import com.mclinic.search.api.util.StringUtil;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * TODO: Write brief description about the class here.
@@ -26,19 +30,22 @@ public class CohortServiceTest {
 
     @Test
     public void aspectTest() throws Exception {
-
         Context context = ContextFactory.createContext();
-        CohortService cohortService = context.getCohortService();
-        cohortService.getAllCohorts();
-
-        System.out.println();
-        System.out.println("Authentication ...");
 
         context.openSession();
-        context.authenticate("username", "password");
-        cohortService.getAllCohorts();
-        context.closeSession();
+        if (!context.isAuthenticated())
+            context.authenticate("admin", "test", "http://localhost:8081/openmrs-standalone");
 
-        cohortService.getAllCohorts();
+        context = ContextFactory.createContext();
+
+        CohortService cohortService = context.getCohortService();
+        cohortService.downloadCohortsByName(StringUtil.EMPTY);
+        List<Cohort> cohorts = cohortService.getAllCohorts();
+
+        for (Cohort cohort : cohorts)
+            System.out.println("Cohort: " + cohort.getName() + " | " + cohort.getUuid());
+
+        context.deauthenticate();
+        context.closeSession();
     }
 }

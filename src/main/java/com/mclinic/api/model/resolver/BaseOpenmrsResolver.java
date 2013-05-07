@@ -16,17 +16,14 @@
 package com.mclinic.api.model.resolver;
 
 import com.google.inject.Inject;
-import com.mclinic.api.Authenticator;
-import com.mclinic.api.configuration.Configuration;
+import com.mclinic.api.config.Configuration;
 import com.mclinic.search.api.model.resolver.BaseResolver;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
 import java.net.URLConnection;
 
 public abstract class BaseOpenmrsResolver extends BaseResolver {
-
-    @Inject
-    private Authenticator authenticator;
 
     @Inject
     private Configuration configuration;
@@ -48,6 +45,9 @@ public abstract class BaseOpenmrsResolver extends BaseResolver {
      */
     @Override
     public URLConnection authenticate(final URLConnection connection) throws IOException {
-        return authenticator.authenticate(connection);
+        String authorization = getConfiguration().getUsername() + ":" + getConfiguration().getPassword();
+        String encodedAuthorization = new String(Base64.encodeBase64(authorization.getBytes()));
+        connection.setRequestProperty("Authorization", "Basic " + encodedAuthorization);
+        return connection;
     }
 }

@@ -17,22 +17,74 @@ package com.mclinic.api.context;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.util.Modules;
 import com.mclinic.api.module.MuzimaModule;
 import com.mclinic.search.api.module.SearchModule;
+import com.mclinic.util.Constants;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
 
 /**
  * TODO: Write brief description about the class here.
  */
 public class ContextFactory {
 
+    private static final String OPENMRS_UUID = "uuid";
+
+    private static Properties contextProperties = new Properties();
+
+    static {
+        URL configUrl = ContextFactory.class.getResource("../service/j2l");
+        contextProperties.setProperty(Constants.RESOURCE_CONFIGURATION_PATH, configUrl.getPath());
+        contextProperties.setProperty(
+                Constants.LUCENE_DIRECTORY_NAME, System.getProperty("java.io.tmpdir"));
+        contextProperties.setProperty(Constants.LUCENE_DOCUMENT_KEY, OPENMRS_UUID);
+    }
+
+    /**
+     * Set a property's value for the context property.
+     *
+     * @param property      the property name.
+     * @param propertyValue the property value.
+     */
+    public static void setProperty(final String property, final String propertyValue) {
+        contextProperties.setProperty(property, propertyValue);
+    }
+
+    /**
+     * Set the context's properties to the properties object.
+     *
+     * @param properties the properties to be set as the context's properties.
+     */
+    public static void setProperties(final Properties properties) {
+        contextProperties = properties;
+    }
+
+    /**
+     * Get copy of the properties with the current properties as the default value. Changing values in the returned
+     * properties will not change the actual values stored inside the context properties. Use the
+     * <code>setProperty</code> or <code>setProperties</code> instead.
+     *
+     * @return copy of the properties with the values from the context's properties as the default.
+     */
+    public static Properties getProperties() {
+        return new Properties(contextProperties);
+    }
+
     // TODO: create context with different signature
     // potential signatures are:
     // * createContext(String path) --> path to the lucene location
     // * createContext(Module ... modules) --> if the consumer wants to create different modules.
-    public static Context createContext() {
-        String tmpDirectory = System.getProperty("java.io.tmpdir");
-        Injector injector = Guice.createInjector(new SearchModule(), new MuzimaModule(tmpDirectory, "uuid"));
-        Context context = new Context(injector);
-        return context;
+    public static Context createContext() throws IOException {
+        Module searchModule = new SearchModule();
+        Module muzimaModule = new MuzimaModule(
+                contextProperties.getProperty(Constants.LUCENE_DIRECTORY_NAME),
+                contextProperties.getProperty(Constants.LUCENE_DOCUMENT_KEY));
+        Module module = Modules.combine(searchModule, muzimaModule);
+        Injector injector = Guice.createInjector(module);
+        return new Context(injector);
     }
 }

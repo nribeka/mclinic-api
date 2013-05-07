@@ -1,0 +1,10 @@
+# Resource
+resource.name=Local Form Data Resource
+node.root=$
+resource.object=com.mclinic.api.model.FormData
+algorithm.class=com.mclinic.api.model.algorithm.FormDataAlgorithm
+resolver.class=com.mclinic.api.model.resolver.LocalResolver
+field.unique=uuid
+
+# Searchable Fields
+uuid=$.uuid

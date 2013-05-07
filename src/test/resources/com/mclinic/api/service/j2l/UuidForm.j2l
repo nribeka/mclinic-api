@@ -1,0 +1,10 @@
+# Resource configuration
+resource.name=Uuid Form Resource
+node.root=$
+resource.object=com.mclinic.api.model.Form
+algorithm.class=com.mclinic.api.model.algorithm.FormAlgorithm
+resolver.class=com.mclinic.api.model.resolver.UuidFormResolver
+field.unique=uuid
+
+# Searchable Fields
+uuid=$.uuid
