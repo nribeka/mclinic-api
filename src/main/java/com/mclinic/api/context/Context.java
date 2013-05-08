@@ -17,60 +17,23 @@ package com.mclinic.api.context;
 
 import com.google.inject.Injector;
 import com.mclinic.api.config.Configuration;
-import com.mclinic.api.model.Cohort;
-import com.mclinic.api.model.Credential;
-import com.mclinic.api.model.Form;
-import com.mclinic.api.model.FormData;
-import com.mclinic.api.model.FormTemplate;
-import com.mclinic.api.model.Member;
-import com.mclinic.api.model.Observation;
-import com.mclinic.api.model.Patient;
-import com.mclinic.api.model.Privilege;
-import com.mclinic.api.model.Role;
-import com.mclinic.api.model.User;
-import com.mclinic.api.model.algorithm.CohortAlgorithm;
-import com.mclinic.api.model.algorithm.CredentialAlgorithm;
-import com.mclinic.api.model.algorithm.FormAlgorithm;
-import com.mclinic.api.model.algorithm.FormDataAlgorithm;
-import com.mclinic.api.model.algorithm.FormTemplateAlgorithm;
-import com.mclinic.api.model.algorithm.MemberAlgorithm;
-import com.mclinic.api.model.algorithm.ObservationAlgorithm;
-import com.mclinic.api.model.algorithm.PatientAlgorithm;
-import com.mclinic.api.model.algorithm.PrivilegeAlgorithm;
-import com.mclinic.api.model.algorithm.RoleAlgorithm;
-import com.mclinic.api.model.algorithm.UserAlgorithm;
-import com.mclinic.api.model.resolver.LocalResolver;
-import com.mclinic.api.model.resolver.MemberCohortResolver;
-import com.mclinic.api.model.resolver.SearchCohortResolver;
-import com.mclinic.api.model.resolver.SearchFormResolver;
-import com.mclinic.api.model.resolver.SearchObservationResolver;
-import com.mclinic.api.model.resolver.SearchPatientResolver;
-import com.mclinic.api.model.resolver.SearchPrivilegeResolver;
-import com.mclinic.api.model.resolver.SearchRoleResolver;
-import com.mclinic.api.model.resolver.SearchUserResolver;
-import com.mclinic.api.model.resolver.UuidCohortResolver;
-import com.mclinic.api.model.resolver.UuidFormResolver;
-import com.mclinic.api.model.resolver.UuidObservationResolver;
-import com.mclinic.api.model.resolver.UuidPatientResolver;
-import com.mclinic.api.model.resolver.UuidPrivilegeResolver;
-import com.mclinic.api.model.resolver.UuidRoleResolver;
-import com.mclinic.api.model.resolver.UuidUserResolver;
 import com.mclinic.api.service.CohortService;
 import com.mclinic.api.service.FormService;
 import com.mclinic.api.service.ObservationService;
 import com.mclinic.api.service.PatientService;
 import com.mclinic.api.service.UserService;
 import com.mclinic.search.api.context.ServiceContext;
-import com.mclinic.search.api.model.object.BaseSearchable;
-import com.mclinic.search.api.model.resolver.BaseResolver;
-import com.mclinic.search.api.model.serialization.BaseAlgorithm;
+import com.mclinic.search.api.model.object.Searchable;
+import com.mclinic.search.api.model.resolver.Resolver;
+import com.mclinic.search.api.model.serialization.Algorithm;
+import com.mclinic.search.api.resource.ResourceConstants;
 import org.apache.lucene.queryParser.ParseException;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
 /**
  * TODO: Write brief description about the class here.
@@ -80,25 +43,6 @@ public class Context {
     private Injector injector;
 
     private static final ThreadLocal<UserContext> userContextHolder = new ThreadLocal<UserContext>();
-
-    private static final List<Class<? extends BaseSearchable>> searachables = Arrays.asList(
-            Cohort.class, Credential.class, Form.class, FormData.class, FormTemplate.class, Member.class,
-            Observation.class, Patient.class, Privilege.class, Role.class, User.class
-    );
-
-    private static final List<Class<? extends BaseAlgorithm>> algorithms = Arrays.asList(
-            CohortAlgorithm.class, CredentialAlgorithm.class, FormAlgorithm.class, FormDataAlgorithm.class,
-            FormTemplateAlgorithm.class, MemberAlgorithm.class, ObservationAlgorithm.class, PatientAlgorithm.class,
-            PrivilegeAlgorithm.class, RoleAlgorithm.class, UserAlgorithm.class
-    );
-
-    private static final List<Class<? extends BaseResolver>> resolvers = Arrays.asList(
-            LocalResolver.class, MemberCohortResolver.class, SearchCohortResolver.class, SearchFormResolver.class,
-            SearchObservationResolver.class, SearchPatientResolver.class, SearchPrivilegeResolver.class,
-            SearchRoleResolver.class, SearchUserResolver.class, UuidCohortResolver.class, UuidFormResolver.class,
-            UuidObservationResolver.class, UuidPatientResolver.class, UuidPrivilegeResolver.class,
-            UuidRoleResolver.class, UuidUserResolver.class
-    );
 
     public Context(final Injector injector) throws IOException {
         setInjector(injector);
@@ -123,20 +67,48 @@ public class Context {
         // * Do: Class c = Class.forName() using the class name from above.
         // * Do: Object o = inject.getInstance(c).
         // * Register object according to their type registerObject, registerAlgorithm, or registerResolver.
-        ServiceContext serviceContext = injector.getInstance(ServiceContext.class);
-        for (Class<? extends BaseSearchable> searachable : searachables)
-            serviceContext.registerObject(injector.getInstance(searachable));
-        for (Class<? extends BaseAlgorithm> algorithm : algorithms)
-            serviceContext.registerAlgorithm(injector.getInstance(algorithm));
-        for (Class<? extends BaseResolver> resolver : resolvers)
-            serviceContext.registerResolver(injector.getInstance(resolver));
         // TODO: Create a list of all available configuration file to load j2l automatically.
         // Approach:
         // * Create a list of all configuration file (list of j2l file names, just like they list hbm files).
         // * TODO: need to add a new method in the search api to register resource using InputStream --done
         // * Read each line and use Class.getResourceAsStream(path to j2l) and then register each of them.
-        URL configUrl = ContextFactory.class.getResource("../service/j2l");
-        serviceContext.registerResources(new File(configUrl.getPath()));
+        ServiceContext serviceContext = injector.getInstance(ServiceContext.class);
+
+        InputStream configListStream = Context.class.getResourceAsStream("../service/j2l/config.list");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(configListStream));
+
+        String line;
+        InputStream inputStream;
+        while ((line = reader.readLine()) != null) {
+            try {
+                inputStream = Context.class.getResourceAsStream("../service/j2l/" + line);
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                inputStream.close();
+
+                String searchableName = properties.getProperty(ResourceConstants.RESOURCE_SEARCHABLE);
+                Class searchableClass = Class.forName(searchableName);
+                Searchable searchable = (Searchable) injector.getInstance(searchableClass);
+                serviceContext.registerSearchable(searchable);
+
+                String algorithmName = properties.getProperty(ResourceConstants.RESOURCE_ALGORITHM_CLASS);
+                Class algorithmClass = Class.forName(algorithmName);
+                Algorithm algorithm = (Algorithm) injector.getInstance(algorithmClass);
+                serviceContext.registerAlgorithm(algorithm);
+
+                String resolverName = properties.getProperty(ResourceConstants.RESOURCE_URI_RESOLVER_CLASS);
+                Class resolverClass = Class.forName(resolverName);
+                Resolver resolver = (Resolver) injector.getInstance(resolverClass);
+                serviceContext.registerResolver(resolver);
+
+                inputStream = Context.class.getResourceAsStream("../service/j2l/" + line);
+                serviceContext.registerResource(inputStream);
+                inputStream.close();
+            } catch (ClassNotFoundException e) {
+                throw new IOException("Unable to register resource for " + line, e);
+            }
+        }
+        configListStream.close();
     }
 
     private void initConfiguration(final Injector injector) throws IOException {

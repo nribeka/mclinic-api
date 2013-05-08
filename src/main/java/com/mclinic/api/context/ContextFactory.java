@@ -24,7 +24,6 @@ import com.mclinic.search.api.module.SearchModule;
 import com.mclinic.util.Constants;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -37,8 +36,6 @@ public class ContextFactory {
     private static Properties contextProperties = new Properties();
 
     static {
-        URL configUrl = ContextFactory.class.getResource("../service/j2l");
-        contextProperties.setProperty(Constants.RESOURCE_CONFIGURATION_PATH, configUrl.getPath());
         contextProperties.setProperty(
                 Constants.LUCENE_DIRECTORY_NAME, System.getProperty("java.io.tmpdir"));
         contextProperties.setProperty(Constants.LUCENE_DOCUMENT_KEY, OPENMRS_UUID);
