@@ -14,11 +14,14 @@
 package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
+import com.mclinic.api.model.Privilege;
 import com.mclinic.api.model.Role;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.util.DigestUtil;
+import net.minidev.json.JSONArray;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoleAlgorithm extends BaseOpenmrsAlgorithm {
 
@@ -34,17 +37,31 @@ public class RoleAlgorithm extends BaseOpenmrsAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         role.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.display");
+        String name = JsonPath.read(jsonObject, "$['name']");
         role.setName(name);
 
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        role.setChecksum(checksum);
+        Object privilegeArrayObject = JsonPath.read(jsonObject, "$['privileges']");
+        if (privilegeArrayObject instanceof JSONArray) {
+            List<Privilege> privileges = new ArrayList<Privilege>();
 
-        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
-        role.setUri(uri);
+            JSONArray privilegeArray = (JSONArray) privilegeArrayObject;
+            for (Object privilegeObject : privilegeArray) {
+                Privilege privilege = new Privilege();
+
+                String privilegeUuid = JsonPath.read(privilegeObject, "$['uuid']");
+                privilege.setUuid(privilegeUuid);
+
+                String privilegeName = JsonPath.read(privilegeObject, "$['name']");
+                privilege.setName(privilegeName);
+
+                privileges.add(privilege);
+            }
+
+            role.setPrivileges(privileges);
+        }
 
         return role;
     }

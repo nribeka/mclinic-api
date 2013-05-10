@@ -17,9 +17,14 @@ package com.mclinic.api.dao.impl;
 
 import com.mclinic.api.dao.UserDao;
 import com.mclinic.api.model.User;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
+import com.mclinic.search.api.util.CollectionUtil;
+import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
@@ -33,7 +38,7 @@ public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
     /**
      * Get a user record by the user name of the user.
      *
-     * @param username the username
+     * @param username the username of the user.
      * @return user with matching username.
      * @throws org.apache.lucene.queryParser.ParseException
      *                             when query parser from lucene unable to parse the query string.
@@ -41,7 +46,19 @@ public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
      */
     @Override
     public User getByUsername(final String username) throws ParseException, IOException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        User user = null;
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(username)) {
+            Filter filter = FilterFactory.createFilter("username", username);
+            filters.add(filter);
+        }
+        List<User> users = service.getObjects(filters, User.class);
+        if (!CollectionUtil.isEmpty(users)) {
+            if (users.size() > 1)
+                throw new IOException("Unable to uniquely identify a Patient using the identifier");
+            user = users.get(0);
+        }
+        return user;
     }
 
     /**
@@ -55,6 +72,12 @@ public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
      */
     @Override
     public List<User> getByName(final String name) throws ParseException, IOException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        StringBuilder query = new StringBuilder();
+        if (!StringUtil.isEmpty(name)) {
+            query.append("givenName:").append(name).append("*").append(" OR ");
+            query.append("middleName:").append(name).append("*").append(" OR ");
+            query.append("familyName:").append(name).append("*");
+        }
+        return service.getObjects(query.toString(), User.class);
     }
 }

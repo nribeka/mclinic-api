@@ -16,7 +16,6 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Privilege;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.util.DigestUtil;
 
 import java.io.IOException;
 
@@ -34,17 +33,11 @@ public class PrivilegeAlgorithm extends BaseOpenmrsAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         privilege.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.display");
+        String name = JsonPath.read(jsonObject, "$['name']");
         privilege.setName(name);
-
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        privilege.setChecksum(checksum);
-
-        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
-        privilege.setUri(uri);
 
         return privilege;
     }

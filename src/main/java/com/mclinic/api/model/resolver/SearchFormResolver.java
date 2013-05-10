@@ -19,6 +19,8 @@ import java.io.IOException;
 
 public class SearchFormResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION = "?v=custom:(uuid,name)";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -30,6 +32,6 @@ public class SearchFormResolver extends BaseOpenmrsResolver {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
             param = "?q=" + searchString;
-        return getConfiguration().getServer() + "/ws/rest/v1/form" + param;
+        return getConfiguration().getServer() + "/ws/rest/v1/form" + REPRESENTATION + param;
     }
 }

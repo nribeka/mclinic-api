@@ -14,12 +14,16 @@
 package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
+import com.mclinic.api.model.Privilege;
+import com.mclinic.api.model.Role;
 import com.mclinic.api.model.User;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.util.DigestUtil;
 import com.mclinic.search.api.util.StringUtil;
+import net.minidev.json.JSONArray;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserAlgorithm extends BaseOpenmrsAlgorithm {
 
@@ -35,19 +39,63 @@ public class UserAlgorithm extends BaseOpenmrsAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         user.setUuid(uuid);
 
-        String display = JsonPath.read(jsonObject, "$.display");
-        String[] displayElements = StringUtil.split(display, "-");
-        user.setUsername(displayElements[0]);
-        user.setName(displayElements[1]);
+        String givenName = JsonPath.read(jsonObject, "$['personName.givenName']");
+        user.setGivenName(givenName);
 
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        user.setChecksum(checksum);
+        String middleName = JsonPath.read(jsonObject, "$['personName.middleName']");
+        user.setMiddleName(middleName);
 
-        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
-        user.setUri(uri);
+        String familyName = JsonPath.read(jsonObject, "$['personName.familyName']");
+        user.setFamilyName(familyName);
+
+        String username;
+        username = JsonPath.read(jsonObject, "$['username']");
+        if (StringUtil.isEmpty(username))
+            username = JsonPath.read(jsonObject, "$['systemId']");
+        user.setUsername(username);
+
+        Object privilegeArrayObject = JsonPath.read(jsonObject, "$['privileges']");
+        if (privilegeArrayObject instanceof JSONArray) {
+            List<Privilege> privileges = new ArrayList<Privilege>();
+
+            JSONArray privilegeArray = (JSONArray) privilegeArrayObject;
+            for (Object privilegeObject : privilegeArray) {
+                Privilege privilege = new Privilege();
+
+                String privilegeUuid = JsonPath.read(privilegeObject, "$['uuid']");
+                privilege.setUuid(privilegeUuid);
+
+                String privilegeName = JsonPath.read(privilegeObject, "$['name']");
+                privilege.setName(privilegeName);
+
+                privileges.add(privilege);
+            }
+
+            user.setPrivileges(privileges);
+        }
+
+        Object roleArrayObject = JsonPath.read(jsonObject, "$['roles']");
+        if (roleArrayObject instanceof JSONArray) {
+            List<Role> roles = new ArrayList<Role>();
+
+            JSONArray roleArray = (JSONArray) roleArrayObject;
+            for (Object roleObject : roleArray) {
+                Role role = new Role();
+
+                String privilegeUuid = JsonPath.read(roleObject, "$['uuid']");
+                role.setUuid(privilegeUuid);
+
+                String privilegeName = JsonPath.read(roleObject, "$['name']");
+                role.setName(privilegeName);
+
+                roles.add(role);
+            }
+
+            user.setRoles(roles);
+        }
 
         return user;
     }

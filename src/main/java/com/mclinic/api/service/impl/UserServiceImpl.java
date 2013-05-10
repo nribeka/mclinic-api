@@ -17,6 +17,7 @@ package com.mclinic.api.service.impl;
 
 import com.google.inject.Inject;
 import com.mclinic.api.dao.CredentialDao;
+import com.mclinic.api.dao.PrivilegeDao;
 import com.mclinic.api.dao.RoleDao;
 import com.mclinic.api.dao.UserDao;
 import com.mclinic.api.model.Credential;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     private CredentialDao credentialDao;
+
+    @Inject
+    private PrivilegeDao privilegeDao;
 
     @Inject
     private RoleDao roleDao;
@@ -131,11 +135,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteUser(final User user) throws IOException, ParseException {
-        try {
-            userDao.delete(user, Constants.UUID_USER_RESOURCE);
-        } catch (IOException e) {
-            userDao.delete(user, Constants.SEARCH_USER_RESOURCE);
-        }
+        throw new IOException("Delete operation is not supported for user object!");
     }
 
     /**
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void saveCredential(final Credential credential) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        credentialDao.save(credential, Constants.LOCAL_CREDENTIAL_RESOURCE);
     }
 
     /**
@@ -163,7 +163,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void updateCredential(final Credential credential) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        credentialDao.delete(credential, Constants.LOCAL_FORM_DATA_RESOURCE);
+        credentialDao.save(credential, Constants.LOCAL_CREDENTIAL_RESOURCE);
     }
 
     /**
@@ -178,7 +179,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Credential getCredentialByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return credentialDao.getByUuid(uuid);
     }
 
     /**
@@ -193,7 +194,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Credential getCredentialByUsername(final String username) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return credentialDao.getByUsername(username);
     }
 
     /**
@@ -207,7 +208,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<Credential> getAllCredentials() throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return credentialDao.getAll();
     }
 
     /**
@@ -221,7 +222,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteCredential(final Credential credential) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        credentialDao.delete(credential, Constants.LOCAL_CREDENTIAL_RESOURCE);
     }
 
     /**
@@ -235,7 +236,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void downloadPrivilege(final String uuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        privilegeDao.download(uuid, Constants.UUID_PRIVILEGE_RESOURCE);
     }
 
     /**
@@ -249,7 +250,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void downloadPrivileges(final String name) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        privilegeDao.download(name, Constants.SEARCH_PRIVILEGE_RESOURCE);
     }
 
     /**
@@ -264,7 +265,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Privilege getPrivilegeByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return privilegeDao.getByUuid(uuid);
     }
 
     /**
@@ -280,7 +281,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<Privilege> getPrivilegesByName(final String name) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return privilegeDao.getByName(name);
     }
 
     /**
@@ -294,7 +295,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deletePrivilege(final Privilege privilege) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new IOException("Delete operation is not supported for privilege object!");
     }
 
     /**
@@ -308,7 +309,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void downloadRole(final String uuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        roleDao.download(uuid, Constants.UUID_ROLE_RESOURCE);
     }
 
     /**
@@ -322,7 +323,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void downloadRoles(final String name) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        roleDao.download(name, Constants.SEARCH_ROLE_RESOURCE);
     }
 
     /**
@@ -337,7 +338,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Role getRoleByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return roleDao.getByUuid(uuid);
     }
 
     /**
@@ -353,7 +354,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<Role> getRolesByName(final String name) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return roleDao.getByName(name);
     }
 
     /**
@@ -367,6 +368,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteRole(final Role role) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new IOException("Delete operation is not supported for role object!");
     }
 }

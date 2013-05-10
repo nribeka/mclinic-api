@@ -36,8 +36,6 @@ public class FormData extends BaseSearchable {
 
     private String templateUuid;
 
-    private String checksum;
-
     /**
      * Get the form data uuid.
      *
@@ -144,25 +142,5 @@ public class FormData extends BaseSearchable {
      */
     public void setTemplateUuid(String templateUuid) {
         this.templateUuid = templateUuid;
-    }
-
-    /**
-     * Get the checksum for the searchable object.
-     *
-     * @return the searchable object's checksum.
-     */
-    @Override
-    public String getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * Set the checksum for the searchable object.
-     *
-     * @param checksum the checksum for the searchable object.
-     */
-    @Override
-    public void setChecksum(String checksum) {
-        this.checksum = checksum;
     }
 }

@@ -21,6 +21,8 @@ import java.io.IOException;
 
 public class UuidCohortResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION = "?v=custom:(uuid,name)";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -32,6 +34,6 @@ public class UuidCohortResolver extends BaseOpenmrsResolver {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
             param = "/" + searchString;
-        return getConfiguration().getServer() + "/ws/rest/v1/cohort" + param;
+        return getConfiguration().getServer() + "/ws/rest/v1/cohort" + param + REPRESENTATION;
     }
 }

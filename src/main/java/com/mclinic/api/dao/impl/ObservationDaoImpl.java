@@ -17,10 +17,13 @@ package com.mclinic.api.dao.impl;
 
 import com.mclinic.api.dao.ObservationDao;
 import com.mclinic.api.model.Observation;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ObservationDaoImpl extends OpenmrsDaoImpl<Observation> implements ObservationDao {
@@ -35,17 +38,22 @@ public class ObservationDaoImpl extends OpenmrsDaoImpl<Observation> implements O
      * Search observations for patient with matching partial search term.
      *
      * @param patientUuid the uuid of the patient.
-     * @param term        the search term for the question of the observations.
+     * @param conceptName the search term for the question of the observations.
      * @return all observations for the patient with question matching the search term.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
     @Override
-    public List<Observation> search(final String patientUuid, final String term) throws ParseException, IOException {
-        String patientQuery = StringUtil.EMPTY;
-        if (patientUuid != null && !StringUtil.isEmpty(patientUuid))
-            patientQuery = "(patientUuid: " + StringUtil.quote(patientUuid) + ")";
-        // TODO: fix the search query later on!
-        return service.getObjects(patientQuery + "(" + patientQuery + ")", Observation.class);
+    public List<Observation> search(final String patientUuid, final String conceptName) throws ParseException, IOException {
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(patientUuid)) {
+            Filter patientFilter = FilterFactory.createFilter("patientUuid", patientUuid);
+            filters.add(patientFilter);
+        }
+        if (!StringUtil.isEmpty(conceptName)) {
+            Filter conceptFilter = FilterFactory.createFilter("conceptName", conceptName);
+            filters.add(conceptFilter);
+        }
+        return service.getObjects(filters, Observation.class);
     }
 }

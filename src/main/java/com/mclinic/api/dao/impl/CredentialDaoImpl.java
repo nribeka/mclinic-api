@@ -17,6 +17,15 @@ package com.mclinic.api.dao.impl;
 
 import com.mclinic.api.dao.CredentialDao;
 import com.mclinic.api.model.Credential;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
+import com.mclinic.search.api.util.CollectionUtil;
+import com.mclinic.search.api.util.StringUtil;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CredentialDaoImpl extends LocalDaoImpl<Credential> implements CredentialDao {
 
@@ -24,6 +33,32 @@ public class CredentialDaoImpl extends LocalDaoImpl<Credential> implements Crede
 
     protected CredentialDaoImpl() {
         super(Credential.class);
+    }
+
+    /**
+     * Get a credential record by the username of the user.
+     *
+     * @param username the username of the user.
+     * @return credential with matching username.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
+    @Override
+    public Credential getByUsername(final String username) throws ParseException, IOException {
+        Credential credential = null;
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(username)) {
+            Filter filter = FilterFactory.createFilter("username", username);
+            filters.add(filter);
+        }
+        List<Credential> credentials = service.getObjects(filters, Credential.class);
+        if (!CollectionUtil.isEmpty(credentials)) {
+            if (credentials.size() > 1)
+                throw new IOException("Unable to uniquely identify a Patient using the identifier");
+            credential = credentials.get(0);
+        }
+        return credential;
     }
 
 }

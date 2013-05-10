@@ -19,6 +19,10 @@ import java.io.IOException;
 
 public class SearchUserResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION =
+            "?v=custom:(uuid,person.personName.givenName,person.personName.middleName,person.personName.familyName," +
+                    "username,systemId,roles:(uuid,name),privileges:(uuid,name))";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -29,7 +33,7 @@ public class SearchUserResolver extends BaseOpenmrsResolver {
     public String resolve(final String searchString) throws IOException {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
-            param = "?q=" + searchString;
-        return getConfiguration().getServer() + "/ws/rest/v1/user" + param;
+            param = "&q=" + searchString;
+        return getConfiguration().getServer() + "/ws/rest/v1/user" + REPRESENTATION + param;
     }
 }

@@ -16,6 +16,14 @@
 package com.mclinic.util;
 
 public class Constants {
+
+    public static final String DATE_FORMAT = "dd/MMM/yyyy";
+
+    public static final int TYPE_NUMERIC = 1;
+
+    public static final int TYPE_DATE = 2;
+
+    public static final int TYPE_STRING = 3;
     /*
      * Context configuration.
      */
@@ -35,10 +43,6 @@ public class Constants {
     /*
      * Resource configuration.
      */
-    public static final String SEARCH_USER_RESOURCE = "Search User Resource";
-
-    public static final String UUID_USER_RESOURCE = "Uuid User Resource";
-
     public static final String SEARCH_FORM_RESOURCE = "Search Form Resource";
 
     public static final String UUID_FORM_RESOURCE = "Uuid Form Resource";
@@ -57,19 +61,21 @@ public class Constants {
 
     public static final String UUID_OBSERVATION_RESOURCE = "Uuid Observation Resource";
 
+    public static final String SEARCH_PRIVILEGE_RESOURCE = "Search Privilege Resource";
+
+    public static final String UUID_PRIVILEGE_RESOURCE = "Uuid Privilege Resource";
+
+    public static final String SEARCH_ROLE_RESOURCE = "Search Role Resource";
+
+    public static final String UUID_ROLE_RESOURCE = "Uuid Role Resource";
+
+    public static final String SEARCH_USER_RESOURCE = "Search User Resource";
+
+    public static final String UUID_USER_RESOURCE = "Uuid User Resource";
+
     public static final String LOCAL_CREDENTIAL_RESOURCE = "Local Credential Resource";
 
     public static final String LOCAL_FORM_DATA_RESOURCE = "Local Form Data Resource";
 
     public static final String LOCAL_FORM_TEMPLATE_RESOURCE = "Local Form Template Resource";
-
-    public static final String LOCAL_MEMBER_RESOURCE = "Local Member Resource";
-
-    public static final String UUID_PRIVILEGE_RESOURCE = "Uuid Privilege Resource";
-
-    public static final String SEARCH_PRIVILEGE_RESOURCE = "Search Privilege Resource";
-
-    public static final String UUID_ROLE_RESOURCE = "Uuid Role Resource";
-
-    public static final String SEARCH_ROLE_RESOURCE = "Search Role Resource";
 }

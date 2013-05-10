@@ -20,12 +20,15 @@ import com.mclinic.api.annotation.Authorization;
 import com.mclinic.api.dao.CohortDao;
 import com.mclinic.api.dao.MemberDao;
 import com.mclinic.api.model.Cohort;
+import com.mclinic.api.model.Member;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.CohortService;
+import com.mclinic.api.service.PatientService;
 import com.mclinic.util.Constants;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CohortServiceImpl implements CohortService {
@@ -35,6 +38,9 @@ public class CohortServiceImpl implements CohortService {
 
     @Inject
     private MemberDao memberDao;
+
+    @Inject
+    private PatientService patientService;
 
     protected CohortServiceImpl() {
     }
@@ -125,11 +131,7 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public void deleteCohort(final Cohort cohort) throws IOException, ParseException {
-        try {
-            cohortDao.delete(cohort, Constants.UUID_COHORT_RESOURCE);
-        } catch (IOException e) {
-            cohortDao.delete(cohort, Constants.SEARCH_COHORT_RESOURCE);
-        }
+        throw new IOException("Delete operation is not supported for cohort object!");
     }
 
     /**
@@ -144,7 +146,7 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public void downloadPatients(final String cohortUuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        memberDao.download(cohortUuid, Constants.MEMBER_COHORT_RESOURCE);
     }
 
     /**
@@ -152,7 +154,6 @@ public class CohortServiceImpl implements CohortService {
      * repository.
      *
      * @param cohortUuid the cohort's uuid.
-     * @param term       the term to be used to narrow down the search result.
      * @return list of all patients under current cohort uuid or empty list when no patient are in the cohort.
      * @throws org.apache.lucene.queryParser.ParseException
      *                             when query parser from lucene unable to parse the query string.
@@ -161,8 +162,16 @@ public class CohortServiceImpl implements CohortService {
      * @should return empty list when no patient are in the cohort.
      */
     @Override
-    public List<Patient> getPatients(final String cohortUuid, final String term) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<Patient> getPatients(final String cohortUuid) throws IOException, ParseException {
+        List<Patient> patients = new ArrayList<Patient>();
+        List<Member> members = memberDao.getByCohortUuid(cohortUuid);
+        for (Member member : members) {
+            patientService.downloadPatientByUuid(member.getPatientUuid());
+            Patient patient = patientService.getPatientByUuid(member.getPatientUuid());
+            if (patient != null)
+                patients.add(patient);
+        }
+        return patients;
     }
 
     /**
@@ -176,6 +185,6 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public void deletePatients(final String cohortUuid) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new IOException("Delete operation is not supported for cohort member object!");
     }
 }

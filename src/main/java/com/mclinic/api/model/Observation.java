@@ -37,8 +37,6 @@ public class Observation extends OpenmrsSearchable {
 
     private String questionUuid;
 
-    private String checksum;
-
     /**
      * Get the uuid for the observation.
      *
@@ -181,25 +179,5 @@ public class Observation extends OpenmrsSearchable {
      */
     public void setValue(final String value) {
         this.value = value;
-    }
-
-    /**
-     * Get the checksum for the searchable object.
-     *
-     * @return the searchable object's checksum.
-     */
-    @Override
-    public String getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * Set the checksum for the searchable object.
-     *
-     * @param checksum the checksum for the searchable object.
-     */
-    @Override
-    public void setChecksum(final String checksum) {
-        this.checksum = checksum;
     }
 }

@@ -19,7 +19,6 @@ import com.google.inject.Inject;
 import com.mclinic.api.dao.OpenmrsDao;
 import com.mclinic.api.model.OpenmrsSearchable;
 import com.mclinic.search.api.context.ServiceContext;
-import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -58,9 +57,6 @@ public abstract class OpenmrsDaoImpl<T extends OpenmrsSearchable> extends Search
      * @throws IOException    when search api unable to process the resource.
      */
     public T getByUuid(final String uuid) throws ParseException, IOException {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(uuid))
-            searchQuery = "uuid: " + StringUtil.quote(uuid);
-        return service.getObject(searchQuery, daoClass);
+        return service.getObject(uuid, daoClass);
     }
 }

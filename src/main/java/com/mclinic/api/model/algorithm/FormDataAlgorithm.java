@@ -17,7 +17,6 @@ import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.FormData;
 import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.model.serialization.BaseAlgorithm;
-import com.mclinic.search.api.util.DigestUtil;
 import net.minidev.json.JSONObject;
 
 import java.io.IOException;
@@ -36,26 +35,23 @@ public class FormDataAlgorithm extends BaseAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         formData.setUuid(uuid);
 
-        String status = JsonPath.read(jsonObject, "$.status");
+        String status = JsonPath.read(jsonObject, "$['status']");
         formData.setStatus(status);
 
-        String payload = JsonPath.read(jsonObject, "$.payload");
+        String payload = JsonPath.read(jsonObject, "$['payload']");
         formData.setPayload(payload);
 
-        String templateUuid = JsonPath.read(jsonObject, "$.templateUuid");
+        String templateUuid = JsonPath.read(jsonObject, "$['templateUuid']");
         formData.setTemplateUuid(templateUuid);
 
-        String patientUuid = JsonPath.read(jsonObject, "$.patientUuid");
+        String patientUuid = JsonPath.read(jsonObject, "$['patientUuid']");
         formData.setPatientUuid(patientUuid);
 
-        String userUuid = JsonPath.read(jsonObject, "$.userUuid");
+        String userUuid = JsonPath.read(jsonObject, "$['userUuid']");
         formData.setUserUuid(userUuid);
-
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        formData.setChecksum(checksum);
 
         return formData;
     }

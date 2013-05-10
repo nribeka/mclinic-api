@@ -18,7 +18,6 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Cohort;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.util.DigestUtil;
 
 import java.io.IOException;
 
@@ -36,17 +35,11 @@ public class CohortAlgorithm extends BaseOpenmrsAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         cohort.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.name");
+        String name = JsonPath.read(jsonObject, "$['name']");
         cohort.setName(name);
-
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        cohort.setChecksum(checksum);
-
-        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
-        cohort.setUri(uri);
 
         return cohort;
     }

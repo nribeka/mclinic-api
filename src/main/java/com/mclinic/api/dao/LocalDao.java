@@ -1,7 +1,6 @@
 package com.mclinic.api.dao;
 
 import com.mclinic.search.api.model.object.BaseSearchable;
-import com.mclinic.search.api.resource.Resource;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public interface LocalDao<T extends BaseSearchable> extends SearchableDao<T> {
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
-    T save(final T object, final Resource resource) throws ParseException, IOException;
+    void save(final T object, final String resource) throws ParseException, IOException;
 
     /**
      * Update the saved object in the local repository.
@@ -31,7 +30,7 @@ public interface LocalDao<T extends BaseSearchable> extends SearchableDao<T> {
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      */
-    T update(final T object, final Resource resource) throws ParseException, IOException;
+    void update(final T object, final String resource) throws ParseException, IOException;
 
     /**
      * Get the OpenMRS searchable object using the uuid.
@@ -52,4 +51,14 @@ public interface LocalDao<T extends BaseSearchable> extends SearchableDao<T> {
      * @throws IOException    when search api unable to process the resource.
      */
     public List<T> getByName(final String name) throws ParseException, IOException;
+
+    /**
+     * Delete the searchable object from the lucene repository.
+     *
+     * @param searchable the object to be deleted.
+     * @param resource   the resource descriptor used to retrieve the object from the repository.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    void delete(final T searchable, final String resource) throws ParseException, IOException;
 }

@@ -19,6 +19,8 @@ import java.io.IOException;
 
 public class MemberCohortResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION = "?v=custom:(cohort.name,patient.uuid)";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -27,6 +29,6 @@ public class MemberCohortResolver extends BaseOpenmrsResolver {
      */
     @Override
     public String resolve(final String searchString) throws IOException {
-        return getConfiguration().getServer() + "/ws/rest/v1/cohort/" + searchString + "/member?v=full";
+        return getConfiguration().getServer() + "/ws/rest/v1/cohort/" + searchString + "/member" + REPRESENTATION;
     }
 }

@@ -13,44 +13,17 @@
  */
 package com.mclinic.api.model;
 
-import com.mclinic.search.api.model.object.BaseSearchable;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The Member class will reference to uuid of all patients for which the Member is associated with.
  * <br/>
  * This class is an exception from all of the other model classes where it's a local object but have the name similar
  * with the same remote resource. This class must not be associated with the <code>MemberCohortResolver</code>.
  */
-public class Member extends BaseSearchable {
-
-    private String uuid;
+public class Member extends OpenmrsSearchable {
 
     private String cohortUuid;
 
-    private List<String> patientUuidList;
-
-    private String checksum;
-
-    /**
-     * Get the uuid for the cohort member.
-     *
-     * @return the uuid.
-     */
-    public String getUuid() {
-        return uuid;
-    }
-
-    /**
-     * Set the uuid for the cohort member.
-     *
-     * @param uuid the uuid to set.
-     */
-    public void setUuid(final String uuid) {
-        this.uuid = uuid;
-    }
+    private String patientUuid;
 
     /**
      * Get the cohort uuid associated with this cohort member.
@@ -71,51 +44,20 @@ public class Member extends BaseSearchable {
     }
 
     /**
-     * Add new patient's uuid in this cohort member record.
+     * Get the uuid of the patient.
      *
-     * @param uuid the patient uuid.
+     * @return the uuid of the patient.
      */
-    public void addPatient(final String uuid) {
-        getPatients().add(uuid);
+    public String getPatientUuid() {
+        return patientUuid;
     }
 
     /**
-     * Get the list of patient uuid for the cohort.
+     * Set the uuid of the patient.
      *
-     * @return the list of patient uuid.
+     * @param patientUuid the the uuid of the patient.
      */
-    public List<String> getPatients() {
-        if (patientUuidList == null)
-            patientUuidList = new ArrayList<String>();
-        return patientUuidList;
-    }
-
-    /**
-     * Set the list of patient uuid for the cohort.
-     *
-     * @param patientUuidList the list of patient uuid.
-     */
-    public void setPatients(final List<String> patientUuidList) {
-        this.patientUuidList = patientUuidList;
-    }
-
-    /**
-     * Get the checksum for the searchable object.
-     *
-     * @return the searchable object's checksum.
-     */
-    @Override
-    public String getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * Set the checksum for the searchable object.
-     *
-     * @param checksum the checksum for the searchable object.
-     */
-    @Override
-    public void setChecksum(final String checksum) {
-        this.checksum = checksum;
+    public void setPatientUuid(final String patientUuid) {
+        this.patientUuid = patientUuid;
     }
 }

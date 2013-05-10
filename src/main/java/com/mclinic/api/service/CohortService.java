@@ -112,14 +112,13 @@ public interface CohortService {
      * repository.
      *
      * @param cohortUuid the cohort's uuid.
-     * @param term       the term to be used to narrow down the search result.
      * @return list of all patients under current cohort uuid or empty list when no patient are in the cohort.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      * @should return list of all patients for the cohort.
      * @should return empty list when no patient are in the cohort.
      */
-    List<Patient> getPatients(final String cohortUuid, final String term) throws IOException, ParseException;
+    List<Patient> getPatients(final String cohortUuid) throws IOException, ParseException;
 
     /**
      * Delete all patients for the current cohort identified by the cohort's uuid.

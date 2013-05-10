@@ -17,10 +17,13 @@ package com.mclinic.api.dao.impl;
 
 import com.mclinic.api.dao.CohortDao;
 import com.mclinic.api.model.Cohort;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CohortDaoImpl extends OpenmrsDaoImpl<Cohort> implements CohortDao {
@@ -41,9 +44,11 @@ public class CohortDaoImpl extends OpenmrsDaoImpl<Cohort> implements CohortDao {
      */
     @Override
     public List<Cohort> getByName(final String name) throws ParseException, IOException {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(name))
-            searchQuery = "name: " + name + "*";
-        return service.getObjects(searchQuery, Cohort.class);
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(name)) {
+            Filter filter = FilterFactory.createFilter("name", name + "*");
+            filters.add(filter);
+        }
+        return service.getObjects(filters, daoClass);
     }
 }

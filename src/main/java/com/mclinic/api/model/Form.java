@@ -25,10 +25,6 @@ public class Form extends OpenmrsSearchable {
 
     private String name;
 
-    private Boolean disabled;
-
-    private String checksum;
-
     /**
      * Get the uuid for the cohort.
      *
@@ -63,43 +59,5 @@ public class Form extends OpenmrsSearchable {
      */
     public void setName(final String name) {
         this.name = name;
-    }
-
-    /**
-     * Get whether the form is disabled or not.
-     *
-     * @return the disabled flag.
-     */
-    public Boolean getDisabled() {
-        return disabled;
-    }
-
-    /**
-     * Set whether the form is disabled or not.
-     *
-     * @param disabled the disabled flag.
-     */
-    public void setDisabled(final Boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    /**
-     * Get the checksum for the searchable object.
-     *
-     * @return the searchable object's checksum.
-     */
-    @Override
-    public String getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * Set the checksum for the searchable object.
-     *
-     * @param checksum the checksum for the searchable object.
-     */
-    @Override
-    public void setChecksum(final String checksum) {
-        this.checksum = checksum;
     }
 }

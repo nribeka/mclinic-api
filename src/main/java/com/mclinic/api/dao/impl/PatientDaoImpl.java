@@ -17,10 +17,15 @@ package com.mclinic.api.dao.impl;
 
 import com.mclinic.api.dao.PatientDao;
 import com.mclinic.api.model.Patient;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
+import com.mclinic.search.api.util.CollectionUtil;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PatientDaoImpl extends OpenmrsDaoImpl<Patient> implements PatientDao {
@@ -41,10 +46,19 @@ public class PatientDaoImpl extends OpenmrsDaoImpl<Patient> implements PatientDa
      */
     @Override
     public Patient getByIdentifier(final String identifier) throws ParseException, IOException {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(identifier))
-            searchQuery = "identifier: " + StringUtil.quote(identifier);
-        return service.getObject(searchQuery, Patient.class);
+        Patient patient = null;
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(identifier)) {
+            Filter filter = FilterFactory.createFilter("identifier", identifier);
+            filters.add(filter);
+        }
+        List<Patient> patients = service.getObjects(filters, Patient.class);
+        if (!CollectionUtil.isEmpty(patients)) {
+            if (patients.size() > 1)
+                throw new IOException("Unable to uniquely identify a Patient using the identifier");
+            patient = patients.get(0);
+        }
+        return patient;
     }
 
     /**
@@ -57,10 +71,13 @@ public class PatientDaoImpl extends OpenmrsDaoImpl<Patient> implements PatientDa
      */
     @Override
     public List<Patient> getByName(final String name) throws ParseException, IOException {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(name))
-            searchQuery = "name:" + name + "*";
-        return service.getObjects(searchQuery, Patient.class);
+        StringBuilder query = new StringBuilder();
+        if (!StringUtil.isEmpty(name)) {
+            query.append("givenName:").append(name).append("*").append(" OR ");
+            query.append("middleName:").append(name).append("*").append(" OR ");
+            query.append("familyName:").append(name).append("*");
+        }
+        return service.getObjects(query.toString(), Patient.class);
     }
 
     /**
@@ -73,7 +90,27 @@ public class PatientDaoImpl extends OpenmrsDaoImpl<Patient> implements PatientDa
      */
     @Override
     public List<Patient> search(final String term) throws ParseException, IOException {
-        // TODO: fix this search patients query
-        return service.getObjects(term, Patient.class);
+        if (!StringUtil.isEmpty(term)) {
+            if (containsDigit(term)) {
+                Filter filter = FilterFactory.createFilter("identifier", term + "*");
+                return service.getObjects(Arrays.asList(filter), Patient.class);
+            } else {
+                StringBuilder query = new StringBuilder();
+                query.append("givenName:").append(term).append("*").append(" OR ");
+                query.append("middleName:").append(term).append("*").append(" OR ");
+                query.append("familyName:").append(term).append("*");
+                return service.getObjects(query.toString(), Patient.class);
+            }
+        }
+        return service.getObjects(StringUtil.EMPTY, Patient.class);
+    }
+
+    private boolean containsDigit(final String term) {
+        for (char c : term.toCharArray()) {
+            if (Character.isDigit(c)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

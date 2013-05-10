@@ -18,14 +18,10 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Member;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.model.serialization.BaseAlgorithm;
-import com.mclinic.search.api.util.DigestUtil;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
 
 import java.io.IOException;
 
-public class MemberAlgorithm extends BaseAlgorithm {
+public class MemberAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the patient will be serialized from the JSON representation.
@@ -39,45 +35,12 @@ public class MemberAlgorithm extends BaseAlgorithm {
 
         Object jsonObject = JsonPath.read(serialized, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
-        member.setUuid(uuid);
-
-        String userUuid = JsonPath.read(jsonObject, "$.cohortUuid");
+        String userUuid = JsonPath.read(jsonObject, "$['cohortUuid']");
         member.setCohortUuid(userUuid);
 
-        String checksum = DigestUtil.getSHA1Checksum(serialized);
-        member.setChecksum(checksum);
-
-        Object jsonMembers = JsonPath.read(jsonObject, "$.patients");
-        if (jsonMembers instanceof JSONArray) {
-            for (Object jsonMember : (JSONArray) jsonMembers) {
-                String patientUuid = JsonPath.read(jsonMember, "$.uuid");
-                member.addPatient(patientUuid);
-            }
-        }
+        String patientUuid = JsonPath.read(jsonObject, "$['patientUuid']");
+        member.setPatientUuid(patientUuid);
 
         return member;
-    }
-
-    /**
-     * Implementation of this method will define how the object will be de-serialized into the String representation.
-     *
-     * @param object the object
-     * @return the string representation
-     */
-    @Override
-    public String serialize(final Searchable object) throws IOException {
-        Member member = (Member) object;
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("uuid", member.getUuid());
-        jsonObject.put("userUuid", member.getCohortUuid());
-        JSONArray patients = new JSONArray();
-        for (String patientUuid : member.getPatients()) {
-            JSONObject patientObject = new JSONObject();
-            patientObject.put("uuid", patientUuid);
-            patients.add(patientObject);
-        }
-        jsonObject.put("patients", patients);
-        return jsonObject.toJSONString();
     }
 }

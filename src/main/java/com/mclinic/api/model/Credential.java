@@ -15,8 +15,6 @@ package com.mclinic.api.model;
 
 import com.mclinic.search.api.model.object.BaseSearchable;
 
-import java.util.List;
-
 /**
  * Credential is a class to hold and persist authentication information for a user locally. User will be allowed to
  * access the system when a credential record for that user is found in the local repository.
@@ -32,12 +30,6 @@ public class Credential extends BaseSearchable {
     private String salt;
 
     private String password;
-
-    private String checksum;
-
-    private List<Role> roles;
-
-    private List<Privilege> privileges;
 
     /**
      * Get the uuid of the credential.
@@ -127,25 +119,5 @@ public class Credential extends BaseSearchable {
      */
     public void setPassword(final String password) {
         this.password = password;
-    }
-
-    /**
-     * Get the checksum for the searchable object.
-     *
-     * @return the searchable object's checksum.
-     */
-    @Override
-    public String getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * Set the checksum for the searchable object.
-     *
-     * @param checksum the checksum for the searchable object.
-     */
-    @Override
-    public void setChecksum(final String checksum) {
-        this.checksum = checksum;
     }
 }

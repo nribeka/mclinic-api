@@ -22,6 +22,10 @@ import java.io.IOException;
 
 public class SearchObservationResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION =
+            "?v=custom:(uuid,obsDatetime,concept.datatype.conceptDatatypeId,concept.name.name,concept.uuid," +
+                    "person.uuid,encounter.uuid,location.uuid,location.name,valueCoded:ref,valueNumeric,valueDatetime)";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -32,7 +36,7 @@ public class SearchObservationResolver extends BaseOpenmrsResolver {
     public String resolve(String searchString) throws IOException {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
-            param = "?q=" + searchString;
-        return getConfiguration().getServer() + "/ws/rest/v1/obs" + param;
+            param = "&patient=" + searchString;
+        return getConfiguration().getServer() + "/ws/rest/v1/obs" + REPRESENTATION + param;
     }
 }

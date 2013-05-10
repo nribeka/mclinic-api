@@ -12,16 +12,6 @@ import java.util.List;
 public interface SearchableDao<T extends BaseSearchable> {
 
     /**
-     * Delete the searchable object from the lucene repository.
-     *
-     * @param searchable the object to be deleted.
-     * @param resource   the resource descriptor used to retrieve the object from the repository.
-     * @throws ParseException when query parser from lucene unable to parse the query string.
-     * @throws IOException    when search api unable to process the resource.
-     */
-    void delete(final T searchable, final String resource) throws ParseException, IOException;
-
-    /**
      * Get all searchable object for the particular type.
      *
      * @return list of all searchable object or empty list.

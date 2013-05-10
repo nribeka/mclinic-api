@@ -28,8 +28,6 @@ public class Role extends OpenmrsSearchable {
 
     private List<Privilege> privileges;
 
-    private String checksum;
-
     /**
      * Get the uuid of the role.
      *
@@ -82,25 +80,5 @@ public class Role extends OpenmrsSearchable {
      */
     public void setPrivileges(List<Privilege> privileges) {
         this.privileges = privileges;
-    }
-
-    /**
-     * Get the checksum for the searchable object.
-     *
-     * @return the searchable object's checksum.
-     */
-    @Override
-    public String getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * Set the checksum for the searchable object.
-     *
-     * @param checksum the checksum for the searchable object.
-     */
-    @Override
-    public void setChecksum(String checksum) {
-        this.checksum = checksum;
     }
 }

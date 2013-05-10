@@ -18,13 +18,39 @@ package com.mclinic.api.dao.impl;
 import com.mclinic.api.dao.CredentialDao;
 import com.mclinic.api.dao.MemberDao;
 import com.mclinic.api.model.Member;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
+import com.mclinic.search.api.util.StringUtil;
+import org.apache.lucene.queryParser.ParseException;
 
-public class MemberDaoImpl extends LocalDaoImpl<Member> implements MemberDao {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MemberDaoImpl extends OpenmrsDaoImpl<Member> implements MemberDao {
 
     private static final String TAG = CredentialDao.class.getSimpleName();
 
     protected MemberDaoImpl() {
         super(Member.class);
+    }
+
+    /**
+     * Get cohort by the name of the cohort. Passing empty string will returns all registered cohorts.
+     *
+     * @param cohortUuid the partial name of the cohort or empty string.
+     * @return the list of all matching cohort on the cohort name.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     */
+    public List<Member> getByCohortUuid(final String cohortUuid) throws ParseException, IOException {
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(cohortUuid)) {
+            Filter filter = FilterFactory.createFilter("cohortUuid", cohortUuid);
+            filters.add(filter);
+        }
+        return service.getObjects(filters, daoClass);
     }
 
 }

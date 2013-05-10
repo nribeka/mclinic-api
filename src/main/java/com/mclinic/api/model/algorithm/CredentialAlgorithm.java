@@ -17,7 +17,6 @@ import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Credential;
 import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.model.serialization.BaseAlgorithm;
-import com.mclinic.search.api.util.DigestUtil;
 import net.minidev.json.JSONObject;
 
 import java.io.IOException;
@@ -36,23 +35,20 @@ public class CredentialAlgorithm extends BaseAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         user.setUuid(uuid);
 
-        String userUuid = JsonPath.read(jsonObject, "$.userUuid");
+        String userUuid = JsonPath.read(jsonObject, "$['userUuid']");
         user.setUserUuid(userUuid);
 
-        String username = JsonPath.read(jsonObject, "$.username");
+        String username = JsonPath.read(jsonObject, "$'[username']");
         user.setUsername(username);
 
-        String password = JsonPath.read(jsonObject, "$.password");
+        String password = JsonPath.read(jsonObject, "$['password']");
         user.setPassword(password);
 
-        String seed = JsonPath.read(jsonObject, "$.seed");
+        String seed = JsonPath.read(jsonObject, "$['salt']");
         user.setSalt(seed);
-
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        user.setChecksum(checksum);
 
         return user;
     }
@@ -71,7 +67,7 @@ public class CredentialAlgorithm extends BaseAlgorithm {
         jsonObject.put("userUuid", credential.getUserUuid());
         jsonObject.put("username", credential.getUsername());
         jsonObject.put("password", credential.getPassword());
-        jsonObject.put("seed", credential.getSalt());
+        jsonObject.put("salt", credential.getSalt());
         return jsonObject.toJSONString();
     }
 }

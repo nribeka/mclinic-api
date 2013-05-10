@@ -16,7 +16,6 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Form;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.util.DigestUtil;
 
 import java.io.IOException;
 
@@ -35,17 +34,11 @@ public class FormAlgorithm extends BaseOpenmrsAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         form.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.display");
+        String name = JsonPath.read(jsonObject, "$['name']");
         form.setName(name);
-
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        form.setChecksum(checksum);
-
-        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
-        form.setUri(uri);
 
         return form;
     }

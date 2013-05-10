@@ -18,7 +18,6 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Patient;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.util.DigestUtil;
 import com.mclinic.search.api.util.ISO8601Util;
 
 import java.io.IOException;
@@ -41,30 +40,30 @@ public class PatientAlgorithm extends BaseOpenmrsAlgorithm {
         // this should minimize the time for the subsequent read() call
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         patient.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.person.display");
-        patient.setName(name);
+        String givenName = JsonPath.read(jsonObject, "$['personName.givenName']");
+        patient.setGivenName(givenName);
 
-        String identifier = JsonPath.read(jsonObject, "$.identifiers[0].identifier");
+        String middleName = JsonPath.read(jsonObject, "$['personName.middleName']");
+        patient.setMiddleName(middleName);
+
+        String familyName = JsonPath.read(jsonObject, "$['personName.familyName']");
+        patient.setFamilyName(familyName);
+
+        String identifier = JsonPath.read(jsonObject, "$['patientIdentifier.identifier']");
         patient.setIdentifier(identifier);
 
-        String gender = JsonPath.read(jsonObject, "$.person.gender");
+        String gender = JsonPath.read(jsonObject, "$['gender']");
         patient.setGender(gender);
 
-        String birthdate = JsonPath.read(jsonObject, "$.person.birthdate");
+        String birthdate = JsonPath.read(jsonObject, "$['birthdate']");
         try {
             patient.setBirthdate(ISO8601Util.toCalendar(birthdate).getTime());
         } catch (ParseException e) {
             getLogger().error(this.getClass().getSimpleName(), "Unable to parse date data from json payload.", e);
         }
-
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        patient.setChecksum(checksum);
-
-        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
-        patient.setUri(uri);
 
         return patient;
     }

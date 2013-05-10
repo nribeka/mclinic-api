@@ -19,6 +19,8 @@ import java.io.IOException;
 
 public class SearchPrivilegeResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION = "?v=custom:(uuid,name)";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -29,7 +31,7 @@ public class SearchPrivilegeResolver extends BaseOpenmrsResolver {
     public String resolve(final String searchString) throws IOException {
         String param = StringUtil.EMPTY;
         if (!StringUtil.isEmpty(searchString))
-            param = "?q=" + searchString;
-        return getConfiguration().getServer() + "/ws/rest/v1/form" + param;
+            param = "&q=" + searchString;
+        return getConfiguration().getServer() + "/ws/rest/v1/privilege" + REPRESENTATION + param;
     }
 }

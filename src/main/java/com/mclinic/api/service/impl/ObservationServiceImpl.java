@@ -123,10 +123,6 @@ public class ObservationServiceImpl implements ObservationService {
      */
     @Override
     public void deleteObservation(final Observation observation) throws IOException, ParseException {
-        try {
-            observationDao.delete(observation, Constants.SEARCH_OBSERVATION_RESOURCE);
-        } catch (IOException e) {
-            observationDao.delete(observation, Constants.UUID_OBSERVATION_RESOURCE);
-        }
+        throw new IOException("Delete operation is not supported for observation object!");
     }
 }

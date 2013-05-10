@@ -18,10 +18,13 @@ package com.mclinic.api.dao.impl;
 import com.mclinic.api.dao.CohortDao;
 import com.mclinic.api.dao.PrivilegeDao;
 import com.mclinic.api.model.Privilege;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrivilegeDaoImpl extends OpenmrsDaoImpl<Privilege> implements PrivilegeDao {
@@ -43,9 +46,11 @@ public class PrivilegeDaoImpl extends OpenmrsDaoImpl<Privilege> implements Privi
      */
     @Override
     public List<Privilege> getByName(final String name) throws ParseException, IOException {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(name))
-            searchQuery = "name: " + name + "*";
-        return service.getObjects(searchQuery, Privilege.class);
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(name)) {
+            Filter filter = FilterFactory.createFilter("name", name + "*");
+            filters.add(filter);
+        }
+        return service.getObjects(filters, daoClass);
     }
 }

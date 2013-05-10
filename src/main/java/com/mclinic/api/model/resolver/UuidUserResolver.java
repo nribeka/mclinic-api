@@ -17,6 +17,10 @@ import java.io.IOException;
 
 public class UuidUserResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION =
+            "?v=custom:(uuid,person.personName.givenName,person.personName.middleName,person.personName.familyName," +
+                    "username,systemId,roles:(uuid,name),privileges:(uuid,name))";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -25,6 +29,6 @@ public class UuidUserResolver extends BaseOpenmrsResolver {
      */
     @Override
     public String resolve(final String searchString) throws IOException {
-        return getConfiguration().getServer() + "/ws/rest/v1/user/" + searchString;
+        return getConfiguration().getServer() + "/ws/rest/v1/user/" + searchString + REPRESENTATION;
     }
 }

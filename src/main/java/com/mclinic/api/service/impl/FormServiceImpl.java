@@ -23,6 +23,7 @@ import com.mclinic.api.model.Form;
 import com.mclinic.api.model.FormData;
 import com.mclinic.api.model.FormTemplate;
 import com.mclinic.api.service.FormService;
+import com.mclinic.search.api.util.StringUtil;
 import com.mclinic.util.Constants;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -109,11 +110,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void deleteForm(final Form form) throws IOException, ParseException {
-        try {
-            formDao.delete(form, Constants.UUID_FORM_RESOURCE);
-        } catch (IOException e) {
-            formDao.delete(form, Constants.SEARCH_FORM_RESOURCE);
-        }
+        throw new IOException("Delete operation is not supported for form object!");
     }
 
     /**
@@ -126,7 +123,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void saveFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        formTemplateDao.save(formTemplate, Constants.LOCAL_FORM_TEMPLATE_RESOURCE);
     }
 
     /**
@@ -140,7 +137,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public FormTemplate getFormTemplateByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formTemplateDao.getByUuid(uuid);
     }
 
     /**
@@ -153,7 +150,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public List<FormTemplate> getAllFormTemplates() throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formTemplateDao.getAll();
     }
 
     /**
@@ -166,7 +163,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void deleteFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        formTemplateDao.delete(formTemplate, Constants.LOCAL_FORM_TEMPLATE_RESOURCE);
     }
 
     /**
@@ -179,7 +176,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void saveFormData(final FormData formData) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        formDataDao.save(formData, Constants.LOCAL_FORM_DATA_RESOURCE);
     }
 
     /**
@@ -193,7 +190,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public FormData getFormDataByUuid(final String uuid) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formDataDao.getByUuid(uuid);
     }
 
     /**
@@ -207,7 +204,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public List<FormData> getAllFormData(final String status) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formDataDao.getAll(StringUtil.EMPTY, StringUtil.EMPTY, status);
     }
 
     /**
@@ -222,7 +219,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public List<FormData> getFormDataByUser(final String userUuid, final String status) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formDataDao.getAll(StringUtil.EMPTY, userUuid, status);
     }
 
     /**
@@ -237,7 +234,7 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public List<FormData> getFormDataByPatient(final String patientUuid, final String status) throws IOException, ParseException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return formDataDao.getAll(patientUuid, StringUtil.EMPTY, status);
     }
 
     /**
@@ -250,6 +247,6 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void deleteFormDate(final FormData formData) throws IOException, ParseException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        formDataDao.delete(formData, Constants.LOCAL_FORM_DATA_RESOURCE);
     }
 }

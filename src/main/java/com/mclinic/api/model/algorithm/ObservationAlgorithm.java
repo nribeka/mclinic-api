@@ -18,8 +18,8 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Observation;
 import com.mclinic.search.api.model.object.Searchable;
-import com.mclinic.search.api.util.DigestUtil;
 import com.mclinic.search.api.util.ISO8601Util;
+import com.mclinic.util.Constants;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -40,40 +40,46 @@ public class ObservationAlgorithm extends BaseOpenmrsAlgorithm {
         // this should minimize the time for the subsequent read() call
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         observation.setUuid(uuid);
 
-        String patientUuid = JsonPath.read(jsonObject, "$.person.uuid");
+        String patientUuid = JsonPath.read(jsonObject, "$['person.uuid']");
         observation.setPatientUuid(patientUuid);
 
-        String encounterUuid = JsonPath.read(jsonObject, "$.encounter.uuid");
+        String encounterUuid = JsonPath.read(jsonObject, "$['encounter.uuid']");
         observation.setEncounterUuid(encounterUuid);
 
-        String conceptName = JsonPath.read(jsonObject, "$.concept.display");
+        String conceptName = JsonPath.read(jsonObject, "$['concept.name.name']");
         observation.setQuestionName(conceptName);
 
-        String conceptUuid = JsonPath.read(jsonObject, "$.concept.uuid");
+        String conceptUuid = JsonPath.read(jsonObject, "$['concept.uuid']");
         observation.setQuestionUuid(conceptUuid);
 
-        String obsValue = JsonPath.read(jsonObject, "$.display");
-        // extract the observation value information
-        int index = obsValue.indexOf("=");
-        if (index != -1)
-            obsValue = obsValue.substring(index + 1);
-        observation.setValue(obsValue.trim());
+        Object valueNumeric = JsonPath.read(jsonObject, "$['valueNumeric']");
+        if (valueNumeric != null) {
+            observation.setValue(valueNumeric.toString());
+            observation.setDataType(Constants.TYPE_NUMERIC);
+        }
 
-        String obsDatetime = JsonPath.read(jsonObject, "$.obsDatetime");
+        Object valueDatetime = JsonPath.read(jsonObject, "$['valueDatetime']");
+        if (valueDatetime != null) {
+            observation.setValue(valueDatetime.toString());
+            observation.setDataType(Constants.TYPE_DATE);
+        }
+
+        Object valueCodedObject = JsonPath.read(jsonObject, "$['valueCoded']");
+        if (valueCodedObject != null) {
+            String valueCoded = JsonPath.read(valueCodedObject, "$['display']");
+            observation.setValue(valueCoded);
+            observation.setDataType(Constants.TYPE_STRING);
+        }
+
+        String obsDatetime = JsonPath.read(jsonObject, "$['obsDatetime']");
         try {
             observation.setObservationDate(ISO8601Util.toCalendar(obsDatetime).getTime());
         } catch (ParseException e) {
             getLogger().error(this.getClass().getSimpleName(), "Unable to parse date data from json payload.", e);
         }
-
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        observation.setChecksum(checksum);
-
-        String uri = JsonPath.read(jsonObject, "$.links[0].uri");
-        observation.setUri(uri);
 
         return observation;
     }

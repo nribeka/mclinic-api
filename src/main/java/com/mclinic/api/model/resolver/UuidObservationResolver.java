@@ -20,6 +20,10 @@ import java.io.IOException;
 
 public class UuidObservationResolver extends BaseOpenmrsResolver {
 
+    private static final String REPRESENTATION =
+            "?v=custom:(uuid,obsDatetime,concept.datatype.conceptDatatypeId,concept.name.name,concept.uuid," +
+                    "person.uuid,encounter.uuid,location.uuid,location.name,valueCoded:ref,valueNumeric,valueDatetime)";
+
     /**
      * Return the full REST resource based on the search string passed to the method.
      *
@@ -28,6 +32,6 @@ public class UuidObservationResolver extends BaseOpenmrsResolver {
      */
     @Override
     public String resolve(String searchString) throws IOException {
-        return getConfiguration().getServer() + "/ws/rest/v1/obs/" + searchString;
+        return getConfiguration().getServer() + "/ws/rest/v1/obs/" + searchString + REPRESENTATION;
     }
 }

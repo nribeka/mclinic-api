@@ -24,8 +24,6 @@ public class Privilege extends OpenmrsSearchable {
 
     private String name;
 
-    private String checksum;
-
     /**
      * Get the name associated with this privilege.
      *
@@ -60,25 +58,5 @@ public class Privilege extends OpenmrsSearchable {
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    /**
-     * Get the checksum for the searchable object.
-     *
-     * @return the searchable object's checksum.
-     */
-    @Override
-    public String getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * Set the checksum for the searchable object.
-     *
-     * @param checksum the checksum for the searchable object.
-     */
-    @Override
-    public void setChecksum(String checksum) {
-        this.checksum = checksum;
     }
 }

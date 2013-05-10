@@ -17,7 +17,6 @@ import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.FormTemplate;
 import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.model.serialization.BaseAlgorithm;
-import com.mclinic.search.api.util.DigestUtil;
 import net.minidev.json.JSONObject;
 
 import java.io.IOException;
@@ -36,14 +35,14 @@ public class FormTemplateAlgorithm extends BaseAlgorithm {
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         formTemplate.setUuid(uuid);
 
-        String payload = JsonPath.read(jsonObject, "$.payload");
+        String payload = JsonPath.read(jsonObject, "$['payload']");
         formTemplate.setPayload(payload);
 
-        String checksum = DigestUtil.getSHA1Checksum(json);
-        formTemplate.setChecksum(checksum);
+        String formUuid = JsonPath.read(jsonObject, "$['formUuid']");
+        formTemplate.setFormUuid(formUuid);
 
         return formTemplate;
     }
@@ -60,6 +59,7 @@ public class FormTemplateAlgorithm extends BaseAlgorithm {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uuid", formTemplate.getUuid());
         jsonObject.put("payload", formTemplate.getPayload());
+        jsonObject.put("formUuid", formTemplate.getFormUuid());
         return jsonObject.toJSONString();
     }
 }

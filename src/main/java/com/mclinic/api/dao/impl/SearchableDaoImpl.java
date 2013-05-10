@@ -38,26 +38,13 @@ public abstract class SearchableDaoImpl<T extends BaseSearchable> implements Sea
     protected Class<T> daoClass;
 
     @Inject
-    private ServiceContext context;
+    protected ServiceContext context;
 
     @Inject
     protected RestAssuredService service;
 
     protected SearchableDaoImpl(final Class<T> daoClass) {
         this.daoClass = daoClass;
-    }
-
-    /**
-     * Delete the searchable object from the lucene repository.
-     *
-     * @param searchable the object to be deleted.
-     * @param resource   the resource descriptor used to retrieve the object from the repository.
-     * @throws ParseException when query parser from lucene unable to parse the query string.
-     * @throws IOException    when search api unable to process the resource.
-     */
-    @Override
-    public void delete(final T searchable, final String resource) throws ParseException, IOException {
-        service.invalidate(searchable, context.getResource(resource));
     }
 
     /**
