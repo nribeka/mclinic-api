@@ -39,7 +39,7 @@ public interface CohortService {
      * @throws IOException    when search api unable to process the resource.
      * @should download cohort with matching uuid.
      */
-    void downloadCohortByUuid(final String uuid) throws IOException, ParseException;
+    Cohort downloadCohortByUuid(final String uuid) throws IOException, ParseException;
 
     /**
      * Download all cohorts with name similar to the partial name passed in the parameter.
@@ -50,7 +50,7 @@ public interface CohortService {
      * @should download all cohort with partially matched name.
      * @should download all cohort when name is empty.
      */
-    void downloadCohortsByName(final String name) throws IOException, ParseException;
+    List<Cohort> downloadCohortsByName(final String name) throws IOException, ParseException;
 
     /**
      * Get a single cohort record from the repository using the uuid.
@@ -83,7 +83,7 @@ public interface CohortService {
      * @should return all registered cohorts.
      * @should return empty list when no cohort is registered.
      */
-    @Authorization(privileges = {"Cohort Privilege"})
+    @Authorization(privileges = {"View Cohort Privilege"})
     List<Cohort> getAllCohorts() throws IOException, ParseException;
 
     /**
@@ -105,7 +105,7 @@ public interface CohortService {
      * @throws IOException    when search api unable to process the resource.
      * @should download all patients from the current cohort identified by the cohort's uuid.
      */
-    void downloadPatients(final String cohortUuid) throws IOException, ParseException;
+    List<Patient> downloadPatients(final String cohortUuid) throws IOException, ParseException;
 
     /**
      * Get all patients under the current cohort identified by the cohort's uuid which already saved in the local

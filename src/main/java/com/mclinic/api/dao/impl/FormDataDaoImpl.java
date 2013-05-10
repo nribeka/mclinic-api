@@ -41,9 +41,8 @@ public class FormDataDaoImpl extends LocalDaoImpl<FormData> implements FormDataD
      * @param userUuid    user's uuid associated to this form data.
      * @param status      the status of this form data.
      * @return list of all searchable object or empty list.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public List<FormData> getAll(final String patientUuid, final String userUuid, final String status)

@@ -48,37 +48,38 @@ public class FormServiceImpl implements FormService {
      * Download a single form record from the form rest resource into the local lucene repository.
      *
      * @param uuid the uuid of the form.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download form with matching uuid.
      */
     @Override
-    public void downloadFormByUuid(final String uuid) throws IOException, ParseException {
+    public Form downloadFormByUuid(final String uuid) throws IOException, ParseException {
         formDao.download(uuid, Constants.UUID_FORM_RESOURCE);
+        return getFormByUuid(uuid);
     }
 
     /**
      * Download all forms with name similar to the partial name passed in the parameter.
      *
      * @param name the partial name of the form to be downloaded. When empty, will return all forms available.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download all form with partially matched name.
      * @should download all form when name is empty.
      */
     @Override
-    public void downloadFormsByName(final String name) throws IOException, ParseException {
+    public List<Form> downloadFormsByName(final String name) throws IOException, ParseException {
         formDao.download(name, Constants.SEARCH_FORM_RESOURCE);
+        return getFormByName(name);
     }
 
     /**
+     * Get form by the uuid of the form.
+     *
      * @param uuid the form uuid.
      * @return form with matching uuid or null when no form match the uuid.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return form with matching uuid.
      * @should return null when no form match the uuid.
      */
@@ -88,10 +89,24 @@ public class FormServiceImpl implements FormService {
     }
 
     /**
+     * Get all form with matching name (or partial name).
+     *
+     * @param name the form name.
+     * @return form with matching uuid or null when no form match the uuid.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return form with matching uuid.
+     * @should return null when no form match the uuid.
+     */
+    @Override
+    public List<Form> getFormByName(final String name) throws IOException, ParseException {
+        return formDao.getByName(name);
+    }
+
+    /**
      * @return all registered forms or empty list when no form is registered.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return all registered forms.
      * @should return empty list when no form is registered.
      */
@@ -104,9 +119,8 @@ public class FormServiceImpl implements FormService {
      * Delete form from the repository.
      *
      * @param form the form to be deleted.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public void deleteForm(final Form form) throws IOException, ParseException {
@@ -117,9 +131,8 @@ public class FormServiceImpl implements FormService {
      * Save a new form template to the repository.
      *
      * @param formTemplate the form template to be saved.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public void saveFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException {
@@ -131,9 +144,8 @@ public class FormServiceImpl implements FormService {
      *
      * @param uuid the form template uuid.
      * @return the form template.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public FormTemplate getFormTemplateByUuid(final String uuid) throws IOException, ParseException {
@@ -144,9 +156,8 @@ public class FormServiceImpl implements FormService {
      * Get all saved form templates from the local repository.
      *
      * @return all saved form templates or empty list when there's no form template saved.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public List<FormTemplate> getAllFormTemplates() throws IOException, ParseException {
@@ -157,9 +168,8 @@ public class FormServiceImpl implements FormService {
      * Delete a form template from the repository.
      *
      * @param formTemplate the form template to be deleted.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public void deleteFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException {
@@ -170,9 +180,8 @@ public class FormServiceImpl implements FormService {
      * Save a new form data object to the database.
      *
      * @param formData the form data to be saved.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public void saveFormData(final FormData formData) throws IOException, ParseException {
@@ -184,9 +193,8 @@ public class FormServiceImpl implements FormService {
      *
      * @param uuid the uuid for the form data.
      * @return the form data object.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public FormData getFormDataByUuid(final String uuid) throws IOException, ParseException {
@@ -198,9 +206,8 @@ public class FormServiceImpl implements FormService {
      *
      * @param status the status of the form data (optional).
      * @return all form data with matching status.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public List<FormData> getAllFormData(final String status) throws IOException, ParseException {
@@ -213,9 +220,8 @@ public class FormServiceImpl implements FormService {
      * @param userUuid the uuid of the user.
      * @param status   the status of the form data (optional).
      * @return all form data for the user with matching status.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public List<FormData> getFormDataByUser(final String userUuid, final String status) throws IOException, ParseException {
@@ -228,9 +234,8 @@ public class FormServiceImpl implements FormService {
      * @param patientUuid the uuid of the patient
      * @param status      the status of the form data (optional).
      * @return all form data for the patient with matching status.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public List<FormData> getFormDataByPatient(final String patientUuid, final String status) throws IOException, ParseException {
@@ -241,9 +246,8 @@ public class FormServiceImpl implements FormService {
      * Delete an instance of form data.
      *
      * @param formData the form data
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public void deleteFormDate(final FormData formData) throws IOException, ParseException {

@@ -52,29 +52,29 @@ public class UserServiceImpl implements UserService {
      * Download a single user record from the user rest resource into the local lucene repository.
      *
      * @param uuid the uuid of the user.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download user with matching uuid.
      */
     @Override
-    public void downloadUserByUuid(final String uuid) throws IOException, ParseException {
+    public User downloadUserByUuid(final String uuid) throws IOException, ParseException {
         userDao.download(uuid, Constants.UUID_USER_RESOURCE);
+        return getUserByUuid(uuid);
     }
 
     /**
      * Download all users with name similar to the partial name passed in the parameter.
      *
      * @param name the partial name of the user to be downloaded. When empty, will return all users available.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download all user with partially matched name.
      * @should download all user when name is empty.
      */
     @Override
-    public void downloadUsersByName(final String name) throws IOException, ParseException {
+    public List<User> downloadUsersByName(final String name) throws IOException, ParseException {
         userDao.download(name, Constants.SEARCH_USER_RESOURCE);
+        return getUserByName(name);
     }
 
     /**
@@ -82,9 +82,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param uuid the user uuid.
      * @return user with matching uuid or null when no user match the uuid.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return user with matching uuid.
      * @should return null when no user match the uuid.
      */
@@ -94,13 +93,27 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Get user using the user's name.
+     *
+     * @param name the name of the user.
+     * @return user with matching name or null when no user match the name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return user with matching username.
+     * @should return null when no user match the username.
+     */
+    @Override
+    public List<User> getUserByName(final String name) throws IOException, ParseException {
+        return userDao.getByName(name);
+    }
+
+    /**
      * Get a single user using the user name.
      *
      * @param username the user username.
      * @return user with matching username or null when no user match the username.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return user with matching username.
      * @should return null when no user match the username.
      */
@@ -113,9 +126,8 @@ public class UserServiceImpl implements UserService {
      * Get all saved users in the local repository.
      *
      * @return all registered users or empty list when no user is registered.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return all registered users.
      * @should return empty list when no user is registered.
      */
@@ -128,9 +140,8 @@ public class UserServiceImpl implements UserService {
      * Delete a user record from the local repository.
      *
      * @param user the user to be deleted.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should delete the user record from the local repository.
      */
     @Override
@@ -142,9 +153,8 @@ public class UserServiceImpl implements UserService {
      * Save a new credential record in the local repository.
      *
      * @param credential the new credential to be saved.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should save the new credential record.
      */
     @Override
@@ -156,9 +166,8 @@ public class UserServiceImpl implements UserService {
      * Update a credential record in the local repository.
      *
      * @param credential the credential record to be updated.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should update the credential record.
      */
     @Override
@@ -172,9 +181,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param uuid the uuid of the record.
      * @return the credential with matching uuid.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return credential with matching uuid.
      */
     @Override
@@ -187,9 +195,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param username the username.
      * @return the credential record for the username.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return credential for the username.
      */
     @Override
@@ -201,9 +208,8 @@ public class UserServiceImpl implements UserService {
      * Get all credential records.
      *
      * @return all credential records from the local repository.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return all saved credential records from local repository.
      */
     @Override
@@ -215,9 +221,8 @@ public class UserServiceImpl implements UserService {
      * Delete a credential record from the local repository.
      *
      * @param credential the credential record to be deleted.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should delete credential from local repository.
      */
     @Override
@@ -229,28 +234,28 @@ public class UserServiceImpl implements UserService {
      * Download privilege record using the privilege uuid.
      *
      * @param uuid the uuid for the privilege.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download privilege with matching uuid.
      */
     @Override
-    public void downloadPrivilege(final String uuid) throws IOException, ParseException {
+    public Privilege downloadPrivilege(final String uuid) throws IOException, ParseException {
         privilegeDao.download(uuid, Constants.UUID_PRIVILEGE_RESOURCE);
+        return getPrivilegeByUuid(uuid);
     }
 
     /**
      * Download all privilege records matching the privilege name.
      *
      * @param name the partial name of the privileges.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download all privileges with matching name.
      */
     @Override
-    public void downloadPrivileges(final String name) throws IOException, ParseException {
+    public List<Privilege> downloadPrivileges(final String name) throws IOException, ParseException {
         privilegeDao.download(name, Constants.SEARCH_PRIVILEGE_RESOURCE);
+        return getPrivilegesByName(name);
     }
 
     /**
@@ -258,9 +263,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param uuid the uuid of the privilege.
      * @return the privilege with matching uuid.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return privilege with matching uuid.
      */
     @Override
@@ -273,9 +277,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param name the partial name of the privileges.
      * @return all privileges with matching name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return all privileges with matching name.
      * @should return empty list when no privilege record match the name.
      */
@@ -288,9 +291,8 @@ public class UserServiceImpl implements UserService {
      * Delete privilege from the local repository.
      *
      * @param privilege the privilege to be deleted.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should delete privilege from the local repository.
      */
     @Override
@@ -302,28 +304,28 @@ public class UserServiceImpl implements UserService {
      * Download role with matching uuid.
      *
      * @param uuid the uuid of the role.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download role with matching uuid.
      */
     @Override
-    public void downloadRole(final String uuid) throws IOException, ParseException {
+    public Role downloadRole(final String uuid) throws IOException, ParseException {
         roleDao.download(uuid, Constants.UUID_ROLE_RESOURCE);
+        return getRoleByUuid(uuid);
     }
 
     /**
      * Download role with matching name.
      *
      * @param name the name of the role.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download roles with matching name.
      */
     @Override
-    public void downloadRoles(final String name) throws IOException, ParseException {
+    public List<Role> downloadRoles(final String name) throws IOException, ParseException {
         roleDao.download(name, Constants.SEARCH_ROLE_RESOURCE);
+        return getRolesByName(name);
     }
 
     /**
@@ -331,9 +333,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param uuid the uuid of the role.
      * @return the role with matching uuid.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return role with matching uuid.
      */
     @Override
@@ -346,9 +347,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param name the partial name of the role.
      * @return all roles with matching name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return role records with matching name.
      * @should return empty list when no record matching the name.
      */
@@ -361,9 +361,8 @@ public class UserServiceImpl implements UserService {
      * Delete role record from the local repository.
      *
      * @param role the role record to be deleted.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should delete role record from local repository.
      */
     @Override

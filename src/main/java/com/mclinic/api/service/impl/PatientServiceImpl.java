@@ -37,29 +37,29 @@ public class PatientServiceImpl implements PatientService {
      * Download a single patient record from the patient rest resource into the local lucene repository.
      *
      * @param uuid the uuid of the patient.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download patient with matching uuid.
      */
     @Override
-    public void downloadPatientByUuid(final String uuid) throws IOException, ParseException {
+    public Patient downloadPatientByUuid(final String uuid) throws IOException, ParseException {
         patientDao.download(uuid, Constants.UUID_PATIENT_RESOURCE);
+        return getPatientByUuid(uuid);
     }
 
     /**
      * Download all patients with name similar to the partial name passed in the parameter.
      *
      * @param name the partial name of the patient to be downloaded. When empty, will return all patients available.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download all patient with partially matched name.
      * @should download all patient when name is empty.
      */
     @Override
-    public void downloadPatientsByName(final String name) throws IOException, ParseException {
+    public List<Patient> downloadPatientsByName(final String name) throws IOException, ParseException {
         patientDao.download(name, Constants.SEARCH_PATIENT_RESOURCE);
+        return getPatientsByName(name);
     }
 
     /**
@@ -67,9 +67,8 @@ public class PatientServiceImpl implements PatientService {
      *
      * @param uuid the patient uuid
      * @return patient with matching uuid or null when no patient match the uuid
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return patient with matching uuid
      * @should return null when no patient match the uuid
      */
@@ -83,9 +82,8 @@ public class PatientServiceImpl implements PatientService {
      *
      * @param identifier the patient identifier.
      * @return patient with matching identifier or null when no patient match the identifier.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return patient with matching identifier.
      * @should return null when no patient match the identifier.
      */
@@ -98,9 +96,8 @@ public class PatientServiceImpl implements PatientService {
      * Get all saved patients in the local repository.
      *
      * @return all registered patients or empty list when no patient is registered.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return all registered patients.
      * @should return empty list when no patient is registered.
      */
@@ -114,9 +111,8 @@ public class PatientServiceImpl implements PatientService {
      *
      * @param name the patient name.
      * @return list of all patients with matching name or empty list when no patient match the name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return list of all patients with matching name partially.
      * @should return empty list when no patient match the name.
      */
@@ -130,9 +126,8 @@ public class PatientServiceImpl implements PatientService {
      *
      * @param term the search term.
      * @return list of all patients with matching search term on the searchable fields or empty list.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return list of all patients with matching search term on the searchable fields.
      * @should return empty list when no patient match the search term.
      */
@@ -145,9 +140,8 @@ public class PatientServiceImpl implements PatientService {
      * Delete a single patient object from the local repository.
      *
      * @param patient the patient object.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should delete the patient object from the local repository.
      */
     @Override

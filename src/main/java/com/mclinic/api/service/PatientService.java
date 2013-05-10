@@ -24,7 +24,7 @@ public interface PatientService {
      * @throws IOException    when search api unable to process the resource.
      * @should download patient with matching uuid.
      */
-    void downloadPatientByUuid(final String uuid) throws IOException, ParseException;
+    Patient downloadPatientByUuid(final String uuid) throws IOException, ParseException;
 
     /**
      * Download all patients with name similar to the partial name passed in the parameter.
@@ -35,7 +35,7 @@ public interface PatientService {
      * @should download all patient with partially matched name.
      * @should download all patient when name is empty.
      */
-    void downloadPatientsByName(final String name) throws IOException, ParseException;
+    List<Patient> downloadPatientsByName(final String name) throws IOException, ParseException;
 
     /**
      * Get a single patient record from the local repository with matching uuid.

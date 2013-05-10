@@ -40,9 +40,8 @@ public class MemberDaoImpl extends OpenmrsDaoImpl<Member> implements MemberDao {
      *
      * @param cohortUuid the partial name of the cohort or empty string.
      * @return the list of all matching cohort on the cohort name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     public List<Member> getByCohortUuid(final String cohortUuid) throws ParseException, IOException {
         List<Filter> filters = new ArrayList<Filter>();

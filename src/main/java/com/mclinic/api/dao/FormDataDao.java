@@ -21,9 +21,8 @@ public interface FormDataDao extends LocalDao<FormData> {
      * @param userUuid    user's uuid associated to this form data.
      * @param status      the status of this form data.
      * @return list of all searchable object or empty list.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     List<FormData> getAll(final String patientUuid, final String userUuid, final String status)
             throws ParseException, IOException;

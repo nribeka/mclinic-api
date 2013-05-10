@@ -38,29 +38,29 @@ public class ObservationServiceImpl implements ObservationService {
      * Download a single observation record from the observation rest resource into the local lucene repository.
      *
      * @param uuid the uuid of the observation.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download observation with matching uuid.
      */
     @Override
-    public void downloadObservationByUuid(final String uuid) throws IOException, ParseException {
+    public Observation downloadObservationByUuid(final String uuid) throws IOException, ParseException {
         observationDao.download(uuid, Constants.UUID_OBSERVATION_RESOURCE);
+        return getObservationByUuid(uuid);
     }
 
     /**
      * Download all observations with name similar to the partial name passed in the parameter.
      *
-     * @param name the partial name of the observation to be downloaded. When empty, will return all observations available.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @param patientUuid the partial name of the observation to be downloaded. When empty, will return all observations available.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should download all observation with partially matched name.
      * @should download all observation when name is empty.
      */
     @Override
-    public void downloadObservationsByName(final String name) throws IOException, ParseException {
-        observationDao.download(name, Constants.SEARCH_OBSERVATION_RESOURCE);
+    public List<Observation> downloadObservationsByPatient(final String patientUuid) throws IOException, ParseException {
+        observationDao.download(patientUuid, Constants.SEARCH_OBSERVATION_RESOURCE);
+        return getObservationsByPatient(patientUuid);
     }
 
     /**
@@ -68,9 +68,8 @@ public class ObservationServiceImpl implements ObservationService {
      *
      * @param uuid the observation uuid.
      * @return the observation with matching uuid or null when no observation match the uuid.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return observation with matching uuid.
      * @should return null when no observation match the uuid.
      */
@@ -84,14 +83,13 @@ public class ObservationServiceImpl implements ObservationService {
      *
      * @param patientUuid the uuid of the patient.
      * @return list of all observations for the patient or empty list when no observation found for the patient.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return list of all observations for the patient.
      * @should return empty list when no observation found for the patient.
      */
     @Override
-    public List<Observation> getAllObservations(final String patientUuid) throws IOException, ParseException {
+    public List<Observation> getObservationsByPatient(final String patientUuid) throws IOException, ParseException {
         return observationDao.search(patientUuid, StringUtil.EMPTY);
     }
 
@@ -101,9 +99,8 @@ public class ObservationServiceImpl implements ObservationService {
      * @param patientUuid the patient.
      * @param term        the search term.
      * @return list of all observations with matching search term on the searchable fields or empty list.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return list of all observations with matching search term on the searchable fields.
      * @should return empty list when no observation match the search term.
      */
@@ -116,9 +113,8 @@ public class ObservationServiceImpl implements ObservationService {
      * Delete a single observation from the local repository.
      *
      * @param observation the observation.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should delete the observation from the local repository.
      */
     @Override

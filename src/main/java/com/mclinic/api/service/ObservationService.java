@@ -37,18 +37,18 @@ public interface ObservationService {
      * @throws IOException    when search api unable to process the resource.
      * @should download observation with matching uuid.
      */
-    void downloadObservationByUuid(final String uuid) throws IOException, ParseException;
+    Observation downloadObservationByUuid(final String uuid) throws IOException, ParseException;
 
     /**
      * Download all observations with name similar to the partial name passed in the parameter.
      *
-     * @param name the partial name of the observation to be downloaded. When empty, will return all observations available.
+     * @param patientUuid the partial name of the observation to be downloaded. When empty, will return all observations available.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      * @should download all observation with partially matched name.
      * @should download all observation when name is empty.
      */
-    void downloadObservationsByName(final String name) throws IOException, ParseException;
+    List<Observation> downloadObservationsByPatient(final String patientUuid) throws IOException, ParseException;
 
     /**
      * Get a single observation record from the repository using the uuid of the observation.
@@ -72,7 +72,7 @@ public interface ObservationService {
      * @should return list of all observations for the patient.
      * @should return empty list when no observation found for the patient.
      */
-    List<Observation> getAllObservations(final String patientUuid) throws IOException, ParseException;
+    List<Observation> getObservationsByPatient(final String patientUuid) throws IOException, ParseException;
 
     /**
      * Search for all observations for the particular patient with matching search term.

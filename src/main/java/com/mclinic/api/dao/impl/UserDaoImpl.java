@@ -40,9 +40,8 @@ public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
      *
      * @param username the username of the user.
      * @return user with matching username.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public User getByUsername(final String username) throws ParseException, IOException {
@@ -66,9 +65,8 @@ public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
      *
      * @param name the partial name of the user or empty string.
      * @return the list of all matching user on the user name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     @Override
     public List<User> getByName(final String name) throws ParseException, IOException {

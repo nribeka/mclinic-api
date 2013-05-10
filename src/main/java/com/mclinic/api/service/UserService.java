@@ -27,7 +27,7 @@ public interface UserService {
      * @throws IOException    when search api unable to process the resource.
      * @should download user with matching uuid.
      */
-    void downloadUserByUuid(final String uuid) throws IOException, ParseException;
+    User downloadUserByUuid(final String uuid) throws IOException, ParseException;
 
     /**
      * Download all users with name similar to the partial name passed in the parameter.
@@ -38,7 +38,7 @@ public interface UserService {
      * @should download all user with partially matched name.
      * @should download all user when name is empty.
      */
-    void downloadUsersByName(final String name) throws IOException, ParseException;
+    List<User> downloadUsersByName(final String name) throws IOException, ParseException;
 
     /**
      * Get a single user using the user's uuid.
@@ -51,6 +51,18 @@ public interface UserService {
      * @should return null when no user match the uuid.
      */
     User getUserByUuid(final String uuid) throws IOException, ParseException;
+
+    /**
+     * Get user using the user's name.
+     *
+     * @param name the name of the user.
+     * @return user with matching name or null when no user match the name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return user with matching username.
+     * @should return null when no user match the username.
+     */
+    List<User> getUserByName(final String name) throws IOException, ParseException;
 
     /**
      * Get a single user using the user name.
@@ -155,7 +167,7 @@ public interface UserService {
      * @throws IOException    when search api unable to process the resource.
      * @should download privilege with matching uuid.
      */
-    void downloadPrivilege(final String uuid) throws IOException, ParseException;
+    Privilege downloadPrivilege(final String uuid) throws IOException, ParseException;
 
     /**
      * Download all privilege records matching the privilege name.
@@ -165,7 +177,7 @@ public interface UserService {
      * @throws IOException    when search api unable to process the resource.
      * @should download all privileges with matching name.
      */
-    void downloadPrivileges(final String name) throws IOException, ParseException;
+    List<Privilege> downloadPrivileges(final String name) throws IOException, ParseException;
 
     /**
      * Get privilege from local repository using the privilege uuid.
@@ -208,7 +220,7 @@ public interface UserService {
      * @throws IOException    when search api unable to process the resource.
      * @should download role with matching uuid.
      */
-    void downloadRole(final String uuid) throws IOException, ParseException;
+    Role downloadRole(final String uuid) throws IOException, ParseException;
 
     /**
      * Download role with matching name.
@@ -218,7 +230,7 @@ public interface UserService {
      * @throws IOException    when search api unable to process the resource.
      * @should download roles with matching name.
      */
-    void downloadRoles(final String name) throws IOException, ParseException;
+    List<Role> downloadRoles(final String name) throws IOException, ParseException;
 
     /**
      * Get role from local repository with matching uuid.

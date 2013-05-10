@@ -39,7 +39,7 @@ public interface FormService {
      * @throws IOException    when search api unable to process the resource.
      * @should download form with matching uuid.
      */
-    void downloadFormByUuid(final String uuid) throws IOException, ParseException;
+    Form downloadFormByUuid(final String uuid) throws IOException, ParseException;
 
     /**
      * Download all forms with name similar to the partial name passed in the parameter.
@@ -50,9 +50,11 @@ public interface FormService {
      * @should download all form with partially matched name.
      * @should download all form when name is empty.
      */
-    void downloadFormsByName(final String name) throws IOException, ParseException;
+    List<Form> downloadFormsByName(final String name) throws IOException, ParseException;
 
     /**
+     * Get form by the uuid of the form.
+     *
      * @param uuid the form uuid.
      * @return form with matching uuid or null when no form match the uuid.
      * @throws ParseException when query parser from lucene unable to parse the query string.
@@ -61,6 +63,18 @@ public interface FormService {
      * @should return null when no form match the uuid.
      */
     Form getFormByUuid(final String uuid) throws IOException, ParseException;
+
+    /**
+     * Get all form with matching name (or partial name).
+     *
+     * @param name the form name.
+     * @return form with matching uuid or null when no form match the uuid.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return form with matching uuid.
+     * @should return null when no form match the uuid.
+     */
+    List<Form> getFormByName(final String name) throws IOException, ParseException;
 
     /**
      * @return all registered forms or empty list when no form is registered.

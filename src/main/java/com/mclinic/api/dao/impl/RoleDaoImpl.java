@@ -40,9 +40,8 @@ public class RoleDaoImpl extends OpenmrsDaoImpl<Role> implements RoleDao {
      *
      * @param name the partial name of the role or empty string.
      * @return the list of all matching role on the role name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when parsing lucene query in the internal saving process happen.
-     * @throws java.io.IOException when reading resource descriptor happen.
+     * @throws ParseException when parsing lucene query in the internal saving process happen.
+     * @throws IOException    when reading resource descriptor happen.
      */
     @Override
     public List<Role> getByName(final String name) throws ParseException, IOException {

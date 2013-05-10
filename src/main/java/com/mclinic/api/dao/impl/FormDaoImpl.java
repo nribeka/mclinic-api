@@ -39,9 +39,8 @@ public class FormDaoImpl extends OpenmrsDaoImpl<Form> implements FormDao {
      *
      * @param name the partial name of the form or empty string.
      * @return the list of all matching form on the form name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when parsing lucene query in the internal saving process happen.
-     * @throws java.io.IOException when reading resource descriptor happen.
+     * @throws ParseException when parsing lucene query in the internal saving process happen.
+     * @throws IOException    when reading resource descriptor happen.
      */
     @Override
     public List<Form> getByName(final String name) throws ParseException, IOException {

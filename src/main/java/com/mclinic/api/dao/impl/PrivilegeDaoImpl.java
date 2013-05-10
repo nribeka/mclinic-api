@@ -40,9 +40,8 @@ public class PrivilegeDaoImpl extends OpenmrsDaoImpl<Privilege> implements Privi
      *
      * @param name the partial name of the privilege or empty string.
      * @return the list of all matching privilege on the privilege name.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when parsing lucene query in the internal saving process happen.
-     * @throws java.io.IOException when reading resource descriptor happen.
+     * @throws ParseException when parsing lucene query in the internal saving process happen.
+     * @throws IOException    when reading resource descriptor happen.
      */
     @Override
     public List<Privilege> getByName(final String name) throws ParseException, IOException {

@@ -18,9 +18,8 @@ public interface CredentialDao extends LocalDao<Credential> {
      *
      * @param username the username of the user.
      * @return credential with matching username.
-     * @throws org.apache.lucene.queryParser.ParseException
-     *                             when query parser from lucene unable to parse the query string.
-     * @throws java.io.IOException when search api unable to process the resource.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      */
     Credential getByUsername(final String username) throws ParseException, IOException;
 }
