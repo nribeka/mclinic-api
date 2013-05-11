@@ -1,10 +1,15 @@
 # Resource configuration
 resource.name=Search User Resource
-node.root=$.results
+node.root=$['results']
 resource.object=com.mclinic.api.model.User
 algorithm.class=com.mclinic.api.model.algorithm.UserAlgorithm
 resolver.class=com.mclinic.api.model.resolver.SearchUserResolver
 field.unique=uuid
 
 # Searchable Fields
-uuid=$.uuid
+uuid=$['uuid']
+givenName=$['personName.givenName']
+middleName=$['personName.middleName']
+familyName=$['personName.familyName']
+username=$['username']
+username=$['systemId']

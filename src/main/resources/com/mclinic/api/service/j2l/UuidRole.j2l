@@ -7,4 +7,5 @@ resolver.class=com.mclinic.api.model.resolver.UuidRoleResolver
 field.unique=uuid
 
 # Searchable Fields
-uuid=$.uuid
+uuid=$['uuid']
+name=$['name']
