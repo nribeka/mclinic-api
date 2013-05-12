@@ -9,6 +9,6 @@ field.unique=uuid
 # Searchable Fields
 uuid=$['uuid']
 status=$['status']
-userUuid=$['userUuid']
-patientUuid=$['patientUuid']
-templateUuid=$['templateUuid']
+userUuid=$['user.uuid']
+patientUuid=$['patient.uuid']
+templateUuid=$['template.uuid']

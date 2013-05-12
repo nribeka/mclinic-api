@@ -44,13 +44,13 @@ public class FormDataAlgorithm extends BaseAlgorithm {
         String payload = JsonPath.read(jsonObject, "$['payload']");
         formData.setPayload(payload);
 
-        String templateUuid = JsonPath.read(jsonObject, "$['templateUuid']");
+        String templateUuid = JsonPath.read(jsonObject, "$['template.uuid']");
         formData.setTemplateUuid(templateUuid);
 
-        String patientUuid = JsonPath.read(jsonObject, "$['patientUuid']");
+        String patientUuid = JsonPath.read(jsonObject, "$['patient.uuid']");
         formData.setPatientUuid(patientUuid);
 
-        String userUuid = JsonPath.read(jsonObject, "$['userUuid']");
+        String userUuid = JsonPath.read(jsonObject, "$['user.uuid']");
         formData.setUserUuid(userUuid);
 
         return formData;
@@ -69,9 +69,9 @@ public class FormDataAlgorithm extends BaseAlgorithm {
         jsonObject.put("uuid", formData.getUuid());
         jsonObject.put("status", formData.getStatus());
         jsonObject.put("payload", formData.getPayload());
-        jsonObject.put("templateUuid", formData.getTemplateUuid());
-        jsonObject.put("patientUuid", formData.getPatientUuid());
-        jsonObject.put("userUuid", formData.getUserUuid());
+        jsonObject.put("template.uuid", formData.getTemplateUuid());
+        jsonObject.put("patient.uuid", formData.getPatientUuid());
+        jsonObject.put("user.uuid", formData.getUserUuid());
         return jsonObject.toJSONString();
     }
 }

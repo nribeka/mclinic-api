@@ -7,4 +7,7 @@ resolver.class=com.mclinic.api.model.resolver.UuidObservationResolver
 field.unique=uuid
 
 # Searchable Fields
-uuid=$.uuid
+uuid=$['uuid']
+patientUuid=$['person.uuid']
+conceptUuid=$['concept.uuid']
+conceptName=$['concept.name.name']

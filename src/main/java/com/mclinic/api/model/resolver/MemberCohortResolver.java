@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class MemberCohortResolver extends BaseOpenmrsResolver {
 
-    private static final String REPRESENTATION = "?v=custom:(cohort.name,patient.uuid)";
+    private static final String REPRESENTATION = "?v=custom:(cohort.uuid,patient.uuid)";
 
     /**
      * Return the full REST resource based on the search string passed to the method.

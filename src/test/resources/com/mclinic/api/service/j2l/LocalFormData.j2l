@@ -7,4 +7,8 @@ resolver.class=com.mclinic.api.model.resolver.LocalResolver
 field.unique=uuid
 
 # Searchable Fields
-uuid=$.uuid
+uuid=$['uuid']
+status=$['status']
+userUuid=$['user.uuid']
+patientUuid=$['patient.uuid']
+templateUuid=$['template.uuid']

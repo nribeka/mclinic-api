@@ -21,14 +21,12 @@ import com.mclinic.api.dao.CohortDao;
 import com.mclinic.api.dao.MemberDao;
 import com.mclinic.api.model.Cohort;
 import com.mclinic.api.model.Member;
-import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.CohortService;
 import com.mclinic.api.service.PatientService;
 import com.mclinic.util.Constants;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CohortServiceImpl implements CohortService {
@@ -131,7 +129,7 @@ public class CohortServiceImpl implements CohortService {
     }
 
     /**
-     * Download all patients under the current cohort identified by the cohort uuid and save them in to the local
+     * Download all patients' uuid under the current cohort identified by the cohort uuid and save them in to the local
      * repository.
      *
      * @param cohortUuid the cohort's uuid.
@@ -140,32 +138,25 @@ public class CohortServiceImpl implements CohortService {
      * @should download all patients from the current cohort identified by the cohort's uuid.
      */
     @Override
-    public List<Patient> downloadPatients(final String cohortUuid) throws IOException, ParseException {
+    public List<Member> downloadMembers(final String cohortUuid) throws IOException, ParseException {
         memberDao.download(cohortUuid, Constants.MEMBER_COHORT_RESOURCE);
-        return getPatients(cohortUuid);
+        return getMembers(cohortUuid);
     }
 
     /**
-     * Get all patients under the current cohort identified by the cohort's uuid which already saved in the local
+     * Get all patients' uuid under the current cohort identified by the cohort's uuid which already saved in the local
      * repository.
      *
      * @param cohortUuid the cohort's uuid.
-     * @return list of all patients under current cohort uuid or empty list when no patient are in the cohort.
+     * @return list of all patients' uuid under current cohort uuid or empty list when no patient are in the cohort.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      * @should return list of all patients for the cohort.
      * @should return empty list when no patient are in the cohort.
      */
     @Override
-    public List<Patient> getPatients(final String cohortUuid) throws IOException, ParseException {
-        List<Patient> patients = new ArrayList<Patient>();
-        for (Member member : memberDao.getByCohortUuid(cohortUuid)) {
-            Patient patient = patientService.getPatientByUuid(member.getPatientUuid());
-            if (patient != null) {
-                patients.add(patient);
-            }
-        }
-        return patients;
+    public List<Member> getMembers(final String cohortUuid) throws IOException, ParseException {
+        return memberDao.getByCohortUuid(cohortUuid);
     }
 
     /**

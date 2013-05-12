@@ -18,6 +18,9 @@ package com.mclinic.api.service;
 import com.mclinic.api.context.Context;
 import com.mclinic.api.context.ContextFactory;
 import com.mclinic.api.model.Cohort;
+import com.mclinic.api.model.Member;
+import com.mclinic.api.model.Observation;
+import com.mclinic.api.model.Patient;
 import com.mclinic.search.api.util.StringUtil;
 import org.junit.Test;
 
@@ -36,14 +39,26 @@ public class CohortServiceTest {
         if (!context.isAuthenticated())
             context.authenticate("admin", "test", "http://localhost:8081/openmrs-standalone");
 
-        context = ContextFactory.createContext();
-
         CohortService cohortService = context.getCohortService();
-        cohortService.downloadCohortsByName(StringUtil.EMPTY);
-        List<Cohort> cohorts = cohortService.getAllCohorts();
+        PatientService patientService = context.getPatientService();
+        ObservationService observationService = context.getObservationService();
 
-        for (Cohort cohort : cohorts)
+        List<Cohort> cohorts = cohortService.downloadCohortsByName(StringUtil.EMPTY);
+        for (Cohort cohort : cohorts) {
             System.out.println("Cohort: " + cohort.getName() + " | " + cohort.getUuid());
+            List<Member> members = cohortService.downloadMembers(cohort.getUuid());
+            for (Member member : members) {
+                System.out.println("Member: " + member.getPatientUuid());
+                Patient patient = patientService.downloadPatientByUuid(member.getPatientUuid());
+                System.out.println("Patient: " + patient.getUuid() + "| identifier: " + patient.getIdentifier());
+                List<Observation> observations =
+                        observationService.downloadObservationsByPatient(member.getPatientUuid());
+                System.out.println("Observation: ");
+                for (Observation observation : observations) {
+                    System.out.println(observation.getQuestionName() + " = " + observation.getValue());
+                }
+            }
+        }
 
         context.deauthenticate();
         context.closeSession();

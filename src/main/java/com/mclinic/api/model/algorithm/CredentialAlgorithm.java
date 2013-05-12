@@ -38,7 +38,7 @@ public class CredentialAlgorithm extends BaseAlgorithm {
         String uuid = JsonPath.read(jsonObject, "$['uuid']");
         user.setUuid(uuid);
 
-        String userUuid = JsonPath.read(jsonObject, "$['userUuid']");
+        String userUuid = JsonPath.read(jsonObject, "$['user.uuid']");
         user.setUserUuid(userUuid);
 
         String username = JsonPath.read(jsonObject, "$'[username']");
@@ -64,7 +64,7 @@ public class CredentialAlgorithm extends BaseAlgorithm {
         Credential credential = (Credential) object;
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uuid", credential.getUuid());
-        jsonObject.put("userUuid", credential.getUserUuid());
+        jsonObject.put("user.uuid", credential.getUserUuid());
         jsonObject.put("username", credential.getUsername());
         jsonObject.put("password", credential.getPassword());
         jsonObject.put("salt", credential.getSalt());

@@ -18,7 +18,7 @@ package com.mclinic.api.service;
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.annotation.Authorization;
 import com.mclinic.api.model.Cohort;
-import com.mclinic.api.model.Patient;
+import com.mclinic.api.model.Member;
 import com.mclinic.api.service.impl.CohortServiceImpl;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -97,7 +97,7 @@ public interface CohortService {
     void deleteCohort(final Cohort cohort) throws IOException, ParseException;
 
     /**
-     * Download all patients under the current cohort identified by the cohort uuid and save them in to the local
+     * Download all patients' uuid under the current cohort identified by the cohort uuid and save them in to the local
      * repository.
      *
      * @param cohortUuid the cohort's uuid.
@@ -105,20 +105,20 @@ public interface CohortService {
      * @throws IOException    when search api unable to process the resource.
      * @should download all patients from the current cohort identified by the cohort's uuid.
      */
-    List<Patient> downloadPatients(final String cohortUuid) throws IOException, ParseException;
+    List<Member> downloadMembers(final String cohortUuid) throws IOException, ParseException;
 
     /**
-     * Get all patients under the current cohort identified by the cohort's uuid which already saved in the local
+     * Get all patients' uuid under the current cohort identified by the cohort's uuid which already saved in the local
      * repository.
      *
      * @param cohortUuid the cohort's uuid.
-     * @return list of all patients under current cohort uuid or empty list when no patient are in the cohort.
+     * @return list of all patients' uuid under current cohort uuid or empty list when no patient are in the cohort.
      * @throws ParseException when query parser from lucene unable to parse the query string.
      * @throws IOException    when search api unable to process the resource.
      * @should return list of all patients for the cohort.
      * @should return empty list when no patient are in the cohort.
      */
-    List<Patient> getPatients(final String cohortUuid) throws IOException, ParseException;
+    List<Member> getMembers(final String cohortUuid) throws IOException, ParseException;
 
     /**
      * Delete all patients for the current cohort identified by the cohort's uuid.

@@ -41,7 +41,7 @@ public class FormTemplateAlgorithm extends BaseAlgorithm {
         String payload = JsonPath.read(jsonObject, "$['payload']");
         formTemplate.setPayload(payload);
 
-        String formUuid = JsonPath.read(jsonObject, "$['formUuid']");
+        String formUuid = JsonPath.read(jsonObject, "$['form.uuid']");
         formTemplate.setFormUuid(formUuid);
 
         return formTemplate;
@@ -59,7 +59,7 @@ public class FormTemplateAlgorithm extends BaseAlgorithm {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("uuid", formTemplate.getUuid());
         jsonObject.put("payload", formTemplate.getPayload());
-        jsonObject.put("formUuid", formTemplate.getFormUuid());
+        jsonObject.put("form.uuid", formTemplate.getFormUuid());
         return jsonObject.toJSONString();
     }
 }

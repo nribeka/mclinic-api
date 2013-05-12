@@ -35,10 +35,10 @@ public class MemberAlgorithm extends BaseOpenmrsAlgorithm {
 
         Object jsonObject = JsonPath.read(serialized, "$");
 
-        String userUuid = JsonPath.read(jsonObject, "$['cohortUuid']");
+        String userUuid = JsonPath.read(jsonObject, "$['cohort.uuid']");
         member.setCohortUuid(userUuid);
 
-        String patientUuid = JsonPath.read(jsonObject, "$['patientUuid']");
+        String patientUuid = JsonPath.read(jsonObject, "$['patient.uuid']");
         member.setPatientUuid(patientUuid);
 
         return member;

@@ -8,4 +8,4 @@ field.unique=uuid
 
 # Searchable Fields
 uuid=$['uuid']
-formUuid=$['formUuid']
+formUuid=$['form.uuid']
