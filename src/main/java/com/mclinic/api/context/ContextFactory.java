@@ -37,7 +37,7 @@ public class ContextFactory {
 
     static {
         contextProperties.setProperty(
-                Constants.LUCENE_DIRECTORY_NAME, System.getProperty("java.io.tmpdir"));
+                Constants.LUCENE_DIRECTORY_NAME, System.getProperty("java.io.tmpdir") + "/lucene");
         contextProperties.setProperty(Constants.LUCENE_DOCUMENT_KEY, OPENMRS_UUID);
     }
 

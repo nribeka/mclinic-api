@@ -17,6 +17,7 @@ package com.mclinic.api.context;
 
 import com.google.inject.Injector;
 import com.mclinic.api.config.Configuration;
+import com.mclinic.api.model.User;
 import com.mclinic.api.service.CohortService;
 import com.mclinic.api.service.FormService;
 import com.mclinic.api.service.ObservationService;
@@ -143,11 +144,16 @@ public class Context {
     //TODO: Need to throw AuthorizationException when userContext is null
     public void authenticate(final String username, final String password, final String server)
             throws IOException, ParseException {
-        getUserContext().authenticate(username, password, server, getUserService());
-
         Configuration configuration = getInjector().getInstance(Configuration.class);
         configuration.configure(username, password, server);
         getUserContext().setConfiguration(configuration);
+        getUserContext().authenticate(username, password, getUserService());
+    }
+
+    public User getAuthenticatedUser() throws IOException {
+        if (getUserContext() == null)
+            throw new IOException("UserContext is not ready. You probably missed the openSession() call?");
+        return getUserContext().getAuthenticatedUser();
     }
 
     public void deauthenticate() throws IOException {

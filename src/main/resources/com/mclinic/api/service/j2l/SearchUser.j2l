@@ -8,8 +8,8 @@ field.unique=uuid
 
 # Searchable Fields
 uuid=$['uuid']
-givenName=$['personName.givenName']
-middleName=$['personName.middleName']
-familyName=$['personName.familyName']
+givenName=$['person.personName.givenName']
+middleName=$['person.personName.middleName']
+familyName=$['person.personName.familyName']
 username=$['username']
-username=$['systemId']
+systemId=$['systemId']

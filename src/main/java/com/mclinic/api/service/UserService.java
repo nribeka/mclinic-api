@@ -30,6 +30,16 @@ public interface UserService {
     User downloadUserByUuid(final String uuid) throws IOException, ParseException;
 
     /**
+     * Download a single user record from the user rest resource into the local lucene repository.
+     *
+     * @param username the username of the user.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download user with matching uuid.
+     */
+    User downloadUserByUsername(final String username) throws IOException, ParseException;
+
+    /**
      * Download all users with name similar to the partial name passed in the parameter.
      *
      * @param name the partial name of the user to be downloaded. When empty, will return all users available.

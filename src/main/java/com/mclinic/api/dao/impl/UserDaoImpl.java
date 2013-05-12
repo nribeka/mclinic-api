@@ -17,14 +17,11 @@ package com.mclinic.api.dao.impl;
 
 import com.mclinic.api.dao.UserDao;
 import com.mclinic.api.model.User;
-import com.mclinic.search.api.filter.Filter;
-import com.mclinic.search.api.filter.FilterFactory;
 import com.mclinic.search.api.util.CollectionUtil;
 import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
@@ -46,15 +43,16 @@ public class UserDaoImpl extends OpenmrsDaoImpl<User> implements UserDao {
     @Override
     public User getByUsername(final String username) throws ParseException, IOException {
         User user = null;
-        List<Filter> filters = new ArrayList<Filter>();
+        StringBuilder query = new StringBuilder();
         if (!StringUtil.isEmpty(username)) {
-            Filter filter = FilterFactory.createFilter("username", username);
-            filters.add(filter);
+            query.append("username:").append(username).append(" OR ");
+            query.append("systemId:").append(username);
         }
-        List<User> users = service.getObjects(filters, User.class);
+        List<User> users = service.getObjects(query.toString(), User.class);
         if (!CollectionUtil.isEmpty(users)) {
-            if (users.size() > 1)
+            if (users.size() > 1) {
                 throw new IOException("Unable to uniquely identify a Patient using the identifier");
+            }
             user = users.get(0);
         }
         return user;

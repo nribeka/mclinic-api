@@ -16,12 +16,16 @@
 package com.mclinic.api.context;
 
 import com.mclinic.api.config.Configuration;
+import com.mclinic.api.exception.AuthenticationException;
 import com.mclinic.api.model.Credential;
 import com.mclinic.api.model.User;
 import com.mclinic.api.service.UserService;
+import com.mclinic.search.api.util.DigestUtil;
+import com.mclinic.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * TODO: Write brief description about the class here.
@@ -34,7 +38,7 @@ class UserContext {
 
     private Configuration configuration;
 
-    public UserContext() {
+    UserContext() {
     }
 
     /**
@@ -44,7 +48,7 @@ class UserContext {
      * @param password the password.
      */
     public void authenticate(final String username, final String password,
-                             final String server, final UserService userService)
+                             final UserService userService)
             throws IOException, ParseException {
         // TODO: Need to update this authentication method.
         // Process:
@@ -54,6 +58,31 @@ class UserContext {
         // * Match the credential's password with this password (password is salted).
         // * If we found a match, get the user with the username. The context is now authenticated.
         user = userService.getUserByUsername(username);
+        if (user == null) {
+            user = userService.downloadUserByUsername(username);
+            if (user != null) {
+                String uuid = UUID.randomUUID().toString();
+                String salt = DigestUtil.getSHA1Checksum(uuid);
+                String hashedPassword = DigestUtil.getSHA1Checksum(salt + ":" + password);
+
+                credential = new Credential();
+                credential.setUuid(uuid);
+                credential.setSalt(salt);
+                credential.setUserUuid(uuid);
+                credential.setUsername(username);
+                credential.setPassword(hashedPassword);
+                userService.saveCredential(credential);
+            } else {
+                throw new AuthenticationException("Unable to authenticate user for username: " + username);
+            }
+        } else {
+            credential = userService.getCredentialByUsername(username);
+            String salt = credential.getSalt();
+            String hashedPassword = DigestUtil.getSHA1Checksum(salt + ":" + password);
+            if (!StringUtil.equals(hashedPassword, credential.getPassword())) {
+                throw new IOException("Unable to authenticate user for username: " + username);
+            }
+        }
     }
 
     /**
@@ -89,13 +118,5 @@ class UserContext {
 
     public void setConfiguration(final Configuration configuration) {
         this.configuration = configuration;
-    }
-
-    public Credential getCredential() {
-        return credential;
-    }
-
-    public void setCredential(final Credential credential) {
-        this.credential = credential;
     }
 }

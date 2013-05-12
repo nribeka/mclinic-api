@@ -63,6 +63,20 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Download a single user record from the user rest resource into the local lucene repository.
+     *
+     * @param username the username of the user.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download user with matching uuid.
+     */
+    @Override
+    public User downloadUserByUsername(final String username) throws IOException, ParseException {
+        userDao.download(username, Constants.SEARCH_USER_RESOURCE);
+        return getUserByUsername(username);
+    }
+
+    /**
      * Download all users with name similar to the partial name passed in the parameter.
      *
      * @param name the partial name of the user to be downloaded. When empty, will return all users available.

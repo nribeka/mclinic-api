@@ -43,13 +43,13 @@ public class UserAlgorithm extends BaseOpenmrsAlgorithm {
         String uuid = JsonPath.read(jsonObject, "$['uuid']");
         user.setUuid(uuid);
 
-        String givenName = JsonPath.read(jsonObject, "$['personName.givenName']");
+        String givenName = JsonPath.read(jsonObject, "$['person.personName.givenName']");
         user.setGivenName(givenName);
 
-        String middleName = JsonPath.read(jsonObject, "$['personName.middleName']");
+        String middleName = JsonPath.read(jsonObject, "$['person.personName.middleName']");
         user.setMiddleName(middleName);
 
-        String familyName = JsonPath.read(jsonObject, "$['personName.familyName']");
+        String familyName = JsonPath.read(jsonObject, "$['person.personName.familyName']");
         user.setFamilyName(familyName);
 
         String username;

@@ -3,6 +3,7 @@ package com.mclinic.api.aspect;
 import com.mclinic.api.annotation.Authorization;
 import com.mclinic.api.context.Context;
 import com.mclinic.api.context.ContextFactory;
+import com.mclinic.api.model.User;
 import org.aspectj.lang.Signature;
 
 import java.io.IOException;
@@ -25,10 +26,13 @@ public aspect AuthenticationAspect {
 
         try {
             Context context = ContextFactory.createContext();
-            if (!context.isAuthenticated())
+            if (!context.isAuthenticated()) {
+                User user = context.getAuthenticatedUser();
                 System.out.println("Context is not authenticated!");
-            else
+                System.out.println("Authenticated user is: " + user.getUsername());
+            } else {
                 System.out.println("Context is authenticated!");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
