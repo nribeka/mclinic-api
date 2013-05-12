@@ -94,6 +94,23 @@ public class ObservationServiceImpl implements ObservationService {
     }
 
     /**
+     * Get all observations for the particular patient.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param conceptUuid the uuid of the concept.
+     * @return list of all observations for the patient or empty list when no observation found for the patient.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should return list of all observations for the patient.
+     * @should return empty list when no observation found for the patient.
+     */
+    @Override
+    public List<Observation> getObservationsByPatientAndConcept(final String patientUuid, final String conceptUuid) throws IOException, ParseException {
+        return observationDao.get(patientUuid, conceptUuid);
+    }
+
+    /**
      * Search for all observations for the particular patient with matching search term.
      *
      * @param patientUuid the patient.

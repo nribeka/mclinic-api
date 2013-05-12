@@ -75,6 +75,20 @@ public interface ObservationService {
     List<Observation> getObservationsByPatient(final String patientUuid) throws IOException, ParseException;
 
     /**
+     * Get all observations for the particular patient.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param conceptUuid the uuid of the concept.
+     * @return list of all observations for the patient or empty list when no observation found for the patient.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return list of all observations for the patient.
+     * @should return empty list when no observation found for the patient.
+     */
+    List<Observation> getObservationsByPatientAndConcept(final String patientUuid, final String conceptUuid)
+            throws IOException, ParseException;
+
+    /**
      * Search for all observations for the particular patient with matching search term.
      *
      * @param patientUuid the patient.

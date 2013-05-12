@@ -36,4 +36,15 @@ public interface ObservationDao extends OpenmrsDao<Observation> {
      * @throws IOException    when search api unable to process the resource.
      */
     List<Observation> search(final String patientUuid, final String term) throws ParseException, IOException;
+
+    /**
+     * Search observations for patient with matching uuid of the question.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param conceptUuid the uuid of the question of the observations.
+     * @return all observations for the patient with question matching the search term.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<Observation> get(final String patientUuid, final String conceptUuid) throws ParseException, IOException;
 }

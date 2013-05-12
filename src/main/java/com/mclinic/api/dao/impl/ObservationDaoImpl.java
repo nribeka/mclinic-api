@@ -56,4 +56,27 @@ public class ObservationDaoImpl extends OpenmrsDaoImpl<Observation> implements O
         }
         return service.getObjects(filters, Observation.class);
     }
+
+    /**
+     * Search observations for patient with matching uuid of the question.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param conceptUuid the uuid of the question of the observations.
+     * @return all observations for the patient with question matching the search term.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    @Override
+    public List<Observation> get(final String patientUuid, final String conceptUuid) throws ParseException, IOException {
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(patientUuid)) {
+            Filter patientFilter = FilterFactory.createFilter("patientUuid", patientUuid);
+            filters.add(patientFilter);
+        }
+        if (!StringUtil.isEmpty(conceptUuid)) {
+            Filter conceptFilter = FilterFactory.createFilter("conceptUuid", conceptUuid);
+            filters.add(conceptFilter);
+        }
+        return service.getObjects(filters, Observation.class);
+    }
 }

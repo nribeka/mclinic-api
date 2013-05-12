@@ -52,6 +52,7 @@ public class CohortServiceImpl implements CohortService {
      * @should download cohort with matching uuid.
      */
     @Override
+    @Authorization(privileges = {"View Cohort Privilege"})
     public Cohort downloadCohortByUuid(final String uuid) throws IOException, ParseException {
         cohortDao.download(uuid, Constants.UUID_COHORT_RESOURCE);
         return getCohortByUuid(uuid);
@@ -67,6 +68,7 @@ public class CohortServiceImpl implements CohortService {
      * @should download all cohort when name is empty.
      */
     @Override
+    @Authorization(privileges = {"View Cohort Privilege"})
     public List<Cohort> downloadCohortsByName(final String name) throws IOException, ParseException {
         cohortDao.download(name, Constants.SEARCH_COHORT_RESOURCE);
         return getCohortsByName(name);
@@ -83,6 +85,7 @@ public class CohortServiceImpl implements CohortService {
      * @should return null when no cohort match the uuid.
      */
     @Override
+    @Authorization(privileges = {"View Cohort Privilege"})
     public Cohort getCohortByUuid(final String uuid) throws IOException, ParseException {
         return cohortDao.getByUuid(uuid);
     }
@@ -98,6 +101,7 @@ public class CohortServiceImpl implements CohortService {
      * @should return empty list when no cohort match the name.
      */
     @Override
+    @Authorization(privileges = {"View Cohort Privilege"})
     public List<Cohort> getCohortsByName(final String name) throws IOException, ParseException {
         return cohortDao.getByName(name);
     }
@@ -110,7 +114,7 @@ public class CohortServiceImpl implements CohortService {
      * @should return empty list when no cohort is registered.
      */
     @Override
-    @Authorization(privileges = {"Cohort Privilege"})
+    @Authorization(privileges = {"View Cohort Privilege"})
     public List<Cohort> getAllCohorts() throws IOException, ParseException {
         return cohortDao.getAll();
     }

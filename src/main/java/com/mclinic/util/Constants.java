@@ -32,6 +32,8 @@ public class Constants {
     public static final String LUCENE_DOCUMENT_KEY = "configuration.lucene.document.key";
 
     public static final String RESOURCE_CONFIGURATION_PATH = "configuration.resource.path";
+
+    public static final String RESOURCE_CONFIGURATION_DEFAULT = "configuration.resource.default";
     /*
      * OpenMRS server configuration.
      */

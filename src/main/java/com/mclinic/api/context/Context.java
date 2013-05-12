@@ -30,10 +30,9 @@ import com.mclinic.search.api.model.serialization.Algorithm;
 import com.mclinic.search.api.resource.ResourceConstants;
 import org.apache.lucene.queryParser.ParseException;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
@@ -74,15 +73,9 @@ public class Context {
         // * TODO: need to add a new method in the search api to register resource using InputStream --done
         // * Read each line and use Class.getResourceAsStream(path to j2l) and then register each of them.
         ServiceContext serviceContext = injector.getInstance(ServiceContext.class);
-
-        InputStream configListStream = Context.class.getResourceAsStream("../service/j2l/config.list");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(configListStream));
-
-        String line;
-        InputStream inputStream;
-        while ((line = reader.readLine()) != null) {
+        for (String configuration : DefaultResource.getDefaultConfiguration()) {
             try {
-                inputStream = Context.class.getResourceAsStream("../service/j2l/" + line);
+                InputStream inputStream = new ByteArrayInputStream(configuration.getBytes());
                 Properties properties = new Properties();
                 properties.load(inputStream);
                 inputStream.close();
@@ -101,15 +94,16 @@ public class Context {
                 Class resolverClass = Class.forName(resolverName);
                 Resolver resolver = (Resolver) injector.getInstance(resolverClass);
                 serviceContext.registerResolver(resolver);
-
-                inputStream = Context.class.getResourceAsStream("../service/j2l/" + line);
-                serviceContext.registerResource(inputStream);
-                inputStream.close();
             } catch (ClassNotFoundException e) {
-                throw new IOException("Unable to register resource for " + line, e);
+                throw new IOException("Unable to register resource for: " + configuration, e);
             }
         }
-        configListStream.close();
+
+        for (String configuration : DefaultResource.getDefaultConfiguration()) {
+            InputStream inputStream = new ByteArrayInputStream(configuration.getBytes());
+            serviceContext.registerResource(inputStream);
+            inputStream.close();
+        }
     }
 
     private void initConfiguration(final Injector injector) throws IOException {
