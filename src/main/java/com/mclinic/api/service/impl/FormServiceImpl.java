@@ -124,7 +124,11 @@ public class FormServiceImpl implements FormService {
      */
     @Override
     public void deleteForm(final Form form) throws IOException, ParseException {
-        throw new IOException("Delete operation is not supported for form object!");
+        try {
+            formDao.delete(form, Constants.SEARCH_FORM_RESOURCE);
+        } finally {
+            formDao.delete(form, Constants.UUID_COHORT_RESOURCE);
+        }
     }
 
     /**

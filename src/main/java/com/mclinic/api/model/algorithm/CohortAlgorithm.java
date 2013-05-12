@@ -18,6 +18,7 @@ package com.mclinic.api.model.algorithm;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Cohort;
 import com.mclinic.search.api.model.object.Searchable;
+import net.minidev.json.JSONObject;
 
 import java.io.IOException;
 
@@ -42,5 +43,21 @@ public class CohortAlgorithm extends BaseOpenmrsAlgorithm {
         cohort.setName(name);
 
         return cohort;
+    }
+
+    /**
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
+     *
+     * @param object the object
+     * @return the string representation
+     */
+    @Override
+    public String serialize(final Searchable object) throws IOException {
+        // serialize the minimum needed to identify an object for deletion purposes.
+        Cohort cohort = (Cohort) object;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", cohort.getUuid());
+        jsonObject.put("name", cohort.getUuid());
+        return jsonObject.toJSONString();
     }
 }

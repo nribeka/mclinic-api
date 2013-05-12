@@ -20,6 +20,7 @@ import com.mclinic.api.model.Observation;
 import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.util.ISO8601Util;
 import com.mclinic.util.Constants;
+import net.minidev.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -82,5 +83,21 @@ public class ObservationAlgorithm extends BaseOpenmrsAlgorithm {
         }
 
         return observation;
+    }
+
+    /**
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
+     *
+     * @param object the object
+     * @return the string representation
+     */
+    @Override
+    public String serialize(final Searchable object) throws IOException {
+        // TODO: Add all other fields into the serialized String.
+        // serialize the minimum needed to identify an object for deletion purposes.
+        Observation observation = (Observation) object;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", observation.getUuid());
+        return jsonObject.toJSONString();
     }
 }

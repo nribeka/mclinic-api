@@ -128,5 +128,5 @@ public interface CohortService {
      * @throws IOException    when search api unable to process the resource.
      * @should delete all patients for the cohort from the local repository.
      */
-    void deletePatients(final String cohortUuid) throws IOException, ParseException;
+    void deleteMembers(final String cohortUuid) throws IOException, ParseException;
 }

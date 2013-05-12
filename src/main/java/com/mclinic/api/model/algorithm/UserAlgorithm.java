@@ -20,6 +20,7 @@ import com.mclinic.api.model.User;
 import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.util.StringUtil;
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,5 +99,21 @@ public class UserAlgorithm extends BaseOpenmrsAlgorithm {
         }
 
         return user;
+    }
+
+    /**
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
+     *
+     * @param object the object
+     * @return the string representation
+     */
+    @Override
+    public String serialize(final Searchable object) throws IOException {
+        // TODO: Add all other fields into the serialized String.
+        // serialize the minimum needed to identify an object for deletion purposes.
+        User user = (User) object;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", user.getUuid());
+        return jsonObject.toJSONString();
     }
 }

@@ -18,6 +18,7 @@ import com.mclinic.api.model.Privilege;
 import com.mclinic.api.model.Role;
 import com.mclinic.search.api.model.object.Searchable;
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,5 +65,21 @@ public class RoleAlgorithm extends BaseOpenmrsAlgorithm {
         }
 
         return role;
+    }
+
+    /**
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
+     *
+     * @param object the object
+     * @return the string representation
+     */
+    @Override
+    public String serialize(final Searchable object) throws IOException {
+        // TODO: Add all other fields into the serialized String.
+        // serialize the minimum needed to identify an object for deletion purposes.
+        Role role = (Role) object;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", role.getUuid());
+        return jsonObject.toJSONString();
     }
 }

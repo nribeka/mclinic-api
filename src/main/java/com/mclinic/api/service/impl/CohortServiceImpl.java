@@ -125,7 +125,11 @@ public class CohortServiceImpl implements CohortService {
      */
     @Override
     public void deleteCohort(final Cohort cohort) throws IOException, ParseException {
-        throw new IOException("Delete operation is not supported for cohort object!");
+        try {
+            cohortDao.delete(cohort, Constants.SEARCH_COHORT_RESOURCE);
+        } finally {
+            cohortDao.delete(cohort, Constants.UUID_COHORT_RESOURCE);
+        }
     }
 
     /**
@@ -160,7 +164,7 @@ public class CohortServiceImpl implements CohortService {
     }
 
     /**
-     * Delete all patients for the current cohort identified by the cohort's uuid.
+     * Delete all members for the current cohort identified by the cohort's uuid.
      *
      * @param cohortUuid the cohort's uuid.
      * @throws ParseException when query parser from lucene unable to parse the query string.
@@ -168,7 +172,9 @@ public class CohortServiceImpl implements CohortService {
      * @should delete all patients for the cohort from the local repository.
      */
     @Override
-    public void deletePatients(final String cohortUuid) throws IOException, ParseException {
-        throw new IOException("Delete operation is not supported for cohort member object!");
+    public void deleteMembers(final String cohortUuid) throws IOException, ParseException {
+        for (Member member : getMembers(cohortUuid)) {
+            memberDao.delete(member, Constants.MEMBER_COHORT_RESOURCE);
+        }
     }
 }

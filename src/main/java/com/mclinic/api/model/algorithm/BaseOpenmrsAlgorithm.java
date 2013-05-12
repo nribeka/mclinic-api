@@ -13,23 +13,9 @@
  */
 package com.mclinic.api.model.algorithm;
 
-import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.model.serialization.BaseAlgorithm;
-
-import java.io.IOException;
 
 /**
  */
 public abstract class BaseOpenmrsAlgorithm extends BaseAlgorithm {
-
-    /**
-     * Implementation of this method will define how the object will be de-serialized into the String representation.
-     *
-     * @param object the object
-     * @return the string representation
-     */
-    @Override
-    public String serialize(final Searchable object) throws IOException {
-        throw new IOException("Create or updating OpenMRS object is disabled. Update them in the server, please!");
-    }
 }

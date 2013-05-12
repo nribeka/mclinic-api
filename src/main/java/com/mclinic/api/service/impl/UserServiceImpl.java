@@ -146,7 +146,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteUser(final User user) throws IOException, ParseException {
-        throw new IOException("Delete operation is not supported for user object!");
+        try {
+            userDao.delete(user, Constants.UUID_USER_RESOURCE);
+        } finally {
+            userDao.delete(user, Constants.SEARCH_USER_RESOURCE);
+        }
     }
 
     /**
@@ -297,7 +301,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deletePrivilege(final Privilege privilege) throws IOException, ParseException {
-        throw new IOException("Delete operation is not supported for privilege object!");
+        try {
+            privilegeDao.delete(privilege, Constants.SEARCH_PRIVILEGE_RESOURCE);
+        } finally {
+            privilegeDao.delete(privilege, Constants.UUID_PRIVILEGE_RESOURCE);
+        }
     }
 
     /**
@@ -367,6 +375,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteRole(final Role role) throws IOException, ParseException {
-        throw new IOException("Delete operation is not supported for role object!");
+        try {
+            roleDao.delete(role, Constants.SEARCH_ROLE_RESOURCE);
+        } finally {
+            roleDao.delete(role, Constants.UUID_ROLE_RESOURCE);
+        }
     }
 }

@@ -91,17 +91,4 @@ public abstract class LocalDaoImpl<T extends BaseSearchable> extends SearchableD
         }
         return service.getObjects(filters, daoClass);
     }
-
-    /**
-     * Delete the searchable object from the lucene repository.
-     *
-     * @param searchable the object to be deleted.
-     * @param resource   the resource descriptor used to retrieve the object from the repository.
-     * @throws ParseException when query parser from lucene unable to parse the query string.
-     * @throws IOException    when search api unable to process the resource.
-     */
-    @Override
-    public void delete(final T searchable, final String resource) throws ParseException, IOException {
-        service.invalidate(searchable, context.getResource(resource));
-    }
 }

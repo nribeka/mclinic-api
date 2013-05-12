@@ -34,8 +34,6 @@ class UserContext {
 
     private Configuration configuration;
 
-    private UserService userService;
-
     public UserContext() {
     }
 

@@ -146,6 +146,10 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void deletePatient(final Patient patient) throws IOException, ParseException {
-        throw new IOException("Delete operation is not supported for patient object!");
+        try {
+            patientDao.delete(patient, Constants.UUID_PATIENT_RESOURCE);
+        } finally {
+            patientDao.delete(patient, Constants.SEARCH_PATIENT_RESOURCE);
+        }
     }
 }
