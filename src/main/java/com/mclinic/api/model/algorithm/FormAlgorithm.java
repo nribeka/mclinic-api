@@ -15,10 +15,12 @@ package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Form;
-import com.mclinic.search.api.serialization.Algorithm;
-import com.mclinic.search.api.util.StringUtil;
+import com.mclinic.search.api.model.object.Searchable;
+import net.minidev.json.JSONObject;
 
-public class FormAlgorithm implements Algorithm {
+import java.io.IOException;
+
+public class FormAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the observation will be serialized from the JSON representation.
@@ -27,40 +29,34 @@ public class FormAlgorithm implements Algorithm {
      * @return the concrete observation object
      */
     @Override
-    public Form deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
 
         Form form = new Form();
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         form.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.display");
+        String name = JsonPath.read(jsonObject, "$['name']");
         form.setName(name);
-
-        form.setJson(json);
 
         return form;
     }
 
     /**
-     * Implementation of this method will define how the observation will be de-serialized into the JSON representation.
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
      *
-     * @param object the observation
-     * @return the json representation
+     * @param object the object
+     * @return the string representation
      */
     @Override
-    public String serialize(final Object object) {
+    public String serialize(final Searchable object) throws IOException {
+        // serialize the minimum needed to identify an object for deletion purposes.
         Form form = (Form) object;
-        String json = form.getJson();
-
-        Object jsonObject = JsonPath.read(json, "$");
-
-        String name = JsonPath.read(jsonObject, "$.display");
-        if (!StringUtil.isEmpty(name))
-            json = json.replaceAll(name, form.getName());
-        return json;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", form.getUuid());
+        jsonObject.put("name", form.getUuid());
+        return jsonObject.toJSONString();
     }
-
 }

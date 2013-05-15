@@ -14,13 +14,19 @@
 package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
+import com.mclinic.api.model.Privilege;
+import com.mclinic.api.model.Role;
 import com.mclinic.api.model.User;
-import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.util.StringUtil;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
-public class UserAlgorithm implements Algorithm {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the object will be serialized from the String representation.
@@ -29,29 +35,68 @@ public class UserAlgorithm implements Algorithm {
      * @return the concrete object
      */
     @Override
-    public Object deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
         User user = new User();
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         user.setUuid(uuid);
 
-        String display = JsonPath.read(jsonObject, "$.display");
-        String[] displayElements = StringUtil.split(display, "-");
-        user.setUsername(displayElements[0]);
-        user.setName(displayElements[1]);
+        String givenName = JsonPath.read(jsonObject, "$['person.personName.givenName']");
+        user.setGivenName(givenName);
 
-        try {
-            String password = JsonPath.read(json, "$.password");
-            user.setPassword(password);
-            String salt = JsonPath.read(json, "$.salt");
-            user.setSalt(salt);
-        } catch (Exception e) {
-            // TODO: damn this is totally bogus!!!
+        String middleName = JsonPath.read(jsonObject, "$['person.personName.middleName']");
+        user.setMiddleName(middleName);
+
+        String familyName = JsonPath.read(jsonObject, "$['person.personName.familyName']");
+        user.setFamilyName(familyName);
+
+        String username;
+        username = JsonPath.read(jsonObject, "$['username']");
+        if (StringUtil.isEmpty(username))
+            username = JsonPath.read(jsonObject, "$['systemId']");
+        user.setUsername(username);
+
+        Object privilegeArrayObject = JsonPath.read(jsonObject, "$['privileges']");
+        if (privilegeArrayObject instanceof JSONArray) {
+            List<Privilege> privileges = new ArrayList<Privilege>();
+
+            JSONArray privilegeArray = (JSONArray) privilegeArrayObject;
+            for (Object privilegeObject : privilegeArray) {
+                Privilege privilege = new Privilege();
+
+                String privilegeUuid = JsonPath.read(privilegeObject, "$['uuid']");
+                privilege.setUuid(privilegeUuid);
+
+                String privilegeName = JsonPath.read(privilegeObject, "$['name']");
+                privilege.setName(privilegeName);
+
+                privileges.add(privilege);
+            }
+
+            user.setPrivileges(privileges);
         }
 
-        user.setJson(json);
+        Object roleArrayObject = JsonPath.read(jsonObject, "$['roles']");
+        if (roleArrayObject instanceof JSONArray) {
+            List<Role> roles = new ArrayList<Role>();
+
+            JSONArray roleArray = (JSONArray) roleArrayObject;
+            for (Object roleObject : roleArray) {
+                Role role = new Role();
+
+                String privilegeUuid = JsonPath.read(roleObject, "$['uuid']");
+                role.setUuid(privilegeUuid);
+
+                String privilegeName = JsonPath.read(roleObject, "$['name']");
+                role.setName(privilegeName);
+
+                roles.add(role);
+            }
+
+            user.setRoles(roles);
+        }
 
         return user;
     }
@@ -63,17 +108,12 @@ public class UserAlgorithm implements Algorithm {
      * @return the string representation
      */
     @Override
-    public String serialize(final Object object) {
+    public String serialize(final Searchable object) throws IOException {
+        // TODO: Add all other fields into the serialized String.
+        // serialize the minimum needed to identify an object for deletion purposes.
         User user = (User) object;
-        String json = user.getJson();
-
-        String display = JsonPath.read(json, "$.display");
-        if (!StringUtil.isEmpty(display))
-            json = json.replaceAll(display, user.getUsername() + " - " + user.getName());
-
-        JSONObject jsonObject = JsonPath.read(json, "$");
-        jsonObject.put("password", user.getPassword());
-        jsonObject.put("salt", user.getSalt());
-        return json;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", user.getUuid());
+        return jsonObject.toJSONString();
     }
 }

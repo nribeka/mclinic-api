@@ -15,27 +15,34 @@
  */
 package com.mclinic.api.dao;
 
-import java.util.List;
-
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.UserDaoImpl;
 import com.mclinic.api.model.User;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 @ImplementedBy(UserDaoImpl.class)
-public interface UserDao {
+public interface UserDao extends OpenmrsDao<User> {
 
-    User createUser(final User user);
+    /**
+     * Get a user record by the user name of the user.
+     *
+     * @param username the username
+     * @return user with matching username.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    User getByUsername(final String username) throws ParseException, IOException;
 
-    User updateUser(final User user);
-
-    User getUserByUuid(final String uuid);
-
-    User getUserByUsername(final String username);
-
-    List<User> getAllUsers();
-
-    void deleteUser(final User user);
-
-    void deleteAllUsers();
-
+    /**
+     * Get user by the name of the user. Passing empty string will returns all registered users.
+     *
+     * @param name the partial name of the user or empty string.
+     * @return the list of all matching user on the user name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<User> getByName(final String name) throws ParseException, IOException;
 }

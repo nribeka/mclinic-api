@@ -15,106 +15,40 @@
  */
 package com.mclinic.api.dao.impl;
 
+import com.mclinic.api.dao.CohortDao;
+import com.mclinic.api.model.Cohort;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
+import com.mclinic.search.api.util.StringUtil;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.inject.Inject;
-import com.mclinic.api.dao.CohortDao;
-import com.mclinic.api.model.Cohort;
-import com.mclinic.search.api.Context;
-import com.mclinic.search.api.RestAssuredService;
-import com.mclinic.search.api.logger.Logger;
-import com.mclinic.search.api.resource.Resource;
-import com.mclinic.search.api.util.StringUtil;
-import com.mclinic.util.Constants;
-
-public class CohortDaoImpl implements CohortDao {
-
-    @Inject
-    private Logger log;
-
-    @Inject
-    private RestAssuredService service;
+public class CohortDaoImpl extends OpenmrsDaoImpl<Cohort> implements CohortDao {
 
     private static final String TAG = CohortDao.class.getSimpleName();
 
-    @Override
-    public Cohort createCohort(final Cohort cohort) {
-        Object object = null;
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
-            object = service.createObject(cohort, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error creating cohort.", e);
-        }
-        return (Cohort) object;
+    protected CohortDaoImpl() {
+        super(Cohort.class);
     }
 
+    /**
+     * Get cohort by the name of the cohort. Passing empty string will returns all registered cohorts.
+     *
+     * @param name the partial name of the cohort or empty string.
+     * @return the list of all matching cohort on the cohort name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
     @Override
-    public Cohort updateCohort(final Cohort cohort) {
-        Object object = null;
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
-            object = service.updateObject(cohort, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error updating cohort.", e);
+    public List<Cohort> getByName(final String name) throws ParseException, IOException {
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(name)) {
+            Filter filter = FilterFactory.createFilter("name", name + "*");
+            filters.add(filter);
         }
-        return (Cohort) object;
-    }
-
-    @Override
-    public Cohort getCohortByUuid(final String uuid) {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(uuid))
-            searchQuery = "uuid: " + StringUtil.quote(uuid);
-
-        Cohort cohort = null;
-        try {
-            cohort = service.getObject(searchQuery, Cohort.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting cohort using query: " + searchQuery, e);
-        }
-        return cohort;
-    }
-
-    @Override
-    public List<Cohort> getAllCohorts() {
-        List<Cohort> cohorts = new ArrayList<Cohort>();
-        try {
-            cohorts = service.getObjects(StringUtil.EMPTY, Cohort.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting all cohorts.", e);
-        }
-        return cohorts;
-    }
-
-    @Override
-    public List<Cohort> getCohortsByName(final String name) {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(name))
-            searchQuery = "name: " + name + "*";
-
-        List<Cohort> cohorts = new ArrayList<Cohort>();
-        try {
-            cohorts = service.getObjects(searchQuery, Cohort.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting cohorts using query: " + searchQuery, e);
-        }
-        return cohorts;
-    }
-
-    @Override
-    public void deleteAllCohorts() {
-        // TODO Do we need to implement this delete all cohorts?
-    }
-
-    @Override
-    public void deleteCohort(final Cohort cohort) {
-        try {
-            Resource resource = Context.getResource(Constants.COHORT_RESOURCE);
-            service.invalidate(cohort, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error deleting cohort.", e);
-        }
+        return service.getObjects(filters, daoClass);
     }
 }

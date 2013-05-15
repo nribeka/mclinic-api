@@ -1,73 +1,108 @@
 package com.mclinic.api.service;
 
-import java.util.List;
-
 import com.google.inject.ImplementedBy;
-import com.mclinic.api.model.Observation;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.impl.PatientServiceImpl;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Service handling all operation to the @{Patient} actor/model
- *
+ * <p/>
  * TODO: add ability to search based on lucene like query syntax (merging name and identifier).
  */
 @ImplementedBy(PatientServiceImpl.class)
 public interface PatientService {
 
-    Patient createPatient(final Patient patient);
-
-    Patient updatePatient(final Patient patient);
+    /**
+     * Download a single patient record from the patient rest resource into the local lucene repository.
+     *
+     * @param uuid the uuid of the patient.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download patient with matching uuid.
+     */
+    Patient downloadPatientByUuid(final String uuid) throws IOException, ParseException;
 
     /**
+     * Download all patients with name similar to the partial name passed in the parameter.
+     *
+     * @param name the partial name of the patient to be downloaded. When empty, will return all patients available.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download all patient with partially matched name.
+     * @should download all patient when name is empty.
+     */
+    List<Patient> downloadPatientsByName(final String name) throws IOException, ParseException;
+
+    /**
+     * Get a single patient record from the local repository with matching uuid.
+     *
      * @param uuid the patient uuid
      * @return patient with matching uuid or null when no patient match the uuid
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
      * @should return patient with matching uuid
      * @should return null when no patient match the uuid
      */
-    Patient getPatientByUuid(final String uuid);
+    Patient getPatientByUuid(final String uuid) throws IOException, ParseException;
 
     /**
-     * @param identifier the patient identifier
-     * @return patient with matching identifier or null when no patient match the identifier
-     * @should return patient with matching identifier
-     * @should return null when no patient match the identifier
+     * Get patient by the identifier of the patient.
+     *
+     * @param identifier the patient identifier.
+     * @return patient with matching identifier or null when no patient match the identifier.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return patient with matching identifier.
+     * @should return null when no patient match the identifier.
      */
-    Patient getPatientByIdentifier(final String identifier);
+    Patient getPatientByIdentifier(final String identifier) throws IOException, ParseException;
 
     /**
-     * @return all registered patients or empty list when no patient is registered
-     * @should return all registered patients
-     * @should return empty list when no patient is registered
+     * Get all saved patients in the local repository.
+     *
+     * @return all registered patients or empty list when no patient is registered.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return all registered patients.
+     * @should return empty list when no patient is registered.
      */
-    List<Patient> getAllPatients();
+    List<Patient> getAllPatients() throws IOException, ParseException;
 
     /**
-     * @param name the patient name
-     * @return list of all patients with matching name or empty list when no patient match the name
-     * @should return list of all patients with matching name
-     * @should return empty list when no patient match the name
+     * Get list of patients with name similar to the search term.
+     *
+     * @param name the patient name.
+     * @return list of all patients with matching name or empty list when no patient match the name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return list of all patients with matching name partially.
+     * @should return empty list when no patient match the name.
      */
-    List<Patient> getPatientsByName(final String name);
+    List<Patient> getPatientsByName(final String name) throws IOException, ParseException;
 
     /**
-     * @param uuid the cohort uuid
-     * @return list of all patients from the cohort or empty list when no patient come from the cohort
-     * @should return list of all patients from the cohort
-     * @should return empty list when no patient match the cohort uuid
+     * Search for patients with matching characteristic on the name or identifier with the search term.
+     *
+     * @param term the search term.
+     * @return list of all patients with matching search term on the searchable fields or empty list.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return list of all patients with matching search term on the searchable fields.
+     * @should return empty list when no patient match the search term.
      */
-    List<Patient> getPatientsByCohort(final String uuid);
+    List<Patient> searchPatients(final String term) throws IOException, ParseException;
 
     /**
-     * @param term the search term
-     * @return list of all patients with matching search term on the searchable fields or empty list
-     * @should return list of all patients with matching search term on the searchable fields
-     * @should return empty list when no patient match the search term
+     * Delete a single patient object from the local repository.
+     *
+     * @param patient the patient object.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should delete the patient object from the local repository.
      */
-    List<Patient> searchPatients(final String term);
-
-    void deletePatient(final Patient patient);
-
-    void deleteAllPatients();
-
+    void deletePatient(final Patient patient) throws IOException, ParseException;
 }

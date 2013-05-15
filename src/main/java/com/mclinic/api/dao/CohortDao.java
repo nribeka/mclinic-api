@@ -15,27 +15,24 @@
  */
 package com.mclinic.api.dao;
 
-import java.util.List;
-
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.CohortDaoImpl;
 import com.mclinic.api.model.Cohort;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 @ImplementedBy(CohortDaoImpl.class)
-public interface CohortDao {
+public interface CohortDao extends OpenmrsDao<Cohort> {
 
-    Cohort createCohort(final Cohort cohort);
-
-    Cohort updateCohort(final Cohort cohort);
-
-    Cohort getCohortByUuid(final String uuid);
-
-    List<Cohort> getAllCohorts();
-
-    List<Cohort> getCohortsByName(final String name);
-
-    void deleteAllCohorts();
-
-    void deleteCohort(final Cohort cohort);
-
+    /**
+     * Get cohort by the name of the cohort. Passing empty string will returns all registered cohorts.
+     *
+     * @param name the partial name of the cohort or empty string.
+     * @return the list of all matching cohort on the cohort name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<Cohort> getByName(final String name) throws ParseException, IOException;
 }

@@ -1,0 +1,11 @@
+# Resource
+resource.name=Local Form Template Resource
+node.root=$
+resource.object=com.mclinic.api.model.FormTemplate
+algorithm.class=com.mclinic.api.model.algorithm.FormTemplateAlgorithm
+resolver.class=com.mclinic.api.model.resolver.LocalResolver
+field.unique=uuid
+
+# Searchable Fields
+uuid=$['uuid']
+formUuid=$['form.uuid']

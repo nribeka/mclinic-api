@@ -15,126 +15,49 @@
  */
 package com.mclinic.api.service;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
+import com.mclinic.api.context.Context;
+import com.mclinic.api.context.ContextFactory;
 import com.mclinic.api.model.Cohort;
-import com.mclinic.api.module.MuzimaModule;
-import com.mclinic.search.api.Context;
-import com.mclinic.search.api.RestAssuredService;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import com.mclinic.search.api.util.StringUtil;
 import org.junit.Test;
 
+import java.util.List;
+
+/**
+ * TODO: Write brief description about the class here.
+ */
 public class CohortServiceTest {
 
-    private CohortService cohortService;
+    @Test
+    public void aspectTest() throws Exception {
+        Context context = ContextFactory.createContext();
 
-    private AdministrativeService service;
+        context.openSession();
+        if (!context.isAuthenticated())
+            context.authenticate("admin", "test", "http://localhost:8081/openmrs-standalone");
 
-    @Before
-    public void prepare() throws Exception {
-        URL repositoryPath = AdministrativeServiceTest.class.getResource("../j2l");
-        URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
-        Context.initialize(new MuzimaModule(lucenePath.getPath(), "uuid"));
+        CohortService cohortService = context.getCohortService();
+        PatientService patientService = context.getPatientService();
+        ObservationService observationService = context.getObservationService();
 
-        service = Context.getInstance(AdministrativeService.class);
-        Assert.assertNotNull(service);
-
-        service.initializeRepository(repositoryPath.getPath());
-
-        URL jsonPath = AdministrativeServiceTest.class.getResource("../json/cohort");
-        service.loadCohorts(new File(jsonPath.getPath()));
-
-        cohortService = Context.getInstance(CohortService.class);
-        Assert.assertNotNull(cohortService);
-    }
-
-    @After
-    public void cleanUp() {
-        URL lucenePath = AdministrativeServiceTest.class.getResource("../lucene");
-
-        File luceneDirectory = new File(lucenePath.getPath());
-        for (String filename : luceneDirectory.list()) {
-            File file = new File(luceneDirectory, filename);
-            Assert.assertTrue(file.delete());
+        List<Cohort> cohorts = cohortService.downloadCohortsByName(StringUtil.EMPTY);
+        for (Cohort cohort : cohorts) {
+            System.out.println("Cohort: " + cohort.getName() + " | " + cohort.getUuid());
+//            List<Member> members = cohortService.downloadMembers(cohort.getUuid());
+//            for (Member member : members) {
+//                System.out.println("Member: " + member.getPatientUuid());
+//                Patient patient = patientService.downloadPatientByUuid(member.getPatientUuid());
+//                System.out.println("Patient: " + patient.getUuid() + "| identifier: " + patient.getIdentifier());
+//                List<Observation> observations =
+//                        observationService.downloadObservationsByPatient(member.getPatientUuid());
+//                System.out.println("Observation: ");
+//                for (Observation observation : observations) {
+//                    System.out.println(observation.getQuestionName() + " = " + observation.getValue());
+//                }
+//            }
         }
-    }
 
-    /**
-     * @verifies return cohort with matching uuid
-     * @see CohortService#getCohortByUuid(String)
-     */
-    @Test
-    public void getCohortByUuid_shouldReturnCohortWithMatchingUuid() throws Exception {
-        String uuid = "0ca78602-738f-408d-8ced-386ad12367db";
-        Cohort cohort = cohortService.getCohortByUuid(uuid);
-        Assert.assertNotNull(cohort);
-    }
-
-    /**
-     * @verifies return null when no cohort match the uuid
-     * @see CohortService#getCohortByUuid(String)
-     */
-    @Test
-    public void getCohortByUuid_shouldReturnNullWhenNoCohortMatchTheUuid() throws Exception {
-        String randomUuid = "1234";
-        Cohort cohort = cohortService.getCohortByUuid(randomUuid);
-        Assert.assertNull(cohort);
-    }
-
-    /**
-     * @verifies return list of all cohorts with matching name
-     * @see CohortService#getCohortsByName(String)
-     */
-    @Test
-    public void getCohortsByName_shouldReturnListOfAllCohortsWithMatchingName() throws Exception {
-        String name = "Fem";
-        List<Cohort> cohorts = cohortService.getCohortsByName(name);
-        Assert.assertNotNull(cohorts);
-        Assert.assertFalse(cohorts.isEmpty());
-    }
-
-    /**
-     * @verifies return empty list when no cohort match the name
-     * @see CohortService#getCohortsByName(String)
-     */
-    @Test
-    public void getCohortsByName_shouldReturnEmptyListWhenNoCohortMatchTheName() throws Exception {
-        String randomName = "RandomName";
-        List<Cohort> cohorts = cohortService.getCohortsByName(randomName);
-        Assert.assertNotNull(cohorts);
-        Assert.assertTrue(cohorts.isEmpty());
-    }
-
-    /**
-     * @verifies return all registered cohorts
-     * @see CohortService#getAllCohorts()
-     */
-    @Test
-    public void getAllCohorts_shouldReturnAllRegisteredCohorts() throws Exception {
-        List<Cohort> cohorts = cohortService.getAllCohorts();
-        Assert.assertNotNull(cohorts);
-        Assert.assertFalse(cohorts.isEmpty());
-    }
-
-    /**
-     * @verifies return empty list when no cohort is registered
-     * @see CohortService#getAllCohorts()
-     */
-    @Test
-    public void getAllCohorts_shouldReturnEmptyListWhenNoCohortIsRegistered() throws Exception {
-        List<Cohort> cohorts = cohortService.getAllCohorts();
-        Assert.assertNotNull(cohorts);
-        Assert.assertFalse(cohorts.isEmpty());
-
-        for (Cohort cohort : cohorts)
-            cohortService.deleteCohort(cohort);
-
-        cohorts = cohortService.getAllCohorts();
-        Assert.assertNotNull(cohorts);
-        Assert.assertTrue(cohorts.isEmpty());
+        context.deauthenticate();
+        context.closeSession();
     }
 }

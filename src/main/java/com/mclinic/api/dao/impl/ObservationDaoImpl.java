@@ -15,127 +15,68 @@
  */
 package com.mclinic.api.dao.impl;
 
+import com.mclinic.api.dao.ObservationDao;
+import com.mclinic.api.model.Observation;
+import com.mclinic.search.api.filter.Filter;
+import com.mclinic.search.api.filter.FilterFactory;
+import com.mclinic.search.api.util.StringUtil;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.inject.Inject;
-import com.mclinic.api.dao.ObservationDao;
-import com.mclinic.api.model.Observation;
-import com.mclinic.api.model.Patient;
-import com.mclinic.search.api.Context;
-import com.mclinic.search.api.RestAssuredService;
-import com.mclinic.search.api.logger.Logger;
-import com.mclinic.search.api.resource.Resource;
-import com.mclinic.search.api.resource.SearchableField;
-import com.mclinic.search.api.util.StringUtil;
-import com.mclinic.util.Constants;
-
-public class ObservationDaoImpl implements ObservationDao {
-
-    @Inject
-    private Logger log;
-
-    @Inject
-    private RestAssuredService service;
+public class ObservationDaoImpl extends OpenmrsDaoImpl<Observation> implements ObservationDao {
 
     private static final String TAG = ObservationDao.class.getSimpleName();
 
-    @Override
-    public Observation createObservation(final Observation observation) {
-        Object object = null;
-        try {
-            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            object = service.createObject(observation, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error creating observation.", e);
-        }
-        return (Observation) object;
+    protected ObservationDaoImpl() {
+        super(Observation.class);
     }
 
+    /**
+     * Search observations for patient with matching partial search term.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param conceptName the search term for the question of the observations.
+     * @return all observations for the patient with question matching the search term.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
     @Override
-    public Observation updateObservation(final Observation observation) {
-        Object object = null;
-        try {
-            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            object = service.updateObject(observation, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error updating observation.", e);
+    public List<Observation> search(final String patientUuid, final String conceptName) throws ParseException, IOException {
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(patientUuid)) {
+            Filter patientFilter = FilterFactory.createFilter("patientUuid", patientUuid);
+            filters.add(patientFilter);
         }
-        return (Observation) object;
+        if (!StringUtil.isEmpty(conceptName)) {
+            Filter conceptFilter = FilterFactory.createFilter("conceptName", conceptName);
+            filters.add(conceptFilter);
+        }
+        return service.getObjects(filters, Observation.class);
     }
 
+    /**
+     * Search observations for patient with matching uuid of the question.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param conceptUuid the uuid of the question of the observations.
+     * @return all observations for the patient with question matching the search term.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
     @Override
-    public Observation getObservationByUuid(final String uuid) {
-        String searchQuery = StringUtil.EMPTY;
-        if (!StringUtil.isEmpty(uuid))
-            searchQuery = "uuid: " + StringUtil.quote(uuid);
-
-        Observation observation = null;
-        try {
-            observation = service.getObject(searchQuery, Observation.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting observation using query: " + searchQuery, e);
+    public List<Observation> get(final String patientUuid, final String conceptUuid) throws ParseException, IOException {
+        List<Filter> filters = new ArrayList<Filter>();
+        if (!StringUtil.isEmpty(patientUuid)) {
+            Filter patientFilter = FilterFactory.createFilter("patientUuid", patientUuid);
+            filters.add(patientFilter);
         }
-        return observation;
-    }
-
-    @Override
-    public List<Observation> getAllObservations(final Patient patient) {
-        String searchQuery = StringUtil.EMPTY;
-        if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
-            searchQuery = "patientUuid: " + StringUtil.quote(patient.getUuid());
-
-        List<Observation> observations = new ArrayList<Observation>();
-        try {
-            observations = service.getObjects(searchQuery, Observation.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error getting observations using query: " + searchQuery, e);
+        if (!StringUtil.isEmpty(conceptUuid)) {
+            Filter conceptFilter = FilterFactory.createFilter("conceptUuid", conceptUuid);
+            filters.add(conceptFilter);
         }
-        return observations;
-    }
-
-    @Override
-    public List<Observation> searchObservations(final Patient patient, final String term) {
-
-        String patientQuery = StringUtil.EMPTY;
-        if (patient != null && !StringUtil.isEmpty(patient.getUuid()))
-            patientQuery = "(patientUuid: " + StringUtil.quote(patient.getUuid()) + ") AND";
-
-        StringBuilder queryBuilder = new StringBuilder();
-        Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-        for (SearchableField searchableField : resource.getSearchableFields()) {
-            String searchableFieldName = searchableField.getName().toLowerCase();
-            if (!searchableField.isUnique() && !searchableFieldName.contains("uuid")) {
-                if (!StringUtil.isBlank(queryBuilder.toString()))
-                    queryBuilder.append(" OR ");
-                String query = searchableField.getName() + ": " + term;
-                queryBuilder.append(query);
-            }
-        }
-
-        List<Observation> observations = new ArrayList<Observation>();
-        try {
-            String searchQuery = queryBuilder.toString();
-            if (!StringUtil.isBlank(searchQuery))
-                observations = service.getObjects(patientQuery + "(" + searchQuery + ")", Observation.class);
-        } catch (Exception e) {
-            log.error(TAG, "Error searching observations using query: " + queryBuilder.toString(), e);
-        }
-        return observations;
-    }
-
-    @Override
-    public void deleteObservation(final Observation observation) {
-        try {
-            Resource resource = Context.getResource(Constants.OBSERVATION_RESOURCE);
-            service.invalidate(observation, resource);
-        } catch (Exception e) {
-            log.error(TAG, "Error deleting observation.", e);
-        }
-    }
-
-    @Override
-    public void deleteAllObservations(final Patient patient) {
-        // TODO Do we need to implement the delete all observations?
+        return service.getObjects(filters, Observation.class);
     }
 }

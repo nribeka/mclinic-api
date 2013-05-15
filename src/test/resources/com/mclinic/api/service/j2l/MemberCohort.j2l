@@ -1,0 +1,10 @@
+# Resource
+resource.name=Cohort Member Resource
+node.root=$['results']
+resource.object=com.mclinic.api.model.Member
+algorithm.class=com.mclinic.api.model.algorithm.MemberAlgorithm
+resolver.class=com.mclinic.api.model.resolver.MemberCohortResolver
+
+# Searchable Fields
+cohortUuid=$['cohort.uuid']
+patientUuid=$['patient.uuid']

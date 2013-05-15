@@ -15,15 +15,17 @@
  */
 package com.mclinic.api.model.algorithm;
 
-import java.text.ParseException;
-
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Observation;
-import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.util.ISO8601Util;
+import com.mclinic.util.Constants;
 import net.minidev.json.JSONObject;
 
-public class ObservationAlgorithm implements Algorithm {
+import java.io.IOException;
+import java.text.ParseException;
+
+public class ObservationAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the observation will be serialized from the JSON representation.
@@ -32,58 +34,70 @@ public class ObservationAlgorithm implements Algorithm {
      * @return the concrete observation object
      */
     @Override
-    public Observation deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
         Observation observation = new Observation();
 
         // get the full json object representation and then pass this around to the next JsonPath.read()
         // this should minimize the time for the subsequent read() call
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         observation.setUuid(uuid);
 
-        String patientUuid = JsonPath.read(jsonObject, "$.person.uuid");
+        String patientUuid = JsonPath.read(jsonObject, "$['person.uuid']");
         observation.setPatientUuid(patientUuid);
 
-        String conceptName = JsonPath.read(jsonObject, "$.concept.display");
-        observation.setFieldName(conceptName);
+        String encounterUuid = JsonPath.read(jsonObject, "$['encounter.uuid']");
+        observation.setEncounterUuid(encounterUuid);
 
-        String conceptUuid = JsonPath.read(jsonObject, "$.concept.uuid");
-        observation.setFieldUuid(conceptUuid);
+        String conceptName = JsonPath.read(jsonObject, "$['concept.name.name']");
+        observation.setQuestionName(conceptName);
 
-        String obsValue = JsonPath.read(jsonObject, "$.display");
-        // extract the observation value information
-        int index = obsValue.indexOf("=");
-        if (index != -1)
-            obsValue = obsValue.substring(index + 1);
-        observation.setValueText(obsValue.trim());
+        String conceptUuid = JsonPath.read(jsonObject, "$['concept.uuid']");
+        observation.setQuestionUuid(conceptUuid);
 
-        String obsDatetime = JsonPath.read(jsonObject, "$.obsDatetime");
+        Object valueNumeric = JsonPath.read(jsonObject, "$['valueNumeric']");
+        if (valueNumeric != null) {
+            observation.setValue(valueNumeric.toString());
+            observation.setDataType(Constants.TYPE_NUMERIC);
+        }
+
+        Object valueDatetime = JsonPath.read(jsonObject, "$['valueDatetime']");
+        if (valueDatetime != null) {
+            observation.setValue(valueDatetime.toString());
+            observation.setDataType(Constants.TYPE_DATE);
+        }
+
+        Object valueCodedObject = JsonPath.read(jsonObject, "$['valueCoded']");
+        if (valueCodedObject != null) {
+            String valueCoded = JsonPath.read(valueCodedObject, "$['display']");
+            observation.setValue(valueCoded);
+            observation.setDataType(Constants.TYPE_STRING);
+        }
+
+        String obsDatetime = JsonPath.read(jsonObject, "$['obsDatetime']");
         try {
             observation.setObservationDate(ISO8601Util.toCalendar(obsDatetime).getTime());
         } catch (ParseException e) {
-            System.out.println("Unable to parse date data from json payload.");
+            getLogger().error(this.getClass().getSimpleName(), "Unable to parse date data from json payload.", e);
         }
-
-        observation.setJson(json);
 
         return observation;
     }
 
     /**
-     * Implementation of this method will define how the observation will be de-serialized into the JSON representation.
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
      *
-     * @param object the observation
-     * @return the json representation
+     * @param object the object
+     * @return the string representation
      */
     @Override
-    public String serialize(final Object object) {
+    public String serialize(final Searchable object) throws IOException {
+        // TODO: Add all other fields into the serialized String.
+        // serialize the minimum needed to identify an object for deletion purposes.
         Observation observation = (Observation) object;
-        // TODO: need to replace this json with values from the new user object in case there's any update
-        // Step:
-        // - Execute JsonPath.read to get the current value
-        // - Perform StringUtil.replace to replace the old value with the value from the object
-        // - Unique id are not allowed to get any kind of update.
-        return observation.getJson();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", observation.getUuid());
+        return jsonObject.toJSONString();
     }
 }

@@ -1,0 +1,11 @@
+# Resource configuration
+resource.name=Uuid Cohort Resource
+node.root=$
+resource.object=com.mclinic.api.model.Cohort
+algorithm.class=com.mclinic.api.model.algorithm.CohortAlgorithm
+resolver.class=com.mclinic.api.model.resolver.UuidCohortResolver
+field.unique=uuid
+
+# Searchable Fields
+uuid=$['uuid']
+name=$['name']

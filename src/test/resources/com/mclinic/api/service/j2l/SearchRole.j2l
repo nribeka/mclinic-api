@@ -1,0 +1,11 @@
+# Resource configuration
+resource.name=Search Role Resource
+node.root=$['results']
+resource.object=com.mclinic.api.model.Role
+algorithm.class=com.mclinic.api.model.algorithm.RoleAlgorithm
+resolver.class=com.mclinic.api.model.resolver.SearchRoleResolver
+field.unique=uuid
+
+# Searchable Fields
+uuid=$['uuid']
+name=$['name']

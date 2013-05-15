@@ -17,10 +17,12 @@ package com.mclinic.api.model.algorithm;
 
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Cohort;
-import com.mclinic.search.api.serialization.Algorithm;
-import com.mclinic.search.api.util.StringUtil;
+import com.mclinic.search.api.model.object.Searchable;
+import net.minidev.json.JSONObject;
 
-public class CohortAlgorithm implements Algorithm {
+import java.io.IOException;
+
+public class CohortAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the object will be serialized from the String representation.
@@ -29,18 +31,16 @@ public class CohortAlgorithm implements Algorithm {
      * @return the concrete object
      */
     @Override
-    public Object deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
         Cohort cohort = new Cohort();
 
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         cohort.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.display");
+        String name = JsonPath.read(jsonObject, "$['name']");
         cohort.setName(name);
-
-        cohort.setJson(json);
 
         return cohort;
     }
@@ -52,16 +52,12 @@ public class CohortAlgorithm implements Algorithm {
      * @return the string representation
      */
     @Override
-    public String serialize(final Object object) {
+    public String serialize(final Searchable object) throws IOException {
+        // serialize the minimum needed to identify an object for deletion purposes.
         Cohort cohort = (Cohort) object;
-        String json = cohort.getJson();
-
-        Object jsonObject = JsonPath.read(json, "$");
-
-        String name = JsonPath.read(jsonObject, "$.display");
-        if (!StringUtil.isEmpty(name))
-            json = json.replaceAll(name, cohort.getName());
-
-        return json;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", cohort.getUuid());
+        jsonObject.put("name", cohort.getUuid());
+        return jsonObject.toJSONString();
     }
 }

@@ -15,51 +15,131 @@
  */
 package com.mclinic.api.service.impl;
 
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.mclinic.api.dao.ObservationDao;
 import com.mclinic.api.model.Observation;
-import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.ObservationService;
+import com.mclinic.search.api.util.StringUtil;
+import com.mclinic.util.Constants;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 public class ObservationServiceImpl implements ObservationService {
 
     @Inject
-    private ObservationDao dao;
+    private ObservationDao observationDao;
 
-    @Override
-    public Observation createObservation(final Observation observation) {
-        return dao.createObservation(observation);
+    protected ObservationServiceImpl() {
     }
 
+    /**
+     * Download a single observation record from the observation rest resource into the local lucene repository.
+     *
+     * @param uuid the uuid of the observation.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download observation with matching uuid.
+     */
     @Override
-    public Observation updateObservation(final Observation observation) {
-        return dao.updateObservation(observation);
+    public Observation downloadObservationByUuid(final String uuid) throws IOException, ParseException {
+        observationDao.download(uuid, Constants.UUID_OBSERVATION_RESOURCE);
+        return getObservationByUuid(uuid);
     }
 
+    /**
+     * Download all observations with name similar to the partial name passed in the parameter.
+     *
+     * @param patientUuid the partial name of the observation to be downloaded. When empty, will return all observations available.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download all observation with partially matched name.
+     * @should download all observation when name is empty.
+     */
     @Override
-    public Observation getObservationByUuid(final String uuid) {
-        return dao.getObservationByUuid(uuid);
+    public List<Observation> downloadObservationsByPatient(final String patientUuid) throws IOException, ParseException {
+        observationDao.download(patientUuid, Constants.SEARCH_OBSERVATION_RESOURCE);
+        return getObservationsByPatient(patientUuid);
     }
 
+    /**
+     * Get a single observation record from the repository using the uuid of the observation.
+     *
+     * @param uuid the observation uuid.
+     * @return the observation with matching uuid or null when no observation match the uuid.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return observation with matching uuid.
+     * @should return null when no observation match the uuid.
+     */
     @Override
-    public List<Observation> getAllObservations(final Patient patient) {
-        return dao.getAllObservations(patient);
+    public Observation getObservationByUuid(final String uuid) throws IOException, ParseException {
+        return observationDao.getByUuid(uuid);
     }
 
+    /**
+     * Get all observations for the particular patient.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @return list of all observations for the patient or empty list when no observation found for the patient.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return list of all observations for the patient.
+     * @should return empty list when no observation found for the patient.
+     */
     @Override
-    public List<Observation> searchObservations(final Patient patient, final String term) {
-        return dao.searchObservations(patient, term);
+    public List<Observation> getObservationsByPatient(final String patientUuid) throws IOException, ParseException {
+        return observationDao.search(patientUuid, StringUtil.EMPTY);
     }
 
+    /**
+     * Get all observations for the particular patient.
+     *
+     * @param patientUuid the uuid of the patient.
+     * @param conceptUuid the uuid of the concept.
+     * @return list of all observations for the patient or empty list when no observation found for the patient.
+     * @throws org.apache.lucene.queryParser.ParseException
+     *                             when query parser from lucene unable to parse the query string.
+     * @throws java.io.IOException when search api unable to process the resource.
+     * @should return list of all observations for the patient.
+     * @should return empty list when no observation found for the patient.
+     */
     @Override
-    public void deleteObservation(final Observation observation) {
-        dao.deleteObservation(observation);
+    public List<Observation> getObservationsByPatientAndConcept(final String patientUuid, final String conceptUuid) throws IOException, ParseException {
+        return observationDao.get(patientUuid, conceptUuid);
     }
 
+    /**
+     * Search for all observations for the particular patient with matching search term.
+     *
+     * @param patientUuid the patient.
+     * @param term        the search term.
+     * @return list of all observations with matching search term on the searchable fields or empty list.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return list of all observations with matching search term on the searchable fields.
+     * @should return empty list when no observation match the search term.
+     */
     @Override
-    public void deleteAllObservations(final Patient patient) {
-        dao.deleteAllObservations(patient);
+    public List<Observation> searchObservations(final String patientUuid, final String term) throws IOException, ParseException {
+        return observationDao.search(patientUuid, term);
+    }
+
+    /**
+     * Delete a single observation from the local repository.
+     *
+     * @param observation the observation.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should delete the observation from the local repository.
+     */
+    @Override
+    public void deleteObservation(final Observation observation) throws IOException, ParseException {
+        try {
+            observationDao.delete(observation, Constants.UUID_OBSERVATION_RESOURCE);
+        } finally {
+            observationDao.delete(observation, Constants.SEARCH_OBSERVATION_RESOURCE);
+        }
     }
 }

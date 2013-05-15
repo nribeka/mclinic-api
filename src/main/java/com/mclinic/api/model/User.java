@@ -15,117 +15,147 @@
  */
 package com.mclinic.api.model;
 
-public class User {
+import java.util.List;
+
+public class User extends OpenmrsSearchable {
 
     private String uuid;
 
-    private String name;
+    private String givenName;
+
+    private String middleName;
+
+    private String familyName;
 
     private String username;
 
-    private String password;
+    private List<Privilege> privileges;
 
-    private String salt;
-
-    private Boolean status;
-
-    private String json;
+    private List<Role> roles;
 
     /**
-     * @return the uuid
+     * Get the uuid of the user.
+     *
+     * @return the uuid of the user.
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * @param uuid the uuid to set
+     * Set the uuid of the user.
+     *
+     * @param uuid the uuid of the user.
      */
     public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
     /**
-     * @return the name
+     * Get the given name for the patient.
+     *
+     * @return the given name for the patient.
      */
-    public String getName() {
-        return name;
+    public String getGivenName() {
+        return givenName;
     }
 
     /**
-     * @param name the name to set
+     * Set the given name for the patient.
+     *
+     * @param givenName the given name for the patient.
      */
-    public void setName(final String name) {
-        this.name = name;
+    public void setGivenName(final String givenName) {
+        this.givenName = givenName;
     }
 
     /**
-     * @return the username
+     * Get the middle name for the patient.
+     *
+     * @return the middle name for the patient.
+     */
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    /**
+     * Set the middle name for the patient.
+     *
+     * @param middleName the middle name for the patient.
+     */
+    public void setMiddleName(final String middleName) {
+        this.middleName = middleName;
+    }
+
+    /**
+     * Get the family name for the patient.
+     *
+     * @return the family name for the patient.
+     */
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    /**
+     * Set the family name for the patient.
+     *
+     * @param familyName the family name for the patient.
+     */
+    public void setFamilyName(final String familyName) {
+        this.familyName = familyName;
+    }
+
+    /**
+     * Get the username of the user.
+     *
+     * @return the username of the user.
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * @param username the username to set
+     * Set the username of the user.
+     *
+     * @param username the username of the user.
      */
     public void setUsername(final String username) {
         this.username = username;
     }
 
     /**
-     * @return the password
+     * Get the list of all privileges for the user.
+     *
+     * @return the list of all privileges for the user.
      */
-    public String getPassword() {
-        return password;
+    public List<Privilege> getPrivileges() {
+        return privileges;
     }
 
     /**
-     * @param password the password to set
+     * Set the list of all privileges for the user.
+     *
+     * @param privileges the list of all privileges for the user.
      */
-    public void setPassword(final String password) {
-        this.password = password;
+    public void setPrivileges(final List<Privilege> privileges) {
+        this.privileges = privileges;
     }
 
     /**
-     * @return the salt
+     * Get the list of all roles for the user.
+     *
+     * @return the list of all roles for the user.
      */
-    public String getSalt() {
-        return salt;
+    public List<Role> getRoles() {
+        return roles;
     }
 
     /**
-     * @param salt the salt to set
+     * Set the list of all roles for the user.
+     *
+     * @param roles the list of all roles for the user.
      */
-    public void setSalt(final String salt) {
-        this.salt = salt;
-    }
-
-    /**
-     * @return the status
-     */
-    public Boolean getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(final Boolean status) {
-        this.status = status;
-    }
-
-    /**
-     * @return the json
-     */
-    public String getJson() {
-        return json;
-    }
-
-    /**
-     * @param json the json to set
-     */
-    public void setJson(final String json) {
-        this.json = json;
+    public void setRoles(final List<Role> roles) {
+        this.roles = roles;
     }
 }

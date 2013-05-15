@@ -15,11 +15,15 @@
  */
 package com.mclinic.api.service;
 
-import java.util.List;
-
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.model.Form;
+import com.mclinic.api.model.FormData;
+import com.mclinic.api.model.FormTemplate;
 import com.mclinic.api.service.impl.FormServiceImpl;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Service handling all operation to the @{Form} actor/model
@@ -27,26 +31,163 @@ import com.mclinic.api.service.impl.FormServiceImpl;
 @ImplementedBy(FormServiceImpl.class)
 public interface FormService {
 
-    Form saveForm(final Form form);
-
-    Form updateForm(final Form form);
+    /**
+     * Download a single form record from the form rest resource into the local lucene repository.
+     *
+     * @param uuid the uuid of the form.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download form with matching uuid.
+     */
+    Form downloadFormByUuid(final String uuid) throws IOException, ParseException;
 
     /**
-     * @param uuid the form uuid
-     * @return form with matching uuid or null when no form match the uuid
-     * @should return form with matching uuid
-     * @should return null when no form match the uuid
+     * Download all forms with name similar to the partial name passed in the parameter.
+     *
+     * @param name the partial name of the form to be downloaded. When empty, will return all forms available.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download all form with partially matched name.
+     * @should download all form when name is empty.
      */
-    Form getFormByUuid(final String uuid);
+    List<Form> downloadFormsByName(final String name) throws IOException, ParseException;
 
     /**
-     * @return all registered forms or empty list when no form is registered
-     * @should return all registered forms
-     * @should return empty list when no form is registered
+     * Get form by the uuid of the form.
+     *
+     * @param uuid the form uuid.
+     * @return form with matching uuid or null when no form match the uuid.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return form with matching uuid.
+     * @should return null when no form match the uuid.
      */
-    List<Form> getAllForms();
+    Form getFormByUuid(final String uuid) throws IOException, ParseException;
 
-    void deleteForm(final Form form);
+    /**
+     * Get all form with matching name (or partial name).
+     *
+     * @param name the form name.
+     * @return form with matching uuid or null when no form match the uuid.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return form with matching uuid.
+     * @should return null when no form match the uuid.
+     */
+    List<Form> getFormByName(final String name) throws IOException, ParseException;
 
-    void deleteAllForms();
+    /**
+     * @return all registered forms or empty list when no form is registered.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return all registered forms.
+     * @should return empty list when no form is registered.
+     */
+    List<Form> getAllForms() throws IOException, ParseException;
+
+    /**
+     * Delete form from the repository.
+     *
+     * @param form the form to be deleted.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    void deleteForm(final Form form) throws IOException, ParseException;
+
+    /**
+     * Save a new form template to the repository.
+     *
+     * @param formTemplate the form template to be saved.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    void saveFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException;
+
+    /**
+     * Get a form template by the uuid.
+     *
+     * @param uuid the form template uuid.
+     * @return the form template.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    FormTemplate getFormTemplateByUuid(final String uuid) throws IOException, ParseException;
+
+    /**
+     * Get all saved form templates from the local repository.
+     *
+     * @return all saved form templates or empty list when there's no form template saved.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<FormTemplate> getAllFormTemplates() throws IOException, ParseException;
+
+    /**
+     * Delete a form template from the repository.
+     *
+     * @param formTemplate the form template to be deleted.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    void deleteFormTemplate(final FormTemplate formTemplate) throws IOException, ParseException;
+
+    /**
+     * Save a new form data object to the database.
+     *
+     * @param formData the form data to be saved.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    void saveFormData(final FormData formData) throws IOException, ParseException;
+
+    /**
+     * Get a single form data object from the local data repository.
+     *
+     * @param uuid the uuid for the form data.
+     * @return the form data object.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    FormData getFormDataByUuid(final String uuid) throws IOException, ParseException;
+
+    /**
+     * Get all form data filtering on the status of the form data.
+     *
+     * @param status the status of the form data (optional).
+     * @return all form data with matching status.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<FormData> getAllFormData(final String status) throws IOException, ParseException;
+
+    /**
+     * Get form data associated with certain user with filtering on the status of the form data.
+     *
+     * @param userUuid the uuid of the user.
+     * @param status   the status of the form data (optional).
+     * @return all form data for the user with matching status.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<FormData> getFormDataByUser(final String userUuid, final String status) throws IOException, ParseException;
+
+    /**
+     * Get form data associated with certain user with filtering on the status of the form data.
+     *
+     * @param patientUuid the uuid of the patient
+     * @param status      the status of the form data (optional).
+     * @return all form data for the patient with matching status.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<FormData> getFormDataByPatient(final String patientUuid, final String status) throws IOException, ParseException;
+
+    /**
+     * Delete an instance of form data.
+     *
+     * @param formData the form data
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    void deleteFormDate(final FormData formData) throws IOException, ParseException;
 }

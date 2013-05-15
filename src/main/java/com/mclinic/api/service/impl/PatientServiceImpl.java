@@ -15,65 +15,141 @@
  */
 package com.mclinic.api.service.impl;
 
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.mclinic.api.dao.PatientDao;
 import com.mclinic.api.model.Patient;
 import com.mclinic.api.service.PatientService;
+import com.mclinic.util.Constants;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 public class PatientServiceImpl implements PatientService {
 
     @Inject
-    private PatientDao dao;
+    private PatientDao patientDao;
 
-    @Override
-    public Patient createPatient(final Patient patient) {
-        return dao.createPatient(patient);
+    protected PatientServiceImpl() {
     }
 
+    /**
+     * Download a single patient record from the patient rest resource into the local lucene repository.
+     *
+     * @param uuid the uuid of the patient.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download patient with matching uuid.
+     */
     @Override
-    public Patient updatePatient(final Patient patient) {
-        return dao.updatePatient(patient);
+    public Patient downloadPatientByUuid(final String uuid) throws IOException, ParseException {
+        patientDao.download(uuid, Constants.UUID_PATIENT_RESOURCE);
+        return getPatientByUuid(uuid);
     }
 
+    /**
+     * Download all patients with name similar to the partial name passed in the parameter.
+     *
+     * @param name the partial name of the patient to be downloaded. When empty, will return all patients available.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should download all patient with partially matched name.
+     * @should download all patient when name is empty.
+     */
     @Override
-    public Patient getPatientByUuid(final String uuid) {
-        return dao.getPatientByUuid(uuid);
+    public List<Patient> downloadPatientsByName(final String name) throws IOException, ParseException {
+        patientDao.download(name, Constants.SEARCH_PATIENT_RESOURCE);
+        return getPatientsByName(name);
     }
 
+    /**
+     * Get a single patient record from the local repository with matching uuid.
+     *
+     * @param uuid the patient uuid
+     * @return patient with matching uuid or null when no patient match the uuid
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return patient with matching uuid
+     * @should return null when no patient match the uuid
+     */
     @Override
-    public Patient getPatientByIdentifier(final String identifier) {
-        return dao.getPatientByIdentifier(identifier);
+    public Patient getPatientByUuid(final String uuid) throws IOException, ParseException {
+        return patientDao.getByUuid(uuid);
     }
 
+    /**
+     * Get patient by the identifier of the patient.
+     *
+     * @param identifier the patient identifier.
+     * @return patient with matching identifier or null when no patient match the identifier.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return patient with matching identifier.
+     * @should return null when no patient match the identifier.
+     */
     @Override
-    public List<Patient> getAllPatients() {
-        return dao.getAllPatients();
+    public Patient getPatientByIdentifier(final String identifier) throws IOException, ParseException {
+        return patientDao.getByIdentifier(identifier);
     }
 
+    /**
+     * Get all saved patients in the local repository.
+     *
+     * @return all registered patients or empty list when no patient is registered.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return all registered patients.
+     * @should return empty list when no patient is registered.
+     */
     @Override
-    public List<Patient> getPatientsByName(final String name) {
-        return dao.getPatientsByName(name);
+    public List<Patient> getAllPatients() throws IOException, ParseException {
+        return patientDao.getAll();
     }
 
+    /**
+     * Get list of patients with name similar to the search term.
+     *
+     * @param name the patient name.
+     * @return list of all patients with matching name or empty list when no patient match the name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return list of all patients with matching name partially.
+     * @should return empty list when no patient match the name.
+     */
     @Override
-    public List<Patient> getPatientsByCohort(final String uuid) {
-        return dao.getPatientsByCohort(uuid);
+    public List<Patient> getPatientsByName(final String name) throws IOException, ParseException {
+        return patientDao.getByName(name);
     }
 
+    /**
+     * Search for patients with matching characteristic on the name or identifier with the search term.
+     *
+     * @param term the search term.
+     * @return list of all patients with matching search term on the searchable fields or empty list.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should return list of all patients with matching search term on the searchable fields.
+     * @should return empty list when no patient match the search term.
+     */
     @Override
-    public List<Patient> searchPatients(final String term) {
-        return dao.searchPatients(term);
+    public List<Patient> searchPatients(final String term) throws IOException, ParseException {
+        return patientDao.search(term);
     }
 
+    /**
+     * Delete a single patient object from the local repository.
+     *
+     * @param patient the patient object.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     * @should delete the patient object from the local repository.
+     */
     @Override
-    public void deletePatient(final Patient patient) {
-        dao.deletePatient(patient);
-    }
-
-    @Override
-    public void deleteAllPatients() {
-        dao.deleteAllPatients();
+    public void deletePatient(final Patient patient) throws IOException, ParseException {
+        try {
+            patientDao.delete(patient, Constants.UUID_PATIENT_RESOURCE);
+        } finally {
+            patientDao.delete(patient, Constants.SEARCH_PATIENT_RESOURCE);
+        }
     }
 }

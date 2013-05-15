@@ -15,32 +15,44 @@
  */
 package com.mclinic.api.dao;
 
-import java.util.List;
-
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.PatientDaoImpl;
 import com.mclinic.api.model.Patient;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 @ImplementedBy(PatientDaoImpl.class)
-public interface PatientDao {
+public interface PatientDao extends OpenmrsDao<Patient> {
 
-    Patient createPatient(final Patient patient);
+    /**
+     * Get patient by using the identifier.
+     *
+     * @param identifier the identifier of the patient.
+     * @return the patient with matching identifier.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    Patient getByIdentifier(final String identifier) throws ParseException, IOException;
 
-    Patient updatePatient(final Patient patient);
+    /**
+     * Get cohort by the name of the cohort. Passing empty string will returns all registered cohorts.
+     *
+     * @param name the partial name of the cohort or empty string.
+     * @return the list of all matching cohort on the cohort name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<Patient> getByName(final String name) throws ParseException, IOException;
 
-    Patient getPatientByUuid(final String uuid);
-
-    Patient getPatientByIdentifier(final String identifier);
-
-    List<Patient> getAllPatients();
-
-    List<Patient> getPatientsByName(final String name);
-
-    List<Patient> getPatientsByCohort(final String uuid);
-
-    List<Patient> searchPatients(final String term);
-
-    void deletePatient(final Patient patient);
-
-    void deleteAllPatients();
+    /**
+     * Search for patients matching the term on name and identifier.
+     *
+     * @param term the term that should match.
+     * @return all patients with matching name or identifier.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<Patient> search(final String term) throws ParseException, IOException;
 }

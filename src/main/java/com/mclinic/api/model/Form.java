@@ -15,45 +15,49 @@
  */
 package com.mclinic.api.model;
 
-public class Form {
+/**
+ * A form is a class to hold form reference in the server. Each form will have one to one connection with a
+ * FormTemplate.
+ */
+public class Form extends OpenmrsSearchable {
 
     private String uuid;
 
     private String name;
 
-    private Boolean disabled;
-
-    private String json;
-
+    /**
+     * Get the uuid for the cohort.
+     *
+     * @return the uuid.
+     */
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * Set the uuid for the cohort.
+     *
+     * @param uuid the uuid to set.
+     */
     public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * Get the name for the cohort.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name for the cohort.
+     *
+     * @param name the name to set.
+     */
     public void setName(final String name) {
         this.name = name;
-    }
-
-    public Boolean getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(final Boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getJson() {
-        return json;
-    }
-
-    public void setJson(final String json) {
-        this.json = json;
     }
 }

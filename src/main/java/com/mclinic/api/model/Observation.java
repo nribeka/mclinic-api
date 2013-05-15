@@ -15,89 +15,169 @@
  */
 package com.mclinic.api.model;
 
-import java.util.Date;
-
 import com.mclinic.search.api.util.StringUtil;
 
-public class Observation {
+import java.util.Date;
+
+public class Observation extends OpenmrsSearchable {
 
     private String uuid;
 
     private String patientUuid;
 
-    private String valueText = StringUtil.EMPTY;
+    private String encounterUuid;
+
+    private String value = StringUtil.EMPTY;
 
     private Date observationDate;
 
-    private String fieldName;
+    private Integer dataType;
 
-    private String fieldUuid;
+    private String questionName;
 
-    private byte dataType;
+    private String questionUuid;
 
-    private String json;
-
+    /**
+     * Get the uuid for the observation.
+     *
+     * @return the uuid for the observation.
+     */
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * Set the uuid for the observation.
+     *
+     * @param uuid the uuid for the observation.
+     */
     public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * Get the uuid for the patient.
+     *
+     * @return the uuid for the patient.
+     */
     public String getPatientUuid() {
         return patientUuid;
     }
 
+    /**
+     * Set the uuid for the patient.
+     *
+     * @param patientUuid the uuid for the patient.
+     */
     public void setPatientUuid(final String patientUuid) {
         this.patientUuid = patientUuid;
     }
 
-    public String getValueText() {
-        return valueText;
+    /**
+     * Get the encounter uuid for this observation.
+     *
+     * @return the encounter uuid.
+     */
+    public String getEncounterUuid() {
+        return encounterUuid;
     }
 
-    public void setValueText(final String valueText) {
-        this.valueText = valueText;
+    /**
+     * Set the encounter uuid for this observation.
+     *
+     * @param encounterUuid the encounter id.
+     */
+    public void setEncounterUuid(final String encounterUuid) {
+        this.encounterUuid = encounterUuid;
     }
 
+    /**
+     * Get the date of the observation.
+     *
+     * @return the date of the observation.
+     */
     public Date getObservationDate() {
         return observationDate;
     }
 
+    /**
+     * Set the date of the observation.
+     *
+     * @param observationDate the date of the observation.
+     */
     public void setObservationDate(final Date observationDate) {
         this.observationDate = observationDate;
     }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(final String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public String getFieldUuid() {
-        return fieldUuid;
-    }
-
-    public void setFieldUuid(final String fieldUuid) {
-        this.fieldUuid = fieldUuid;
-    }
-
-    public byte getDataType() {
+    /**
+     * Get the data type of the observation.
+     *
+     * @return the data type of the observation.
+     */
+    public Integer getDataType() {
         return dataType;
     }
 
-    public void setDataType(byte dataType) {
+    /**
+     * Set the data type of the observation.
+     *
+     * @param dataType the data type of the observation.
+     */
+    public void setDataType(Integer dataType) {
         this.dataType = dataType;
     }
 
-    public String getJson() {
-        return json;
+    /**
+     * Get the question name of the observation.
+     *
+     * @return the question name of the observation.
+     */
+    public String getQuestionName() {
+        return questionName;
     }
 
-    public void setJson(final String json) {
-        this.json = json;
+    /**
+     * Set the question name of the observation.
+     *
+     * @param questionName the question name of the observation.
+     */
+    public void setQuestionName(final String questionName) {
+        this.questionName = questionName;
+    }
+
+    /**
+     * Get the uuid of the question of the observation.
+     *
+     * @return the uuid of the question of the observation.
+     */
+    public String getQuestionUuid() {
+        return questionUuid;
+    }
+
+    /**
+     * Set the uuid of the question of the observation.
+     *
+     * @param questionUuid the uuid of the question of the observation.
+     */
+    public void setQuestionUuid(final String questionUuid) {
+        this.questionUuid = questionUuid;
+    }
+
+    /**
+     * Get the value of the observation.
+     *
+     * @return the value of the observation.
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * Set the value of the observation.
+     *
+     * @param value the value of the observation.
+     */
+    public void setValue(final String value) {
+        this.value = value;
     }
 }

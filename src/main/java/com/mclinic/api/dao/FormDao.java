@@ -15,24 +15,24 @@
  */
 package com.mclinic.api.dao;
 
-import java.util.List;
-
 import com.google.inject.ImplementedBy;
 import com.mclinic.api.dao.impl.FormDaoImpl;
 import com.mclinic.api.model.Form;
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.util.List;
 
 @ImplementedBy(FormDaoImpl.class)
-public interface FormDao {
+public interface FormDao extends OpenmrsDao<Form> {
 
-    Form saveForm(final Form form);
-
-    Form updateForm(final Form form);
-
-    Form getFormByUuid(final String uuid);
-
-    List<Form> getAllForms();
-
-    void deleteForm(final Form form);
-
-    void deleteAllForms();
+    /**
+     * Get form by the name of the form. Passing empty string will returns all registered forms.
+     *
+     * @param name the partial name of the form or empty string.
+     * @return the list of all matching form on the form name.
+     * @throws ParseException when query parser from lucene unable to parse the query string.
+     * @throws IOException    when search api unable to process the resource.
+     */
+    List<Form> getByName(final String name) throws ParseException, IOException;
 }

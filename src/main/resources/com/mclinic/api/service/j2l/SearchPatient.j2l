@@ -1,0 +1,14 @@
+# Resource configuration
+resource.name=Search Patient Resource
+node.root=$['results']
+resource.object=com.mclinic.api.model.Patient
+algorithm.class=com.mclinic.api.model.algorithm.PatientAlgorithm
+resolver.class=com.mclinic.api.model.resolver.SearchPatientResolver
+field.unique=uuid
+
+# Searchable Fields
+uuid=$['uuid']
+givenName=$['personName.givenName']
+middleName=$['personName.middleName']
+familyName=$['personName.familyName']
+identifier=$['patientIdentifier.identifier']

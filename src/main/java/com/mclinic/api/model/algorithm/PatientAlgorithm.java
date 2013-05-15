@@ -15,19 +15,16 @@
  */
 package com.mclinic.api.model.algorithm;
 
-import java.text.ParseException;
-
-import com.google.inject.Inject;
 import com.jayway.jsonpath.JsonPath;
 import com.mclinic.api.model.Patient;
-import com.mclinic.search.api.logger.Logger;
-import com.mclinic.search.api.serialization.Algorithm;
+import com.mclinic.search.api.model.object.Searchable;
 import com.mclinic.search.api.util.ISO8601Util;
+import net.minidev.json.JSONObject;
 
-public class PatientAlgorithm implements Algorithm {
+import java.io.IOException;
+import java.text.ParseException;
 
-    @Inject
-    private Logger logger;
+public class PatientAlgorithm extends BaseOpenmrsAlgorithm {
 
     /**
      * Implementation of this method will define how the observation will be serialized from the JSON representation.
@@ -36,7 +33,7 @@ public class PatientAlgorithm implements Algorithm {
      * @return the concrete observation object
      */
     @Override
-    public Patient deserialize(final String json) {
+    public Searchable deserialize(final String json) throws IOException {
 
         Patient patient = new Patient();
 
@@ -44,45 +41,47 @@ public class PatientAlgorithm implements Algorithm {
         // this should minimize the time for the subsequent read() call
         Object jsonObject = JsonPath.read(json, "$");
 
-        String uuid = JsonPath.read(jsonObject, "$.uuid");
+        String uuid = JsonPath.read(jsonObject, "$['uuid']");
         patient.setUuid(uuid);
 
-        String name = JsonPath.read(jsonObject, "$.person.display");
-        patient.setName(name);
+        String givenName = JsonPath.read(jsonObject, "$['personName.givenName']");
+        patient.setGivenName(givenName);
 
-        String identifier = JsonPath.read(jsonObject, "$.identifiers[0].identifier");
+        String middleName = JsonPath.read(jsonObject, "$['personName.middleName']");
+        patient.setMiddleName(middleName);
+
+        String familyName = JsonPath.read(jsonObject, "$['personName.familyName']");
+        patient.setFamilyName(familyName);
+
+        String identifier = JsonPath.read(jsonObject, "$['patientIdentifier.identifier']");
         patient.setIdentifier(identifier);
 
-        String gender = JsonPath.read(jsonObject, "$.person.gender");
+        String gender = JsonPath.read(jsonObject, "$['gender']");
         patient.setGender(gender);
 
-        String birthdate = JsonPath.read(jsonObject, "$.person.birthdate");
+        String birthdate = JsonPath.read(jsonObject, "$['birthdate']");
         try {
             patient.setBirthdate(ISO8601Util.toCalendar(birthdate).getTime());
         } catch (ParseException e) {
-            logger.error(PatientAlgorithm.class.getSimpleName(), "Unable to parse date data from json payload.", e);
+            getLogger().error(this.getClass().getSimpleName(), "Unable to parse date data from json payload.", e);
         }
-
-        patient.setJson(json);
 
         return patient;
     }
 
     /**
-     * Implementation of this method will define how the observation will be de-serialized into the JSON representation.
+     * Implementation of this method will define how the object will be de-serialized into the String representation.
      *
-     * @param object the observation
-     * @return the json representation
+     * @param object the object
+     * @return the string representation
      */
     @Override
-    public String serialize(final Object object) {
-
+    public String serialize(final Searchable object) throws IOException {
+        // TODO: Add all other fields into the serialized String.
+        // serialize the minimum needed to identify an object for deletion purposes.
         Patient patient = (Patient) object;
-        // TODO: need to replace this json with values from the new user object in case there's any update
-        // Step:
-        // - Execute JsonPath.read to get the current value
-        // - Perform StringUtil.replace to replace the old value with the value from the object
-        // - Unique id are not allowed to get any kind of update.
-        return patient.getJson();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("uuid", patient.getUuid());
+        return jsonObject.toJSONString();
     }
 }
